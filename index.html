@@ -765,7 +765,7 @@
       // the video file itself.
       var heroTagline = document.getElementById('heroTaglineOverlay');
       if (heroTagline) {
-        var TAGLINE_WINDOW = 1.3; // seconds before the end where it appears
+        var TAGLINE_WINDOW = 4; // seconds before the end where it appears
         heroVideo.addEventListener('timeupdate', function () {
           var dur = heroVideo.duration;
           var showTagline = isFinite(dur) && (dur - heroVideo.currentTime) <= TAGLINE_WINDOW;
