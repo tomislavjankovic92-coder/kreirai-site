@@ -736,16 +736,27 @@
     // fallback so the animation is never stuck on a frozen still frame.
     var heroVideo = document.getElementById('heroLogoVideo');
     if (heroVideo) {
-      var HERO_RATE = 1;
+      // Playback speed is normal throughout, except the clip's final 2
+      // seconds (its original, unedited final 2 seconds — the file itself
+      // is untouched) are played back slower so they last ~5 seconds.
+      var HERO_NORMAL_RATE = 1;
+      var HERO_SLOWDOWN_WINDOW = 2;        // last N seconds of the clip's own timeline
+      var HERO_SLOWDOWN_RATE = 2 / 5;      // stretches those 2s into ~5 perceived seconds
       heroVideo.muted = true;
       heroVideo.defaultMuted = true;
-      heroVideo.defaultPlaybackRate = HERO_RATE;
-      heroVideo.playbackRate = HERO_RATE;
-      heroVideo.addEventListener('ratechange', function () {
-        if (heroVideo.playbackRate !== HERO_RATE) heroVideo.playbackRate = HERO_RATE;
-      });
+      heroVideo.defaultPlaybackRate = HERO_NORMAL_RATE;
+      heroVideo.playbackRate = HERO_NORMAL_RATE;
+      var applyHeroPlaybackRate = function () {
+        var dur = heroVideo.duration;
+        var rate = HERO_NORMAL_RATE;
+        if (isFinite(dur) && (dur - heroVideo.currentTime) <= HERO_SLOWDOWN_WINDOW) {
+          rate = HERO_SLOWDOWN_RATE;
+        }
+        if (heroVideo.playbackRate !== rate) heroVideo.playbackRate = rate;
+      };
+      heroVideo.addEventListener('timeupdate', applyHeroPlaybackRate);
       var tryPlayHeroVideo = function () {
-        heroVideo.playbackRate = HERO_RATE;
+        applyHeroPlaybackRate();
         var p = heroVideo.play();
         if (p && typeof p.catch === 'function') { p.catch(function () {}); }
       };
