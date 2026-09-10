@@ -390,7 +390,7 @@
           class="hero-logo-video absolute inset-0 w-full h-full border-0 outline-none"
           src="https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260910_180726_af93c9d9-7225-4830-afa5-5b99bf8b6944.mp4"
           poster="https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260910_180517_a440d575-355b-42a5-b264-a8b81a8a69ea.png"
-          autoplay muted loop playsinline webkit-playsinline preload="auto"
+          autoplay muted playsinline webkit-playsinline preload="auto"
           aria-label="Promotivni video KreirAI — od koda do gotovog proizvoda"
         ></video>
         <p id="heroTaglineOverlay" class="hero-tagline-overlay absolute inset-x-0 bottom-[14%] font-mono font-semibold text-[10px] sm:text-sm tracking-[0.28em] uppercase text-cyan-bright text-center pointer-events-none" aria-hidden="true">Ideja u posao.</p>
@@ -736,38 +736,29 @@
     // fallback so the animation is never stuck on a frozen still frame.
     var heroVideo = document.getElementById('heroLogoVideo');
     if (heroVideo) {
-      // Playback speed is normal throughout, except the clip's final 2
-      // seconds (its original, unedited final 2 seconds — the file itself
-      // is untouched) are played back slower so they last ~5 seconds.
-      var HERO_NORMAL_RATE = 1;
-      var HERO_SLOWDOWN_WINDOW = 2;        // last N seconds of the clip's own timeline
-      var HERO_SLOWDOWN_RATE = 2 / 5;      // stretches those 2s into ~5 perceived seconds
+      var HERO_RATE = 1;
+      var HERO_END_HOLD_MS = 3000; // hold on the last frame this long before the next loop starts
       heroVideo.muted = true;
       heroVideo.defaultMuted = true;
-      heroVideo.defaultPlaybackRate = HERO_NORMAL_RATE;
-      heroVideo.playbackRate = HERO_NORMAL_RATE;
-      var applyHeroPlaybackRate = function () {
-        var dur = heroVideo.duration;
-        var rate = HERO_NORMAL_RATE;
-        if (isFinite(dur) && (dur - heroVideo.currentTime) <= HERO_SLOWDOWN_WINDOW) {
-          rate = HERO_SLOWDOWN_RATE;
-        }
-        if (heroVideo.playbackRate !== rate) heroVideo.playbackRate = rate;
-      };
-      heroVideo.addEventListener('timeupdate', applyHeroPlaybackRate);
+      heroVideo.defaultPlaybackRate = HERO_RATE;
+      heroVideo.playbackRate = HERO_RATE;
+      heroVideo.addEventListener('ratechange', function () {
+        if (heroVideo.playbackRate !== HERO_RATE) heroVideo.playbackRate = HERO_RATE;
+      });
       var tryPlayHeroVideo = function () {
-        applyHeroPlaybackRate();
+        heroVideo.playbackRate = HERO_RATE;
         var p = heroVideo.play();
         if (p && typeof p.catch === 'function') { p.catch(function () {}); }
       };
-      // Rely on the native "loop" attribute (already on the <video> tag) —
-      // it's the reliable mechanism. This is just a safety net in case
-      // "loop" ever gets dropped or ignored: if the video does fire
-      // "ended", jump back to the start and keep playing.
-      heroVideo.setAttribute('loop', '');
+      // No native "loop" attribute here on purpose: looping is handled by
+      // hand so the last frame can be held for a few seconds before the
+      // clip restarts, instead of jumping straight back to the start.
+      heroVideo.removeAttribute('loop');
       heroVideo.addEventListener('ended', function () {
-        heroVideo.currentTime = 0;
-        tryPlayHeroVideo();
+        setTimeout(function () {
+          heroVideo.currentTime = 0;
+          tryPlayHeroVideo();
+        }, HERO_END_HOLD_MS);
       });
       // "Ideja u posao." fades in only during the video's final logo-reveal
       // moment, and fades out again as soon as it loops back to the start —
