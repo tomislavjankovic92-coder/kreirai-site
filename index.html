@@ -133,6 +133,34 @@
   }
   html.dark #scrollProgress{ background: linear-gradient(90deg, #3EE8F5, #9B7BFF); }
 
+  /* Cursor-following ambient glow — a soft light that trails the mouse
+     pointer across the page. Fixed + pointer-events:none so it never
+     blocks clicks, blended into the page (not painted flat on top) so
+     it stays subtle instead of washing over text/cards, and skipped
+     entirely on touch devices / reduced-motion. */
+  #cursorGlow{
+    position: fixed;
+    top: 0; left: 0;
+    width: 420px; height: 420px;
+    margin-left: -210px; margin-top: -210px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 45;
+    opacity: 0;
+    transition: opacity .5s ease;
+    background: radial-gradient(circle, rgba(62,232,245,.14) 0%, rgba(155,123,255,.09) 35%, transparent 70%);
+    mix-blend-mode: screen;
+    will-change: transform, opacity;
+  }
+  html:not(.dark) #cursorGlow{
+    background: radial-gradient(circle, rgba(31,185,204,.08) 0%, rgba(124,92,224,.06) 40%, transparent 70%);
+    mix-blend-mode: normal;
+  }
+  #cursorGlow.is-active{ opacity: 1; }
+  @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce){
+    #cursorGlow{ display: none; }
+  }
+
   .mobile-nav{ max-height:0; overflow:hidden; transition: max-height .3s ease; }
   .mobile-nav.open{ max-height:460px; }
 
@@ -348,6 +376,8 @@
 </div>
 
 <div id="scrollProgress"></div>
+
+<div id="cursorGlow" aria-hidden="true"></div>
 
 <!-- ============================================================
      NAV
@@ -693,6 +723,34 @@
         try { localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light'); } catch (e) {}
       });
     });
+
+    // ---- cursor-following ambient glow (desktop / fine-pointer only) ----
+    (function () {
+      var glow = document.getElementById('cursorGlow');
+      if (!glow) return;
+      var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!fine || reduced) return;
+
+      var rafId = null, x = 0, y = 0, hideTimer = null;
+
+      function render() {
+        glow.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
+        rafId = null;
+      }
+
+      window.addEventListener('mousemove', function (e) {
+        x = e.clientX; y = e.clientY;
+        glow.classList.add('is-active');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(function () { glow.classList.remove('is-active'); }, 2200);
+        if (!rafId) rafId = requestAnimationFrame(render);
+      }, { passive: true });
+
+      document.addEventListener('mouseleave', function () {
+        glow.classList.remove('is-active');
+      });
+    })();
 
     // ---- pull-to-refresh (mobile) ----
     (function () {
