@@ -60,6 +60,14 @@
      ============================================================ */
   html { scroll-behavior: smooth; overscroll-behavior-y: contain; overflow-x: hidden; max-width: 100%; }
 
+  /* Header is now fixed (not sticky — Safari/iOS drops position:sticky
+     when any ancestor sets overflow-x:hidden, which html/body do here),
+     so it no longer reserves its own space in normal flow. --header-h
+     is measured from the real header bar (JS, right after <header> in
+     the markup) and used to push <main> down by exactly that amount,
+     with a sane fallback for the instant before that script runs. */
+  main{ padding-top: var(--header-h, 76px); }
+
   body{
     background:#F2F4FA; color:#0E1526;
     transition: background .3s ease, color .3s ease;
@@ -405,8 +413,8 @@
 <!-- ============================================================
      NAV
      ============================================================ -->
-<header class="sticky top-0 z-50 bg-[#F2F4FA]/85 dark:bg-[#080B14]/85 backdrop-blur border-b border-line dark:border-[#232B47] transition-colors">
-  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
+<header class="fixed top-0 inset-x-0 z-50 bg-[#F2F4FA]/85 dark:bg-[#080B14]/85 backdrop-blur border-b border-line dark:border-[#232B47] transition-colors">
+  <div id="headerBar" class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
     <a href="#pocetna" class="font-serif font-semibold text-xl tracking-tight shrink-0">
       <span class="text-ink dark:text-[#EBEFFA]">Kreir</span><span class="text-gradient">AI</span>
     </a>
@@ -451,6 +459,29 @@
     </div>
   </nav>
 </header>
+
+<script>
+  // Header is fixed now, so <main> needs padding-top matching its real
+  // height (see --header-h in <style>). Measured from #headerBar (the
+  // top row only — not the mobile dropdown, whose open/close shouldn't
+  // shove page content around) and kept in sync on resize/orientation
+  // change. Runs here, before <main> is parsed, so there is no flash of
+  // hero content hidden under the header on first paint.
+  (function () {
+    var bar = document.getElementById('headerBar');
+    if (!bar) return;
+    function syncHeaderHeight() {
+      var h = bar.getBoundingClientRect().height;
+      if (h > 0) document.documentElement.style.setProperty('--header-h', h + 'px');
+    }
+    syncHeaderHeight();
+    window.addEventListener('resize', syncHeaderHeight, { passive: true });
+    window.addEventListener('orientationchange', syncHeaderHeight, { passive: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(syncHeaderHeight).catch(function () {});
+    }
+  })();
+</script>
 
 <main>
 
