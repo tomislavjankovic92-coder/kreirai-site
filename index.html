@@ -122,11 +122,14 @@
   /* --- Scroll-triggered reveal system ---
      Add data-reveal="fade-up | fade-down | fade-left | fade-right | zoom-in"
      to any element, optionally data-reveal-delay="150" (ms).
-     JS toggles .is-visible via IntersectionObserver. */
+     JS toggles .is-visible via IntersectionObserver. will-change is set
+     by JS only for the brief moment each element is actually animating
+     in, then cleared — dozens of data-reveal elements left permanently
+     promoted to their own GPU layer (the old always-on will-change
+     here) is a classic, real cause of scroll jank on a page this size. */
   [data-reveal]{
     opacity: 0;
     transition: opacity .8s cubic-bezier(.16,.8,.24,1), transform .8s cubic-bezier(.16,.8,.24,1);
-    will-change: opacity, transform;
   }
   [data-reveal="fade-up"]{ transform: translateY(40px); }
   [data-reveal="fade-down"]{ transform: translateY(-32px); }
@@ -273,6 +276,19 @@
   .btn-glow-sm::before{ padding: 1.25px; }
 
   @keyframes btn-ring-spin{ to{ --glow-angle: 360deg; } }
+
+  /* All the rotating glow rings (buttons, service cards, hero stage)
+     pause while the page is actively scrolling — same reasoning as the
+     code-rain canvas: these run 100% of the time regardless of scroll,
+     and pausing them for the ~200ms a scroll gesture takes frees up
+     real compositing budget exactly when it's needed most. Toggled by
+     JS adding/removing .is-scrolling on <body>. */
+  body.is-scrolling .btn-glow::before,
+  body.is-scrolling .btn-glow-sm::before,
+  body.is-scrolling .service-card::before,
+  body.is-scrolling .hero-stage::after{
+    animation-play-state: paused;
+  }
 
   @media (prefers-reduced-motion: reduce){
     .btn-glow, .btn-glow-sm{ transition:none; }
@@ -889,6 +905,24 @@
       }, { passive: true });
     })();
 
+    // ---- pause the always-on glow-ring animations while scrolling ----
+    // Buttons, service cards and the hero stage all have a rotating
+    // conic-gradient ring animating 100% of the time. Freeing up that
+    // compositing work during an active scroll gesture (resuming ~160ms
+    // after it stops) is a real, measurable smoothness win, with no
+    // visible change outside of scrolling itself.
+    (function () {
+      var body = document.body;
+      var resumeTimer = null;
+      window.addEventListener('scroll', function () {
+        body.classList.add('is-scrolling');
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(function () {
+          body.classList.remove('is-scrolling');
+        }, 160);
+      }, { passive: true });
+    })();
+
     // ---- cursor-following ambient glow (desktop / fine-pointer only) ----
     (function () {
       var glow = document.getElementById('cursorGlow');
@@ -1051,7 +1085,19 @@
           if (entry.isIntersecting) {
             var el = entry.target;
             var delay = parseInt(el.getAttribute('data-reveal-delay') || '0', 10);
-            setTimeout(function () { el.classList.add('is-visible'); }, delay);
+            setTimeout(function () {
+              // Promote to a GPU layer only for the ~0.8s the reveal
+              // transition actually runs, then drop it — leaving
+              // will-change on every revealed element forever (as before)
+              // meant dozens of permanent compositing layers sitting
+              // around for the rest of the visit, which is real scroll-
+              // jank fuel on a page with this many reveal elements.
+              el.style.willChange = 'opacity, transform';
+              el.classList.add('is-visible');
+              var clearWillChange = function () { el.style.willChange = 'auto'; };
+              el.addEventListener('transitionend', clearWillChange, { once: true });
+              setTimeout(clearWillChange, 1000); // fallback if transitionend never fires
+            }, delay);
             io.unobserve(el);
           }
         });
