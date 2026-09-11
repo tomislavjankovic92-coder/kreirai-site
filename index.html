@@ -162,19 +162,19 @@
   #cursorGlow{
     position: fixed;
     top: 0; left: 0;
-    width: 420px; height: 420px;
-    margin-left: -210px; margin-top: -210px;
+    width: 200px; height: 200px;
+    margin-left: -100px; margin-top: -100px;
     border-radius: 50%;
     pointer-events: none;
     z-index: 45;
     opacity: 0;
     transition: opacity .5s ease;
-    background: radial-gradient(circle, rgba(62,232,245,.14) 0%, rgba(155,123,255,.09) 35%, transparent 70%);
+    background: radial-gradient(circle, rgba(62,232,245,.055) 0%, rgba(155,123,255,.03) 35%, transparent 70%);
     mix-blend-mode: screen;
     will-change: transform, opacity;
   }
   html:not(.dark) #cursorGlow{
-    background: radial-gradient(circle, rgba(31,185,204,.08) 0%, rgba(124,92,224,.06) 40%, transparent 70%);
+    background: radial-gradient(circle, rgba(31,185,204,.03) 0%, rgba(124,92,224,.02) 40%, transparent 70%);
     mix-blend-mode: normal;
   }
   #cursorGlow.is-active{ opacity: 1; }
