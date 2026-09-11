@@ -68,6 +68,12 @@
      with a sane fallback for the instant before that script runs. */
   main{ padding-top: var(--header-h, 76px); }
 
+  /* Promotes the fixed, blurred header to its own GPU compositor layer
+     so scrolling doesn't force the browser to repaint the backdrop-blur
+     against the rest of the page on every frame — helps smooth out
+     scroll jank, no visual change. */
+  header{ transform: translateZ(0); }
+
   body{
     background:#F2F4FA; color:#0E1526;
     transition: background .3s ease, color .3s ease;
@@ -815,27 +821,35 @@
       }
 
       var lastT = null;
+      var lastDrawT = 0;
+      var FRAME_INTERVAL = 1000 / 30; // draw at ~30fps — plenty for such a slow drift, half the main-thread cost of 60fps
       function frame(t) {
         if (hidden) { rafId = null; return; }
         if (lastT === null) lastT = t;
         var dt = Math.min((t - lastT) / 1000, 0.05);
         lastT = t;
 
-        ctx.clearRect(0, 0, w, h);
-        var isDark = document.documentElement.classList.contains('dark');
-        var palette = isDark ? DARK_COLORS : LIGHT_COLORS;
+        // Keep scheduling rAF every frame (cheap) but only do the actual
+        // clear+redraw work at ~30fps, so the main thread has more room
+        // during scroll compositing.
+        if (t - lastDrawT >= FRAME_INTERVAL) {
+          lastDrawT = t;
+          ctx.clearRect(0, 0, w, h);
+          var isDark = document.documentElement.classList.contains('dark');
+          var palette = isDark ? DARK_COLORS : LIGHT_COLORS;
 
-        for (var i = 0; i < particles.length; i++) {
-          var p = particles[i];
-          p.y += p.vy * dt;
-          if (p.y > h + 20) {
-            p.y = -20;
-            p.x = rand(0, w);
-            p.char = GLYPHS[(Math.random() * GLYPHS.length) | 0];
+          for (var i = 0; i < particles.length; i++) {
+            var p = particles[i];
+            p.y += p.vy * dt;
+            if (p.y > h + 20) {
+              p.y = -20;
+              p.x = rand(0, w);
+              p.char = GLYPHS[(Math.random() * GLYPHS.length) | 0];
+            }
+            ctx.font = p.size + 'px "JetBrains Mono", monospace';
+            ctx.fillStyle = palette[p.colorIdx] + p.alpha + ')';
+            ctx.fillText(p.char, p.x, p.y);
           }
-          ctx.font = p.size + 'px "JetBrains Mono", monospace';
-          ctx.fillStyle = palette[p.colorIdx] + p.alpha + ')';
-          ctx.fillText(p.char, p.x, p.y);
         }
         rafId = requestAnimationFrame(frame);
       }
@@ -860,6 +874,19 @@
         hidden = document.hidden;
         if (hidden) { stop(); } else { start(); }
       });
+
+      // Pause entirely while the page is actively scrolling — the fixed,
+      // blurred header above this canvas has to keep re-sampling whatever
+      // is moving behind it, so freeing up the main thread during scroll
+      // (instead of also redrawing glyphs every frame) is what actually
+      // smooths out scroll jank. Resumes ~160ms after scrolling stops.
+      var scrollResumeTimer = null;
+      window.addEventListener('scroll', function () {
+        if (hidden) return;
+        stop();
+        clearTimeout(scrollResumeTimer);
+        scrollResumeTimer = setTimeout(start, 160);
+      }, { passive: true });
     })();
 
     // ---- cursor-following ambient glow (desktop / fine-pointer only) ----
