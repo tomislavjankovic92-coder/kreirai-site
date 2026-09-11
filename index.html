@@ -147,9 +147,9 @@
     height: 100%;
     z-index: -1;
     pointer-events: none;
-    opacity: .78;
+    opacity: .9;
   }
-  html:not(.dark) #codeBgCanvas{ opacity: .6; }
+  html:not(.dark) #codeBgCanvas{ opacity: .95; }
   @media (prefers-reduced-motion: reduce){
     #codeBgCanvas{ display: none; }
   }
@@ -754,7 +754,7 @@
       var ctx = canvas.getContext('2d');
       var GLYPHS = ['{', '}', '<', '>', '/', '*', '=', ';', '(', ')', '01', '10', '#', '+', '::', 'AI'];
       var DARK_COLORS = ['rgba(62,232,245,', 'rgba(155,123,255,'];
-      var LIGHT_COLORS = ['rgba(13,102,113,', 'rgba(69,53,145,'];
+      var LIGHT_COLORS = ['rgba(6,78,88,', 'rgba(51,38,115,'];
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
       var w = 0, h = 0, particles = [], rafId = null, hidden = false;
 
@@ -766,7 +766,7 @@
           y: seedY ? rand(0, h) : rand(-h, 0),
           vy: rand(6, 14), // px per second
           size: rand(10, 13),
-          alpha: rand(0.09, 0.17),
+          alpha: rand(0.13, 0.22),
           colorIdx: Math.random() < 0.5 ? 0 : 1,
           char: GLYPHS[(Math.random() * GLYPHS.length) | 0]
         };
