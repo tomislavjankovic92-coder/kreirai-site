@@ -147,9 +147,9 @@
     height: 100%;
     z-index: -1;
     pointer-events: none;
-    opacity: .55;
+    opacity: .78;
   }
-  html:not(.dark) #codeBgCanvas{ opacity: .32; }
+  html:not(.dark) #codeBgCanvas{ opacity: .6; }
   @media (prefers-reduced-motion: reduce){
     #codeBgCanvas{ display: none; }
   }
@@ -775,7 +775,7 @@
           y: seedY ? rand(0, h) : rand(-h, 0),
           vy: rand(6, 14), // px per second
           size: rand(10, 13),
-          alpha: rand(0.05, 0.11),
+          alpha: rand(0.09, 0.17),
           colorIdx: Math.random() < 0.5 ? 0 : 1,
           char: GLYPHS[(Math.random() * GLYPHS.length) | 0]
         };
