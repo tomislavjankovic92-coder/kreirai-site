@@ -81,7 +81,7 @@
       </header>
 
       <!-- Scrollable body -->
-      <main id="appBody" class="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-950/40 relative">
+      <main id="appBody" class="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-950/40">
 
         <section id="tab-narudzbe" class="app-tab p-4 pb-6">
           <h1 class="text-lg font-bold text-ink dark:text-slate-100 mb-3">Narudžbe</h1>
@@ -129,14 +129,14 @@
           <p class="text-[11.5px] text-inksoft dark:text-slate-500 leading-relaxed">Ovo je konceptualna demo aplikacija koju je izradio <a href="https://kreirai.hr" class="underline">KreirAI</a>. Svi klijenti, narudžbe i podaci su izmišljeni i služe samo kao prikaz mogućnosti.</p>
         </section>
 
-        <!-- Sheet overlay + panel (detail / add-order) -->
-        <div id="sheetOverlay" class="fixed sm:absolute inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-30"></div>
-        <div id="sheetPanel" class="fixed sm:absolute left-0 right-0 bottom-0 max-h-[85%] bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl p-5 pb-8 overflow-y-auto translate-y-full transition-transform duration-300 z-40"></div>
-
-        <!-- Toast -->
-        <div id="toast" class="fixed sm:absolute left-1/2 -translate-x-1/2 bottom-24 bg-slate-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 whitespace-nowrap"></div>
-
       </main>
+
+      <!-- Sheet overlay + panel (detail / add-order) -->
+      <div id="sheetOverlay" class="fixed sm:absolute inset-0 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 z-30"></div>
+      <div id="sheetPanel" class="fixed sm:absolute left-0 right-0 bottom-0 max-h-[85%] bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl p-5 pb-8 overflow-y-auto translate-y-full transition-transform duration-300 z-40"></div>
+
+      <!-- Toast -->
+      <div id="toast" class="fixed sm:absolute left-1/2 -translate-x-1/2 bottom-24 bg-slate-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 whitespace-nowrap"></div>
 
       <!-- FAB -->
       <button id="fabAdd" type="button" aria-label="Nova narudžba" class="absolute right-5 bottom-[88px] w-14 h-14 rounded-full bg-brand text-white shadow-lg flex items-center justify-center hover:bg-brand-dark transition z-20">
