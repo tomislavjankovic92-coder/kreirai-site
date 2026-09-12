@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LANEA — Case study: Proljetna kolekcija (demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+          sans: ['"Work Sans"', 'system-ui', 'sans-serif']
+        },
+        colors: {
+          sage: { DEFAULT: '#8A9A7B', dark: '#5F6E52', light: '#B7C2AC' },
+          blush: { DEFAULT: '#D9A5A0', dark: '#B97C76' },
+          cream: '#FAF6F0',
+          ink: '#2E2A24',
+          inksoft: '#7A7267',
+          line: '#E8E1D6'
+        }
+      }
+    }
+  };
+</script>
+<style>
+  html, body { margin: 0; }
+  [data-reveal] { opacity: 0; transition: opacity .8s cubic-bezier(.16,.8,.24,1), transform .8s cubic-bezier(.16,.8,.24,1); }
+  [data-reveal="fade-up"] { transform: translateY(22px); }
+  [data-reveal="fade-right"] { transform: translateX(-22px); }
+  [data-reveal="fade-left"] { transform: translateX(22px); }
+  [data-reveal].is-visible { opacity: 1; transform: translate(0,0); }
+  main { padding-top: var(--header-h, 108px); }
+  header { transform: translateZ(0); }
+  .heart-btn svg { transition: fill .15s ease, stroke .15s ease, transform .15s ease; }
+  .heart-btn.is-liked svg { fill: #C0392B; stroke: #C0392B; transform: scale(1.08); }
+  .lightbox-img { transition: opacity .2s ease; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+</head>
+<body class="font-sans bg-cream text-ink">
+
+  <header id="siteHeader" class="fixed top-0 inset-x-0 z-50 bg-cream/90 backdrop-blur border-b border-line transition-colors">
+    <div id="demoRibbon" class="bg-ink text-cream text-[12px] sm:text-[13px]">
+      <div class="max-w-6xl mx-auto px-5 sm:px-8 py-2 flex items-center justify-between gap-3">
+        <p class="leading-snug">🎯 Ovo je konceptualni prikaz oglasne kampanje koji je izradio <a href="https://kreirai.hr" class="underline font-semibold hover:text-blush">KreirAI</a> — brend, podaci i rezultati su izmišljeni.</p>
+        <button id="ribbonClose" type="button" aria-label="Zatvori obavijest" class="shrink-0 opacity-80 hover:opacity-100 text-base leading-none">✕</button>
+      </div>
+    </div>
+    <div id="headerBar" class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
+      <a href="#pregled" class="font-serif font-semibold text-xl sm:text-2xl tracking-wide text-ink">LANEA</a>
+      <nav class="hidden md:flex items-center gap-7 text-[13px] font-medium text-inksoft">
+        <a href="#pregled" class="hover:text-ink transition">Pregled</a>
+        <a href="#varijante" class="hover:text-ink transition">Varijante</a>
+        <a href="#rezultati" class="hover:text-ink transition">Rezultati</a>
+        <a href="#galerija" class="hover:text-ink transition">Galerija</a>
+      </nav>
+      <div class="hidden md:flex items-center gap-4">
+        <span class="text-[11px] font-mono uppercase tracking-[0.1em] text-inksoft border border-line rounded-full px-3 py-1.5">Case study</span>
+        <a href="https://kreirai.hr" class="text-[12.5px] font-semibold text-sage-dark hover:text-ink transition">Izradio KreirAI →</a>
+      </div>
+      <button id="navToggle" type="button" aria-label="Izbornik" class="md:hidden w-9 h-9 flex items-center justify-center text-ink">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+    <nav id="mobileNav" hidden class="md:hidden border-t border-line bg-cream px-5 py-4 flex flex-col gap-4 text-[14px] font-medium text-ink">
+      <a href="#pregled">Pregled</a>
+      <a href="#varijante">Varijante</a>
+      <a href="#rezultati">Rezultati</a>
+      <a href="#galerija">Galerija</a>
+      <a href="https://kreirai.hr" class="text-sage-dark font-semibold">Izradio KreirAI →</a>
+    </nav>
+  </header>
+  <script>
+    (function () {
+      var bar = document.getElementById('headerBar');
+      var ribbon = document.getElementById('demoRibbon');
+      function syncHeaderHeight() {
+        var h = document.getElementById('siteHeader').getBoundingClientRect().height;
+        if (h > 0) document.documentElement.style.setProperty('--header-h', h + 'px');
+      }
+      window.__syncHeaderHeight = syncHeaderHeight;
+      syncHeaderHeight();
+      window.addEventListener('resize', syncHeaderHeight, { passive: true });
+      window.addEventListener('orientationchange', syncHeaderHeight, { passive: true });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncHeaderHeight).catch(function(){});
+    })();
+  </script>
+
+  <main>
+
+    <!-- ===================== PREGLED / HERO ===================== -->
+    <section id="pregled" class="scroll-mt-24 relative">
+      <div class="relative h-[62vh] min-h-[420px] max-h-[640px] overflow-hidden">
+        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_110757_737f76d8-4e0f-421b-a134-d7bb4294ecff.png" alt="LANEA proljetna kolekcija — hero vizual" class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/20 to-ink/10"></div>
+        <div class="relative h-full max-w-6xl mx-auto px-5 sm:px-8 flex flex-col justify-end pb-12 sm:pb-16">
+          <p class="font-mono text-[11px] tracking-[0.18em] uppercase text-cream/80" data-reveal="fade-up">Case study · Meta oglasi</p>
+          <h1 class="font-serif font-semibold text-3xl sm:text-5xl text-cream mt-3 max-w-xl leading-tight" data-reveal="fade-up" data-reveal-delay="80">Proljetna kolekcija 2026</h1>
+          <p class="mt-3 text-cream/90 text-[15px] sm:text-base max-w-lg" data-reveal="fade-up" data-reveal-delay="160">Kako smo za LANEA testirali tri različite poruke i pronašli onu koja donosi najbolji omjer klikova i troška.</p>
+        </div>
+      </div>
+      <div class="max-w-6xl mx-auto px-5 sm:px-8 -mt-8 sm:-mt-10 relative z-10">
+        <div class="grid grid-cols-3 gap-3 sm:gap-4" data-reveal="fade-up" data-reveal-delay="200">
+          <div class="bg-white rounded-2xl border border-line px-4 py-4 sm:py-5 text-center shadow-sm">
+            <p class="font-serif font-semibold text-2xl sm:text-3xl text-sage-dark">3</p>
+            <p class="text-[11px] sm:text-[12px] text-inksoft mt-1">Testirane poruke</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-line px-4 py-4 sm:py-5 text-center shadow-sm">
+            <p class="font-serif font-semibold text-2xl sm:text-3xl text-sage-dark">12</p>
+            <p class="text-[11px] sm:text-[12px] text-inksoft mt-1">Dana testiranja</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-line px-4 py-4 sm:py-5 text-center shadow-sm">
+            <p class="font-serif font-semibold text-2xl sm:text-3xl text-sage-dark">75.800</p>
+            <p class="text-[11px] sm:text-[12px] text-inksoft mt-1">Ukupni doseg</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-3xl mx-auto px-5 sm:px-8 py-14 sm:py-20 text-center">
+        <p class="text-inksoft text-[15px] sm:text-base leading-relaxed" data-reveal="fade-up">KreirAI je za LANEA, malu hrvatsku modnu marku posvećenu prirodnim materijalima, osmislio i testirao tri različite poruke za lansiranje proljetne kolekcije na Instagramu i Facebooku. Cilj je bio utvrditi koji pristup komunikaciji donosi najbolji omjer klikova, angažmana i troška po kliku — prije nego što se budžet skalira na pobjedničku poruku.</p>
+      </div>
+    </section>
+
+    <!-- ===================== VARIJANTE ===================== -->
+    <section id="varijante" class="scroll-mt-24 max-w-6xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
+      <div class="max-w-[60ch]" data-reveal="fade-up">
+        <p class="font-mono text-xs tracking-[0.18em] uppercase text-sage-dark">Testirane poruke</p>
+        <h2 class="font-serif font-semibold text-3xl sm:text-4xl mt-3">Tri varijante, jedna pobjednica</h2>
+        <p class="mt-3 text-inksoft">Svaka varijanta testira drugačiju hipotezu o tome što potencijalne kupce najviše potiče na klik. Odaberi varijantu da vidiš kako izgleda kao oglas i koja je poruka iza nje.</p>
+      </div>
+
+      <div class="mt-10 grid lg:grid-cols-[260px_1fr] gap-8 items-start">
+        <div id="variantTabs" class="flex lg:flex-col gap-2.5 overflow-x-auto no-scrollbar lg:overflow-visible" data-reveal="fade-right"></div>
+        <div class="grid sm:grid-cols-2 gap-8 items-start" data-reveal="fade-left">
+          <div id="mockupHost" class="max-w-[340px] mx-auto sm:mx-0 w-full"></div>
+          <div id="copyHost"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== REZULTATI ===================== -->
+    <section id="rezultati" class="scroll-mt-24 bg-white/70 border-y border-line">
+      <div class="max-w-5xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
+        <div class="max-w-[60ch]" data-reveal="fade-up">
+          <p class="font-mono text-xs tracking-[0.18em] uppercase text-sage-dark">Rezultati testiranja</p>
+          <h2 class="font-serif font-semibold text-3xl sm:text-4xl mt-3">Varijanta B pobjeđuje s najboljim omjerom</h2>
+          <p id="resultsConclusion" class="mt-3 text-inksoft"></p>
+        </div>
+        <div id="resultsTable" class="mt-10 space-y-3" data-reveal="fade-up" data-reveal-delay="100"></div>
+      </div>
+    </section>
+
+    <!-- ===================== GALERIJA ===================== -->
+    <section id="galerija" class="scroll-mt-24 max-w-6xl mx-auto px-5 sm:px-8 py-14 sm:py-20">
+      <div class="max-w-[60ch]" data-reveal="fade-up">
+        <p class="font-mono text-xs tracking-[0.18em] uppercase text-sage-dark">Kreativa</p>
+        <h2 class="font-serif font-semibold text-3xl sm:text-4xl mt-3">Vizuali korišteni u kampanji</h2>
+        <p class="mt-3 text-inksoft">Set fotografija snimljen za kampanju, korišten u oglasima, na webu i društvenim mrežama.</p>
+      </div>
+      <div id="galleryGrid" class="mt-10 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4"></div>
+    </section>
+
+    <!-- ===================== PRISTUP ===================== -->
+    <section id="pristup" class="max-w-3xl mx-auto px-5 sm:px-8 py-14 sm:py-24 text-center">
+      <p class="font-mono text-xs tracking-[0.18em] uppercase text-sage-dark" data-reveal="fade-up">Kako radimo</p>
+      <h2 class="font-serif font-semibold text-2xl sm:text-3xl mt-3" data-reveal="fade-up" data-reveal-delay="60">Testiranje poruka prije skaliranja budžeta</h2>
+      <p class="mt-4 text-inksoft leading-relaxed" data-reveal="fade-up" data-reveal-delay="120">Prije nego predložimo veći oglasni budžet, prvo definiramo nekoliko različitih hipoteza o tome što ciljanu publiku najviše pokreće na akciju — kvaliteta, hitnost, cijena ili nešto četvrto. Varijante puštamo paralelno na manji testni budžet 5–7 dana, pratimo CTR, cijenu po kliku i angažman, a tek onda skaliramo poruku koja se pokazala najisplativijom.</p>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-line py-10 px-5 sm:px-8 text-center">
+    <p class="text-inksoft text-sm">LANEA · Demo case study koji je izradio <a href="https://kreirai.hr" class="underline hover:text-ink">KreirAI</a></p>
+    <p class="mt-1 text-xs text-inksoft/80">Svi podaci, brend i rezultati su izmišljeni i služe samo kao prikaz mogućnosti.</p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="fixed inset-0 z-[60] hidden items-center justify-center bg-ink/90 px-4" role="dialog" aria-modal="true">
+    <button id="lightboxClose" type="button" aria-label="Zatvori" class="absolute top-5 right-5 text-cream/80 hover:text-cream w-10 h-10 flex items-center justify-center">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <button id="lightboxPrev" type="button" aria-label="Prethodna" class="absolute left-3 sm:left-6 text-cream/80 hover:text-cream w-10 h-10 flex items-center justify-center">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <img id="lightboxImg" src="" alt="" class="lightbox-img max-w-full max-h-[85vh] rounded-lg object-contain">
+    <button id="lightboxNext" type="button" aria-label="Sljedeća" class="absolute right-3 sm:right-6 text-cream/80 hover:text-cream w-10 h-10 flex items-center justify-center">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---------- Ribbon close ----------
+  var ribbonClose = document.getElementById('ribbonClose');
+  if (ribbonClose) {
+    ribbonClose.addEventListener('click', function () {
+      document.getElementById('demoRibbon').remove();
+      if (window.__syncHeaderHeight) window.__syncHeaderHeight();
+    });
+  }
+
+  // ---------- Mobile nav ----------
+  var navToggle = document.getElementById('navToggle');
+  var mobileNav = document.getElementById('mobileNav');
+  navToggle.addEventListener('click', function () {
+    mobileNav.hidden = !mobileNav.hidden;
+    if (window.__syncHeaderHeight) window.__syncHeaderHeight();
+  });
+  mobileNav.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      mobileNav.hidden = true;
+      if (window.__syncHeaderHeight) window.__syncHeaderHeight();
+    });
+  });
+
+  // ---------- Data ----------
+  var IMG = {
+    hero: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_110757_737f76d8-4e0f-421b-a134-d7bb4294ecff.png',
+    adA: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_110757_9a8e06a8-a21f-48f3-91c1-2c62afc38da0.png',
+    adB: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_110756_5cc4ab31-0e70-4b21-b6ef-a3430881329b.png',
+    adC: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_110756_2c9dbca3-bc86-4e98-9bb8-1966a79c6b8e.png',
+    g1: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_110756_b7646762-2af3-4312-9f53-1da3f4e29b97.png',
+    g2: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_110756_75295cbf-bcef-4e0d-88eb-4ed5274db922.png',
+    g3: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_110756_90da38b2-d67b-4677-a598-5c8f8875534b.png',
+    g4: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_110757_65cbd393-80e3-4d1f-bf6d-20c7ced1af43.png',
+    g5: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_110756_517c3200-9fa3-4410-9293-2a470169cedc.png',
+    g6: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_110756_63c46b59-1c6b-4afa-a64c-6e4b75a5c6f4.png'
+  };
+
+  var VARIANT_ORDER = ['a', 'b', 'c'];
+  var VARIANTS = {
+    a: {
+      key: 'a', label: 'Varijanta A', theme: 'Prirodni materijali',
+      hypothesis: 'Poruka temeljena na kvaliteti i prirodnosti materijala.',
+      headline: 'Lan koji diše s tobom',
+      text: 'Nova proljetna kolekcija od 100% prirodnog lana. Lagano, prozračno, za tople dane koji dolaze.',
+      cta: 'Kupi sada', img: IMG.adA,
+      metrics: { ctr: 1.8, cpc: 0.42, eng: 3.1, reach: 24500 }, likes: 128
+    },
+    b: {
+      key: 'b', label: 'Varijanta B', theme: 'Društveni dokaz i hitnost',
+      hypothesis: 'Poruka koja naglašava popularnost i ograničenu dostupnost.',
+      headline: 'Već rasprodano u 3 boje 👀',
+      text: 'Proljetna kolekcija LANEA broji dane do rasprodaje. Pogledaj što je ostalo prije nego nestane.',
+      cta: 'Pogledaj kolekciju', img: IMG.adB,
+      metrics: { ctr: 2.6, cpc: 0.31, eng: 4.7, reach: 26200 }, likes: 341
+    },
+    c: {
+      key: 'c', label: 'Varijanta C', theme: 'Popust i promocija',
+      hypothesis: 'Poruka usmjerena na uvodni popust za nove kupce.',
+      headline: '20% popusta za prvih 100 narudžbi',
+      text: 'Iskoristi uvodni popust na cijelu proljetnu kolekciju LANEA. Ograničena količina.',
+      cta: 'Iskoristi popust', img: IMG.adC,
+      metrics: { ctr: 2.1, cpc: 0.38, eng: 3.6, reach: 25100 }, likes: 203
+    }
+  };
+  var likedState = { a: false, b: false, c: false };
+  var activeVariant = 'a';
+
+  var winnerKey = VARIANT_ORDER.reduce(function (best, k) {
+    return VARIANTS[k].metrics.ctr > VARIANTS[best].metrics.ctr ? k : best;
+  }, VARIANT_ORDER[0]);
+
+  function pctFmt(v) { return v.toFixed(1).replace('.', ',') + '%'; }
+  function eurFmt(v) { return v.toFixed(2).replace('.', ',') + ' €'; }
+  function reachFmt(v) { return v.toLocaleString('hr-HR'); }
+
+  // ---------- Variant tabs ----------
+  var variantTabs = document.getElementById('variantTabs');
+  function renderTabs() {
+    variantTabs.innerHTML = VARIANT_ORDER.map(function (k) {
+      var v = VARIANTS[k];
+      var active = k === activeVariant;
+      return '<button type="button" data-variant="' + k + '" class="variant-tab shrink-0 text-left rounded-2xl border px-4 py-3 transition ' +
+        (active ? 'bg-ink text-cream border-ink' : 'bg-white text-ink border-line hover:border-sage') + '">' +
+        '<span class="flex items-center gap-2">' +
+          '<span class="font-semibold text-[13.5px]">' + v.label + '</span>' +
+          (k === winnerKey ? '<span class="text-[11px]">🏆</span>' : '') +
+        '</span>' +
+        '<span class="block text-[12px] mt-0.5 ' + (active ? 'text-cream/70' : 'text-inksoft') + '">' + v.theme + '</span>' +
+      '</button>';
+    }).join('');
+  }
+  variantTabs.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-variant]');
+    if (!btn) return;
+    activeVariant = btn.getAttribute('data-variant');
+    renderTabs();
+    renderMockup();
+    renderCopy();
+    highlightResultsRow();
+  });
+
+  // ---------- Instagram-style mockup ----------
+  var mockupHost = document.getElementById('mockupHost');
+  function renderMockup() {
+    var v = VARIANTS[activeVariant];
+    var liked = likedState[activeVariant];
+    var likeCount = v.likes + (liked ? 1 : 0);
+    mockupHost.innerHTML =
+      '<div class="bg-white rounded-2xl border border-line overflow-hidden shadow-sm">' +
+        '<div class="flex items-center gap-2.5 p-3">' +
+          '<span class="w-8 h-8 rounded-full bg-gradient-to-br from-sage to-blush shrink-0"></span>' +
+          '<div class="min-w-0"><p class="text-[13px] font-semibold text-ink leading-tight">lanea.hr</p><p class="text-[11px] text-inksoft leading-tight">Sponzorirano</p></div>' +
+        '</div>' +
+        '<img src="' + v.img + '" alt="Oglasni vizual — ' + v.theme + '" class="w-full aspect-square object-cover">' +
+        '<div class="p-3.5">' +
+          '<div class="flex items-center gap-3 mb-2.5">' +
+            '<button type="button" data-action="like" aria-label="Sviđa mi se" class="heart-btn ' + (liked ? 'is-liked' : '') + '">' +
+              '<svg width="21" height="21" viewBox="0 0 24 24" fill="' + (liked ? '#C0392B' : 'none') + '" stroke="' + (liked ? '#C0392B' : 'currentColor') + '" stroke-width="1.8" class="text-ink"><path d="M12 21s-7-4.35-9.5-8.8C.8 8.7 2.2 5 5.6 5c2 0 3.4 1.1 4.4 2.6C11 6.1 12.4 5 14.4 5c3.4 0 4.8 3.7 3.1 7.2C19 16.65 12 21 12 21z"/></svg>' +
+            '</button>' +
+            '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="text-ink"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4A8.5 8.5 0 0 1 4 15.3L2 21l5.9-1.9a8.38 8.38 0 0 0 4.1 1.1 8.5 8.5 0 0 0 8.5-8.4A8.48 8.48 0 0 0 12 3a8.5 8.5 0 0 0-8.5 8.5"/></svg>' +
+            '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="text-ink"><path d="m22 2-7 20-4-9-9-4Z"/></svg>' +
+          '</div>' +
+          '<p class="text-[13px] font-semibold text-ink"><span data-like-count>' + likeCount + '</span> sviđanja</p>' +
+          '<p class="text-[13px] text-ink mt-1"><span class="font-semibold">lanea.hr</span> ' + v.headline + '</p>' +
+          '<button type="button" class="mt-3 w-full text-center text-[13px] font-semibold border border-line rounded-lg py-2 hover:bg-cream transition">' + v.cta + '</button>' +
+        '</div>' +
+      '</div>';
+  }
+  mockupHost.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-action="like"]');
+    if (!btn) return;
+    likedState[activeVariant] = !likedState[activeVariant];
+    renderMockup();
+  });
+
+  // ---------- Copy panel ----------
+  var copyHost = document.getElementById('copyHost');
+  function statChip(label, val) {
+    return '<div class="bg-cream rounded-xl px-3 py-2 text-center"><p class="font-serif font-semibold text-[15px] text-ink">' + val + '</p><p class="text-[10px] text-inksoft mt-0.5">' + label + '</p></div>';
+  }
+  function renderCopy() {
+    var v = VARIANTS[activeVariant];
+    copyHost.innerHTML =
+      '<p class="font-mono text-[11px] tracking-[0.1em] uppercase text-sage-dark">' + v.theme + '</p>' +
+      '<h3 class="font-serif font-semibold text-2xl mt-2 leading-snug">„' + v.headline + '"</h3>' +
+      '<p class="mt-3 text-inksoft text-[14.5px] leading-relaxed">' + v.text + '</p>' +
+      '<p class="mt-4 text-[13px] text-ink bg-sage/10 border border-sage/30 rounded-xl px-3.5 py-2.5"><span class="font-semibold">Hipoteza:</span> ' + v.hypothesis + '</p>' +
+      '<div class="mt-5 grid grid-cols-4 gap-2">' +
+        statChip('CTR', pctFmt(v.metrics.ctr)) +
+        statChip('CPC', eurFmt(v.metrics.cpc)) +
+        statChip('Angažman', pctFmt(v.metrics.eng)) +
+        statChip('Doseg', reachFmt(v.metrics.reach)) +
+      '</div>';
+  }
+
+  // ---------- Results table ----------
+  var resultsTable = document.getElementById('resultsTable');
+  var resultsConclusion = document.getElementById('resultsConclusion');
+  var maxCtr = Math.max.apply(null, VARIANT_ORDER.map(function (k) { return VARIANTS[k].metrics.ctr; }));
+  var maxEng = Math.max.apply(null, VARIANT_ORDER.map(function (k) { return VARIANTS[k].metrics.eng; }));
+
+  function renderResults() {
+    resultsTable.innerHTML = VARIANT_ORDER.map(function (k) {
+      var v = VARIANTS[k];
+      var isWinner = k === winnerKey;
+      var isActive = k === activeVariant;
+      var ctrPct = (v.metrics.ctr / maxCtr * 100);
+      var engPct = (v.metrics.eng / maxEng * 100);
+      return '<button type="button" data-variant="' + k + '" class="result-row w-full text-left grid sm:grid-cols-[160px_1fr_1fr_90px_100px] gap-3 sm:gap-4 items-center bg-white rounded-2xl border-2 px-4 sm:px-5 py-4 transition ' +
+        (isWinner ? 'border-sage' : 'border-line') + (isActive ? ' ring-2 ring-ink/10' : '') + '">' +
+        '<div class="flex items-center gap-2">' +
+          '<div><p class="font-semibold text-[14px] text-ink">' + v.label + (isWinner ? ' <span class="ml-1 text-[11px] font-semibold text-sage-dark">🏆 Pobjednica</span>' : '') + '</p><p class="text-[12px] text-inksoft">' + v.theme + '</p></div>' +
+        '</div>' +
+        '<div><p class="text-[11px] text-inksoft mb-1">CTR · ' + pctFmt(v.metrics.ctr) + '</p><div class="h-2 rounded-full bg-cream overflow-hidden"><div class="h-full rounded-full bg-sage" style="width:' + ctrPct + '%"></div></div></div>' +
+        '<div><p class="text-[11px] text-inksoft mb-1">Angažman · ' + pctFmt(v.metrics.eng) + '</p><div class="h-2 rounded-full bg-cream overflow-hidden"><div class="h-full rounded-full bg-blush" style="width:' + engPct + '%"></div></div></div>' +
+        '<div class="text-right sm:text-left"><p class="text-[11px] text-inksoft">CPC</p><p class="text-[14px] font-semibold text-ink">' + eurFmt(v.metrics.cpc) + '</p></div>' +
+        '<div class="text-right sm:text-left"><p class="text-[11px] text-inksoft">Doseg</p><p class="text-[14px] font-semibold text-ink">' + reachFmt(v.metrics.reach) + '</p></div>' +
+      '</button>';
+    }).join('');
+
+    var winner = VARIANTS[winnerKey];
+    var worstCtr = Math.min.apply(null, VARIANT_ORDER.map(function (k) { return VARIANTS[k].metrics.ctr; }));
+    var worstCpcForCompare = Math.max.apply(null, VARIANT_ORDER.map(function (k) { return VARIANTS[k].metrics.cpc; }));
+    var ctrLift = Math.round((winner.metrics.ctr - worstCtr) / worstCtr * 100);
+    var cpcSaving = Math.round((worstCpcForCompare - winner.metrics.cpc) / worstCpcForCompare * 100);
+    resultsConclusion.textContent = winner.label + ', s porukom temeljenom na "' + winner.theme.toLowerCase() + '", ostvarila je najbolji rezultat — do ' + ctrLift + '% viši CTR uz do ' + cpcSaving + '% nižu cijenu po kliku u odnosu na najslabiju varijantu. Ta poruka je nakon testa skalirana na puni budžet kampanje.';
+  }
+  resultsTable.addEventListener('click', function (e) {
+    var row = e.target.closest('.result-row');
+    if (!row) return;
+    activeVariant = row.getAttribute('data-variant');
+    renderTabs();
+    renderMockup();
+    renderCopy();
+    highlightResultsRow();
+    document.getElementById('varijante').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  function highlightResultsRow() {
+    resultsTable.querySelectorAll('.result-row').forEach(function (row) {
+      row.classList.toggle('ring-2', row.getAttribute('data-variant') === activeVariant);
+      row.classList.toggle('ring-ink/10', row.getAttribute('data-variant') === activeVariant);
+    });
+  }
+
+  // ---------- Gallery + lightbox ----------
+  var GALLERY_IMAGES = [
+    { src: IMG.g1, alt: 'Šetnja mediteranskim vrtom u lanenoj haljini' },
+    { src: IMG.g2, alt: 'Detalj lanene bluze' },
+    { src: IMG.g3, alt: 'Proljetni modni dodaci' },
+    { src: IMG.g4, alt: 'Složena lanena odjeća na polici' },
+    { src: IMG.g5, alt: 'Dvije žene u lanenim haljinama u maslinku' },
+    { src: IMG.g6, alt: 'Detalj sandala i ruba lanene haljine' }
+  ];
+  var galleryGrid = document.getElementById('galleryGrid');
+  galleryGrid.innerHTML = GALLERY_IMAGES.map(function (g, i) {
+    return '<button type="button" data-index="' + i + '" class="gallery-item rounded-xl overflow-hidden aspect-[4/5] group">' +
+      '<img src="' + g.src + '" alt="' + g.alt + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">' +
+    '</button>';
+  }).join('');
+
+  var lightbox = document.getElementById('lightbox');
+  var lightboxImg = document.getElementById('lightboxImg');
+  var lbIndex = 0;
+  function openLightbox(i) {
+    lbIndex = i;
+    updateLightbox();
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+  function updateLightbox() {
+    var g = GALLERY_IMAGES[lbIndex];
+    lightboxImg.src = g.src;
+    lightboxImg.alt = g.alt;
+  }
+  function nextImg() { lbIndex = (lbIndex + 1) % GALLERY_IMAGES.length; updateLightbox(); }
+  function prevImg() { lbIndex = (lbIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length; updateLightbox(); }
+
+  galleryGrid.addEventListener('click', function (e) {
+    var item = e.target.closest('.gallery-item');
+    if (!item) return;
+    openLightbox(parseInt(item.getAttribute('data-index'), 10));
+  });
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxNext').addEventListener('click', nextImg);
+  document.getElementById('lightboxPrev').addEventListener('click', prevImg);
+  lightbox.addEventListener('click', function (e) { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', function (e) {
+    if (lightbox.classList.contains('hidden')) return;
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowRight') nextImg();
+    else if (e.key === 'ArrowLeft') prevImg();
+  });
+
+  // ---------- Scroll reveal (will-change lifecycle safe) ----------
+  function initReveal(els) {
+    if (!('IntersectionObserver' in window)) { els.forEach(function (el) { el.classList.add('is-visible'); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var delay = parseInt(el.getAttribute('data-reveal-delay') || '0', 10);
+          setTimeout(function () {
+            el.style.willChange = 'opacity, transform';
+            el.classList.add('is-visible');
+            var clearWillChange = function () { el.style.willChange = 'auto'; };
+            el.addEventListener('transitionend', clearWillChange, { once: true });
+            setTimeout(clearWillChange, 1000);
+          }, delay);
+          io.unobserve(el);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  }
+
+  // ---------- Init ----------
+  renderTabs();
+  renderMockup();
+  renderCopy();
+  renderResults();
+  highlightResultsRow();
+  initReveal(Array.prototype.slice.call(document.querySelectorAll('[data-reveal]')));
+})();
+</script>
+</body>
+</html>
