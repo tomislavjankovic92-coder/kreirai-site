@@ -435,22 +435,27 @@
     rozata: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_085533_72ad3e2b-7a78-4f01-ae7c-b8763d5637b1.png',
     wine: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_085509_6313d530-b561-45f2-aff7-dc627eafa655.png',
     hero: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_085509_e24ad948-383f-4bca-83d3-b342391f1b07.png',
-    interior: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_085509_629e1722-81e0-4584-8579-cd9472006bae.png'
+    interior: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_085509_629e1722-81e0-4584-8579-cd9472006bae.png',
+    masline: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_093455_706177e5-e335-43c9-ad3a-4898623f4975.png',
+    skampi: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_093517_e34c1de6-c401-4955-9c0f-065428ec46ed.png',
+    rapska: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_093455_d40cb462-b898-4317-832d-1cc07bb8072b.png',
+    limunada: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_093455_e1e0229b-fd1e-4c7e-bb97-7c647f9919fe.png',
+    espresso: 'https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_093455_814d295b-b58c-43d8-856a-82f92bd258c6.png'
   };
 
   var MENU_ITEMS = [
-    { id: 'masline', cat: 'predjela', name: 'Masline i domaći kruh', desc: 'Domaće masline u ulju i kruh iz krušne peći.', price: 5.50, tag: 'vegan', img: null },
+    { id: 'masline', cat: 'predjela', name: 'Masline i domaći kruh', desc: 'Domaće masline u ulju i kruh iz krušne peći.', price: 5.50, tag: 'vegan', img: IMG.masline },
     { id: 'prsut', cat: 'predjela', name: 'Pršut i paški sir', desc: 'Dalmatinski pršut, paški sir, masline.', price: 12.00, tag: null, img: IMG.prsut },
-    { id: 'skampi', cat: 'predjela', name: 'Škampi na buzaru', desc: 'Svježi škampi u umaku od rajčice, češnjaka i vina.', price: 14.00, tag: null, img: null },
+    { id: 'skampi', cat: 'predjela', name: 'Škampi na buzaru', desc: 'Svježi škampi u umaku od rajčice, češnjaka i vina.', price: 14.00, tag: null, img: IMG.skampi },
     { id: 'riba', cat: 'glavna', name: 'Riba dana na žaru', desc: 'Svježi brancin s blitvom i krumpirom.', price: 24.00, tag: 'bezglutena', img: IMG.fish },
     { id: 'rizot', cat: 'glavna', name: 'Crni rižot od sipe', desc: 'Tradicionalni rižot s crnilom sipe.', price: 16.50, tag: 'bezglutena', img: IMG.risotto },
     { id: 'fuzi', cat: 'glavna', name: 'Fuži s tartufima', desc: 'Domaća tjestenina u kremastom umaku od tartufa.', price: 17.00, tag: 'vegetarijansko', img: IMG.fuzi },
     { id: 'pasticada', cat: 'glavna', name: 'Pašticada s njokima', desc: 'Dalmatinski gulaš od govedine pripreman 24h, domaći njoki.', price: 19.50, tag: null, img: null },
     { id: 'rozata', cat: 'desert', name: 'Rožata', desc: 'Klasični dalmatinski krem karamel.', price: 6.00, tag: 'vegetarijansko', img: IMG.rozata },
-    { id: 'rapska', cat: 'desert', name: 'Rapska torta', desc: 'Torta s bademima i maraskinom.', price: 6.50, tag: 'vegetarijansko', img: null },
+    { id: 'rapska', cat: 'desert', name: 'Rapska torta', desc: 'Torta s bademima i maraskinom.', price: 6.50, tag: 'vegetarijansko', img: IMG.rapska },
     { id: 'plavac', cat: 'pica', name: 'Plavac Mali (čaša)', desc: 'Domaće crno vino s otoka.', price: 5.00, tag: null, img: IMG.wine },
-    { id: 'limunada', cat: 'pica', name: 'Domaća limunada', desc: 'Svježe cijeđena limunada s mentom.', price: 3.50, tag: 'vegan', img: null },
-    { id: 'espresso', cat: 'pica', name: 'Espresso', desc: 'Domaća pražiona kava.', price: 1.80, tag: 'vegan', img: null }
+    { id: 'limunada', cat: 'pica', name: 'Domaća limunada', desc: 'Svježe cijeđena limunada s mentom.', price: 3.50, tag: 'vegan', img: IMG.limunada },
+    { id: 'espresso', cat: 'pica', name: 'Espresso', desc: 'Domaća pražiona kava.', price: 1.80, tag: 'vegan', img: IMG.espresso }
   ];
 
   var GALLERY_IMAGES = [
