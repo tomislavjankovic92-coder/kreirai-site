@@ -711,15 +711,17 @@
       </div>
     </div>
 
-    <form id="contactForm" data-reveal="fade-left" class="bg-white dark:bg-[#10162A] border border-line dark:border-[#232B47] rounded-2xl p-6 sm:p-8 flex flex-col gap-5 transition-colors">
+    <form id="contactForm" novalidate data-reveal="fade-left" class="bg-white dark:bg-[#10162A] border border-line dark:border-[#232B47] rounded-2xl p-6 sm:p-8 flex flex-col gap-5 transition-colors">
       <div class="grid sm:grid-cols-2 gap-5">
         <div>
           <label for="ime" class="block text-xs font-mono uppercase tracking-wide text-inksoft dark:text-[#A6AFC9] mb-2">Ime i prezime</label>
-          <input id="ime" name="Ime" type="text" required class="w-full border border-line dark:border-[#232B47] bg-white dark:bg-[#161D34] text-ink dark:text-[#EBEFFA] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan transition-colors">
+          <input id="ime" name="Ime" type="text" required aria-describedby="imeError" class="w-full border border-line dark:border-[#232B47] bg-white dark:bg-[#161D34] text-ink dark:text-[#EBEFFA] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan transition-colors">
+          <p id="imeError" class="field-error hidden mt-1.5 text-xs text-red-500 dark:text-red-400" role="alert"></p>
         </div>
         <div>
           <label for="email" class="block text-xs font-mono uppercase tracking-wide text-inksoft dark:text-[#A6AFC9] mb-2">E-mail</label>
-          <input id="email" name="Email" type="email" required class="w-full border border-line dark:border-[#232B47] bg-white dark:bg-[#161D34] text-ink dark:text-[#EBEFFA] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan transition-colors">
+          <input id="email" name="Email" type="email" required aria-describedby="emailError" class="w-full border border-line dark:border-[#232B47] bg-white dark:bg-[#161D34] text-ink dark:text-[#EBEFFA] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan transition-colors">
+          <p id="emailError" class="field-error hidden mt-1.5 text-xs text-red-500 dark:text-red-400" role="alert"></p>
         </div>
       </div>
       <div>
@@ -733,7 +735,8 @@
       </div>
       <div>
         <label for="poruka" class="block text-xs font-mono uppercase tracking-wide text-inksoft dark:text-[#A6AFC9] mb-2">Opis projekta</label>
-        <textarea id="poruka" name="Poruka" rows="4" placeholder="U par rečenica opišite što vam treba i okvirni rok..." required class="w-full border border-line dark:border-[#232B47] bg-white dark:bg-[#161D34] text-ink dark:text-[#EBEFFA] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan transition-colors"></textarea>
+        <textarea id="poruka" name="Poruka" rows="4" placeholder="U par rečenica opišite što vam treba i okvirni rok..." required aria-describedby="porukaError" class="w-full border border-line dark:border-[#232B47] bg-white dark:bg-[#161D34] text-ink dark:text-[#EBEFFA] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan transition-colors"></textarea>
+        <p id="porukaError" class="field-error hidden mt-1.5 text-xs text-red-500 dark:text-red-400" role="alert"></p>
       </div>
       <button type="submit" class="btn-glow self-start inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-6 py-3 rounded-full shadow-soft hover:-translate-y-0.5 transition">
         Pošaljite upit
@@ -755,8 +758,83 @@
       var form = document.getElementById('contactForm');
       if (!form) return;
       var hint = document.getElementById('contactFormHint');
+
+      // Custom validation UI instead of the browser's native bubble —
+      // those render inconsistently across browsers (and on mobile,
+      // often not at all in a useful position), so the form carries
+      // novalidate and does its own error display, field by field.
+      var FIELDS = [
+        {
+          input: form.querySelector('#ime'),
+          error: document.getElementById('imeError'),
+          messageFor: function (input) {
+            return input.validity.valueMissing ? 'Unesite ime i prezime.' : '';
+          }
+        },
+        {
+          input: form.querySelector('#email'),
+          error: document.getElementById('emailError'),
+          messageFor: function (input) {
+            if (input.validity.valueMissing) return 'Unesite e-mail adresu.';
+            if (input.validity.typeMismatch) return 'Unesite ispravnu e-mail adresu.';
+            return '';
+          }
+        },
+        {
+          input: form.querySelector('#poruka'),
+          error: document.getElementById('porukaError'),
+          messageFor: function (input) {
+            return input.validity.valueMissing ? 'Ukratko opišite svoj projekt.' : '';
+          }
+        }
+      ];
+
+      function setFieldError(field, message) {
+        field.input.classList.toggle('border-red-500', !!message);
+        field.input.classList.toggle('dark:border-red-500', !!message);
+        field.input.setAttribute('aria-invalid', message ? 'true' : 'false');
+        if (field.error) {
+          field.error.textContent = message || '';
+          field.error.classList.toggle('hidden', !message);
+        }
+      }
+
+      function validateField(field) {
+        var message = field.messageFor(field.input);
+        setFieldError(field, message);
+        return !message;
+      }
+
+      // Clear/re-check a field's error as the visitor fixes it, instead
+      // of only re-validating on the next submit attempt.
+      FIELDS.forEach(function (field) {
+        var eventName = field.input.tagName === 'TEXTAREA' || field.input.type === 'text' ? 'input' : 'input';
+        field.input.addEventListener(eventName, function () {
+          if (!field.error || field.error.classList.contains('hidden')) return;
+          validateField(field);
+        });
+        field.input.addEventListener('blur', function () { validateField(field); });
+      });
+
       form.addEventListener('submit', function (e) {
         e.preventDefault();
+
+        var firstInvalid = null;
+        var allValid = true;
+        FIELDS.forEach(function (field) {
+          var ok = validateField(field);
+          if (!ok) {
+            allValid = false;
+            if (!firstInvalid) firstInvalid = field.input;
+          }
+        });
+
+        if (!allValid) {
+          if (hint) hint.textContent = '';
+          if (firstInvalid) firstInvalid.focus();
+          return;
+        }
+
         var ime = form.Ime.value.trim();
         var email = form.Email.value.trim();
         var usluga = form.Usluga.value;
