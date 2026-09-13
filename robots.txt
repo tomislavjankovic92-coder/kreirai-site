@@ -2,3 +2,5 @@ User-agent: *
 Disallow: /koncept1/
 Disallow: /koncept2/
 Disallow: /koncept3/
+
+Sitemap: https://kreirai.hr/sitemap.xml
