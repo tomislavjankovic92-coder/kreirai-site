@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'none'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stranica nije pronađena — KreirAI</title>
+<meta name="robots" content="noindex, follow">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzNFRThGNSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5QjdCRkYiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9IiMwQTBFMUEiLz4KICA8cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHJ4PSI4IiBmaWxsPSJ1cmwoI2cpIiBmaWxsLW9wYWNpdHk9IjAuMTQiLz4KICA8dGV4dCB4PSIxNiIgeT0iMjMiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCAnVGltZXMgTmV3IFJvbWFuJywgc2VyaWYiIGZvbnQtc2l6ZT0iMTkiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InVybCgjZykiPks8L3RleHQ+Cjwvc3ZnPgo=">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="tailwind.css">
+
+<style>
+  /* This page is deliberately always in the dark "hero stage" look
+     (same as the homepage hero) rather than following the site-wide
+     light/dark toggle — a 404 is a one-off dead end, not a page people
+     browse, so it skips that extra complexity on purpose. */
+  html, body{ background:#0A0E1A; color:#EBEFFA; }
+  body{ overflow-x:hidden; max-width:100%; }
+
+  .text-gradient{
+    background-image: linear-gradient(100deg, #3EE8F5 0%, #9B7BFF 85%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  .stage{
+    background:
+      radial-gradient(circle at 50% 40%, rgba(62,232,245,.20), transparent 42%),
+      radial-gradient(circle at 25% 15%, rgba(155,123,255,.16), transparent 60%),
+      radial-gradient(circle at 78% 78%, rgba(62,232,245,.14), transparent 55%),
+      #0A0E1A;
+  }
+  .stage-grid{
+    background-image:
+      linear-gradient(rgba(235,239,250,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(235,239,250,.06) 1px, transparent 1px);
+    background-size:26px 26px;
+    -webkit-mask-image:radial-gradient(circle at 50% 42%, black 0%, transparent 68%);
+    mask-image:radial-gradient(circle at 50% 42%, black 0%, transparent 68%);
+  }
+
+  @keyframes fade-up{
+    from{ opacity:0; transform:translateY(22px); }
+    to{ opacity:1; transform:none; }
+  }
+  .fade-up{ animation: fade-up .8s cubic-bezier(.16,.8,.24,1) both; }
+  .fade-up-1{ animation-delay:.05s; }
+  .fade-up-2{ animation-delay:.15s; }
+  .fade-up-3{ animation-delay:.25s; }
+  @media (prefers-reduced-motion: reduce){
+    .fade-up{ animation:none; opacity:1; transform:none; }
+  }
+
+  /* Glowing-border buttons — same chasing-ring effect as the rest of
+     the site (see index.html for the full explanation). */
+  @property --glow-angle{ syntax:'<angle>'; initial-value:0deg; inherits:false; }
+  .btn-glow{
+    position: relative;
+    isolation: isolate;
+    box-shadow: 0 0 8px 0 rgba(62,232,245,.32);
+    transition: box-shadow .3s ease, transform .2s ease;
+  }
+  .btn-glow:hover, .btn-glow:focus-visible{
+    box-shadow: 0 0 14px 2px rgba(62,232,245,.48);
+  }
+  .btn-glow::before{
+    content:"";
+    position:absolute; inset:0; box-sizing:border-box; border-radius:inherit;
+    padding:1.5px;
+    background: conic-gradient(from var(--glow-angle), transparent 0%, rgba(62,232,245,.85) 26%, rgba(155,123,255,.85) 48%, transparent 68%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    mask-repeat:no-repeat; -webkit-mask-repeat:no-repeat;
+    filter: blur(.5px);
+    animation: btn-ring-spin 2.8s linear infinite;
+    pointer-events:none;
+    -webkit-transform: translateZ(0); transform: translateZ(0);
+  }
+  @keyframes btn-ring-spin{ to{ --glow-angle:360deg; } }
+  @media (prefers-reduced-motion: reduce){
+    .btn-glow{ transition:none; }
+    .btn-glow::before{ animation:none; }
+  }
+</style>
+</head>
+<body class="font-sans antialiased">
+
+<header class="relative z-10">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-6 flex items-center justify-between">
+    <a href="index.html" class="font-serif font-semibold text-xl tracking-tight">
+      <span class="text-[#EBEFFA]">Kreir</span><span class="text-gradient">AI</span>
+    </a>
+    <a href="index.html" class="font-mono text-xs tracking-[0.1em] uppercase text-[#A6AFC9] hover:text-[#EBEFFA] transition">← Početna</a>
+  </div>
+</header>
+
+<main class="stage relative min-h-[80vh] flex items-center">
+  <div class="stage-grid absolute inset-0"></div>
+
+  <div class="relative max-w-3xl mx-auto px-5 sm:px-8 py-16 text-center">
+    <p class="fade-up fade-up-1 font-mono text-xs tracking-[0.18em] uppercase text-cyan-bright">// Greška 404</p>
+
+    <div class="fade-up fade-up-2 font-serif font-semibold text-gradient leading-none mt-4 text-[96px] sm:text-[140px] lg:text-[168px]">
+      404
+    </div>
+
+    <h1 class="fade-up fade-up-2 font-serif font-semibold text-2xl sm:text-3xl mt-2">
+      Ova stranica ne postoji.
+    </h1>
+    <p class="fade-up fade-up-3 mt-4 text-[#A6AFC9] max-w-[52ch] mx-auto">
+      Možda je adresa pogrešno upisana ili je stranica premještena. Vratite se na početnu ili nam javite što ste tražili — rado ćemo pomoći.
+    </p>
+
+    <div class="fade-up fade-up-3 mt-8 flex flex-wrap items-center justify-center gap-3">
+      <a href="index.html" class="btn-glow inline-flex items-center gap-2 bg-gradient-to-r from-cyan-bright to-violet-bright text-[#0A0E1A] font-bold text-sm px-6 py-3.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+        Natrag na početnu
+      </a>
+      <a href="index.html#kontakt" class="btn-glow inline-flex items-center gap-2 border border-[#232B47] text-[#EBEFFA] font-bold text-sm px-6 py-3.5 rounded-full hover:bg-[#161D34] transition">
+        Pošaljite upit
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer class="relative z-10 border-t border-[#232B47]">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-[#A6AFC9]">
+    <span class="font-serif font-semibold text-[#EBEFFA]"><span>Kreir</span><span class="text-gradient">AI</span></span>
+    <span>© 2026 KreirAI. Sva prava pridržana.</span>
+  </div>
+</footer>
+
+</body>
+</html>
