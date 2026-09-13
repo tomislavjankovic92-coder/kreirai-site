@@ -2,7 +2,7 @@
 <html lang="hr">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://d8j0ntlcm91z4.cloudfront.net; media-src 'self' https://d8j0ntlcm91z4.cloudfront.net; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://d8j0ntlcm91z4.cloudfront.net; media-src 'self' https://d8j0ntlcm91z4.cloudfront.net; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KreirAI</title>
@@ -711,7 +711,7 @@
       </div>
     </div>
 
-    <form data-reveal="fade-left" action="mailto:info@kreirai.hr" method="post" enctype="text/plain" class="bg-white dark:bg-[#10162A] border border-line dark:border-[#232B47] rounded-2xl p-6 sm:p-8 flex flex-col gap-5 transition-colors">
+    <form id="contactForm" data-reveal="fade-left" class="bg-white dark:bg-[#10162A] border border-line dark:border-[#232B47] rounded-2xl p-6 sm:p-8 flex flex-col gap-5 transition-colors">
       <div class="grid sm:grid-cols-2 gap-5">
         <div>
           <label for="ime" class="block text-xs font-mono uppercase tracking-wide text-inksoft dark:text-[#A6AFC9] mb-2">Ime i prezime</label>
@@ -739,9 +739,43 @@
       <button type="submit" class="btn-glow self-start inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-6 py-3 rounded-full shadow-soft hover:-translate-y-0.5 transition">
         Pošaljite upit
       </button>
+      <p id="contactFormHint" class="text-xs text-inksoft dark:text-[#A6AFC9]" aria-live="polite"></p>
     </form>
   </section>
 
+  <script>
+    // Contact form deliberately has NO action="mailto:..." attribute —
+    // Chrome/Firefox flag any <form> whose native action is mailto:/http:
+    // as "not secure" and disable autofill on every field in it, even on
+    // a fully HTTPS page (the browser can't verify how a mailto submission
+    // is transmitted). Building the mailto: link in JS after preventDefault
+    // keeps the exact same end result (opens the visitor's mail client,
+    // prefilled) while letting the browser treat the fields as normal —
+    // autofill works again.
+    (function () {
+      var form = document.getElementById('contactForm');
+      if (!form) return;
+      var hint = document.getElementById('contactFormHint');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var ime = form.Ime.value.trim();
+        var email = form.Email.value.trim();
+        var usluga = form.Usluga.value;
+        var poruka = form.Poruka.value.trim();
+        var subject = 'Upit s web stranice — ' + usluga;
+        var body =
+          'Ime i prezime: ' + ime + '\n' +
+          'E-mail: ' + email + '\n' +
+          'Usluga: ' + usluga + '\n\n' +
+          'Opis projekta:\n' + poruka;
+        var mailtoUrl = 'mailto:info@kreirai.hr' +
+          '?subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(body);
+        window.location.href = mailtoUrl;
+        if (hint) hint.textContent = 'Otvara se vaš e-mail klijent s pripremljenom porukom…';
+      });
+    })();
+  </script>
 
 </main>
 
