@@ -1149,6 +1149,12 @@
       sections.forEach(function (sec) {
         if (sec.offsetTop <= scrollPos) currentId = sec.id;
       });
+      // Near the very bottom of the page, always highlight the last section.
+      // If it's shorter than the viewport there may not be enough scroll
+      // room below its top for scrollPos to ever pass its offsetTop threshold,
+      // so without this the highlight would get stuck on the section before it.
+      var atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+      if (atBottom && sections.length) currentId = sections[sections.length - 1].id;
       navLinks.forEach(function (link) {
         link.classList.toggle('is-active', link.getAttribute('href') === '#' + currentId);
       });
