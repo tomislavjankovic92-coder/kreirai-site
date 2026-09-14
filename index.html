@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KreirAI — web stranice, aplikacije i oglasne kampanje uz AI</title>
 <meta name="description" content="Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, aplikacije i oglasne kampanje — brzo i bez agencijske birokracije.">
+<link rel="canonical" href="https://kreirai.hr/">
 
 <!-- Social share preview (link thumbnail) -->
 <meta property="og:type" content="website">
@@ -411,6 +412,21 @@
   #ptr.spinning svg{ animation: ptr-spin .7s linear infinite; }
   @keyframes ptr-spin{ to{ transform: rotate(360deg); } }
 </style>
+
+<!-- Structured data: who KreirAI is, so Google can associate the brand
+     name with this site (knowledge panel / search result enrichment). -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "KreirAI",
+  "url": "https://kreirai.hr/",
+  "logo": "https://kreirai.hr/og-image.png",
+  "description": "Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, aplikacije i oglasne kampanje — brzo i bez agencijske birokracije.",
+  "email": "info@kreirai.hr",
+  "areaServed": "HR"
+}
+</script>
 
 <!-- Structured data for the FAQ section below — mirrors that visible
      text exactly (search engines require the two to match). -->
