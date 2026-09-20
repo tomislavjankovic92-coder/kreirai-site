@@ -539,6 +539,23 @@
   html.dark footer::before{
     background: linear-gradient(90deg, transparent, rgba(62,232,245,.55), rgba(255,148,120,.55), transparent);
   }
+
+  /* ============================================================
+     Djelatnosti kojima služimo — 1 / 2 / 5 stupaca. Tailwind's
+     md:/lg:grid-cols-5 nije u kompajliranom CSS-u za ovu izgradnju,
+     pa je grid samostalan, po istom obrascu kao .price-grid.
+     ============================================================ */
+  .industries-grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 640px){
+    .industries-grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1024px){
+    .industries-grid{ grid-template-columns: repeat(5, 1fr); }
+  }
 </style>
 </head>
 <body>
@@ -625,10 +642,88 @@
 
 <main>
 
+  <!-- ============================================================
+       DJELATNOSTI — obrti i uslužne djelatnosti kojima gradimo
+       web stranice
+       ============================================================ -->
+  <section id="djelatnosti" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
+    <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
+      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Djelatnosti kojima služimo</p>
+      <h1 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
+        Ako vodite uslužni obrt, <span class="text-gradient">mi gradimo za vas.</span>
+      </h1>
+      <p class="mt-4 text-inksoft dark:text-[#A6AFC9]">Specijalizirani smo za lokalne uslužne djelatnosti — one kod kojih odlična web stranica izravno znači više poziva, više rezervacija, više prihoda.</p>
+    </div>
+
+    <div class="industries-grid mt-14">
+      <article class="service-card glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-5 text-center transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="0">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3 21 10 12 19l-3-3 9-9Z"/><path d="M11 16 6 21H3v-3l5-5"/></svg></span>
+        <h3 class="font-semibold text-sm">Ličioci</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-xs">Galerije prije/poslije, područja usluživanja i upiti za ponudu koji znatiželjne posjetitelje pretvaraju u pozive za procjenu.</p>
+      </article>
+
+      <article class="service-card glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-5 text-center transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="40">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 3.5a4 4 0 0 0-5.4 4.9L3.5 15v5.5H9l6.6-6.6a4 4 0 0 0 4.9-5.4l-3 3-2.1-2.1 3-3Z"/></svg></span>
+        <h3 class="font-semibold text-sm">Vodoinstalateri</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-xs">Raspored s prioritetom na hitne intervencije, isticanje broja za poziv i znakovi povjerenja za klijente kojima gori pod nogama.</p>
+      </article>
+
+      <article class="service-card glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-5 text-center transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="80">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5V14h4v5.5"/></svg></span>
+        <h3 class="font-semibold text-sm">Krovopokrivači</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-xs">Poruke o šteti od nevremena i zamjeni krova, strukturirane da potaknu hitne pozive uz izgradnju povjerenja za veće projekte.</p>
+      </article>
+
+      <article class="service-card glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-5 text-center transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="120">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4c-2 0-2.8 1-4 1-1.3 0-2.3-.8-3.2-.1-1.1.9-1.1 3.5 0 6 .8 1.9 1.5 2.6 1.9 4.7.3 1.5.9 2.4 1.6 2.4.8 0 .9-1.5 1.2-2.9.2-.9.6-1.5 1.1-1.5s.9.6 1.1 1.5c.3 1.4.4 2.9 1.2 2.9.7 0 1.3-.9 1.6-2.4.4-2.1 1.1-2.8 1.9-4.7 1.1-2.5 1.1-5.1 0-6-.9-.7-1.9.1-3.2.1-1.2 0-2-1-4-1Z"/></svg></span>
+        <h3 class="font-semibold text-sm">Stomatolozi</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-xs">Jasnoća tretmana, povjerenje oko osiguranja i stranice usmjerene na zakazivanje koje smanjuju oklijevanje i potiču rezervacije.</p>
+      </article>
+
+      <article class="service-card glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-5 text-center transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="160">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 2.5 5 13h5.5L10 21.5 19 11h-5.5L14 2.5Z"/></svg></span>
+        <h3 class="font-semibold text-sm">Električari</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-xs">Isticanje licenci i sigurnosti uz putanje za hitne pozive kod stambenih i poslovnih električarskih radova.</p>
+      </article>
+
+      <article class="service-card glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-5 text-center transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="0">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.4"/><path d="M12 4v4.2M12 15.8V20M4 12h4.2M15.8 12H20M6.3 6.3l3 3M14.7 14.7l3 3M17.7 6.3l-3 3M9.3 14.7l-3 3"/></svg></span>
+        <h3 class="font-semibold text-sm">Klima i grijanje</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-xs">Poruke o hitnim popravcima i planovima održavanja, uravnotežene da zabilježe trenutne poslove i vrijednost stalnih klijenata.</p>
+      </article>
+
+      <article class="service-card glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-5 text-center transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="40">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3h3v2.2l1.6 1.4c.5.4.9 1 .9 1.7V20a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V8.3c0-.7.3-1.3.9-1.7L10 5.2V3Z"/><path d="M9.5 12h4M9.5 15.5h4"/></svg></span>
+        <h3 class="font-semibold text-sm">Čišćenje</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-xs">Jasnoća paketa i tekst usmjeren na povjerenje koji pomaže kućanstvima i tvrtkama da brzo usporede i naruče uslugu.</p>
+      </article>
+
+      <article class="service-card glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-5 text-center transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="80">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><circle cx="8.3" cy="11.2" r=".4"/><circle cx="12" cy="11.2" r=".4"/><circle cx="15.7" cy="11.2" r=".4"/><circle cx="8.3" cy="14.6" r=".4"/><circle cx="12" cy="14.6" r=".4"/><circle cx="15.7" cy="14.6" r=".4"/><circle cx="8.3" cy="18" r=".4"/><circle cx="12" cy="18" r=".4"/><circle cx="15.7" cy="18" r=".4"/></svg></span>
+        <h3 class="font-semibold text-sm">Knjigovođe</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-xs">Stranice usmjerene na stručnost koje grade povjerenje i pretvaraju sezonsku žurbu u konzultacije i stalne klijente.</p>
+      </article>
+
+      <article class="service-card glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-5 text-center transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="120">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16V11l2-4h11l2 4v5"/><path d="M4.5 16h15M7 16v2M17 16v2"/><circle cx="7.7" cy="16" r="1.2"/><circle cx="16.3" cy="16" r="1.2"/></svg></span>
+        <h3 class="font-semibold text-sm">Auto detailing</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-xs">Vizualno usmjerene prezentacije usluga koje foto-dokaz pretvaraju u rezervacije premium paketa i ponovljenu potražnju.</p>
+      </article>
+
+      <article class="service-card glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-5 text-center transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="160">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 3.5 20.5 9.5 18 12l-6-6 2.5-2.5Z"/><path d="M13 8.5 4 17.5V20h2.5L15.5 11"/></svg></span>
+        <h3 class="font-semibold text-sm">Adaptacije</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-xs">Detaljno pripovijedanje o projektima uz jasnoću financiranja i opsega radova koje kvalificira klijente prije nego što nazovu.</p>
+      </article>
+    </div>
+
+    <p class="mt-8 text-center text-inksoft dark:text-[#A6AFC9] text-sm">Također: <strong class="text-ink dark:text-[#EBEFFA] font-semibold">uređenje okoliša</strong>, <strong class="text-ink dark:text-[#EBEFFA] font-semibold">odvjetnički uredi</strong>, <strong class="text-ink dark:text-[#EBEFFA] font-semibold">kiropraktičari</strong>, <strong class="text-ink dark:text-[#EBEFFA] font-semibold">tattoo studiji</strong>, <strong class="text-ink dark:text-[#EBEFFA] font-semibold">autoservisi</strong> i drugi.</p>
+  </section>
+
 <section id="usluge" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 py-20 sm:py-28">
     <div class="max-w-[56ch]" data-reveal="fade-up">
       <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Usluge</p>
-      <h1 class="section-heading font-serif font-semibold text-3xl sm:text-4xl mt-3">Jedan tim, cijeli digitalni opseg posla.</h1>
+      <h2 class="section-heading font-serif font-semibold text-3xl sm:text-4xl mt-3">Jedan tim, cijeli digitalni opseg posla.</h2>
       <p class="mt-3 text-inksoft dark:text-[#A6AFC9]">Svaka usluga kombinira brzinu AI generiranja s ljudskom kontrolom kvalitete prije isporuke.</p>
     </div>
 
