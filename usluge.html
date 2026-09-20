@@ -444,6 +444,50 @@
   }
 
   /* ============================================================
+     Mala okrugla kvačica uz stavke cjenika, i istaknuti obrub oko
+     "popularne" kartice — preneseno s početne stranice.
+     ============================================================ */
+  .mark-icon{
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.35rem; height: 1.35rem; border-radius: 50%; flex: none;
+  }
+  .mark-icon svg{ width: .75rem; height: .75rem; }
+  .mark-ok{ background: rgba(31,185,204,.10); color: #1FB9CC; }
+  html.dark .mark-ok{ background: rgba(62,232,245,.14); color: #3EE8F5; }
+
+  .compare-win{
+    border: 1.5px solid rgba(255,111,89,.4);
+    box-shadow: 0 20px 44px -28px rgba(255,111,89,.35);
+  }
+  html.dark .compare-win{
+    border-color: rgba(255,148,120,.4);
+    box-shadow: 0 20px 44px -28px rgba(255,148,120,.4);
+  }
+
+  /* ============================================================
+     Cjenik — 3 paketa u redu na desktopu (Tailwind's md:grid-cols-3
+     utility isn't in this build's compiled CSS, so the grid is
+     self-contained here), CTA gumb uvijek pri dnu kartice, i mala
+     "Popularno" značka nad srednjom karticom.
+     ============================================================ */
+  .price-grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  @media (min-width: 768px){
+    .price-grid{ grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  }
+  .price-cta-wrap{ margin-top: auto; }
+  .price-badge-pos{
+    position: absolute;
+    top: -0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  /* ============================================================
      Djelatnosti kojima služimo — 1 / 2 / 5 stupaca. Tailwind's
      md:/lg:grid-cols-5 nije u kompajliranom CSS-u za ovu izgradnju,
      pa je grid samostalan, po istom obrascu kao .price-grid.
@@ -685,6 +729,93 @@
     <p class="mt-8 text-center text-inksoft dark:text-[#A6AFC9] text-sm">Također: <strong class="text-ink dark:text-[#EBEFFA] font-semibold">uređenje okoliša</strong>, <strong class="text-ink dark:text-[#EBEFFA] font-semibold">odvjetnički uredi</strong>, <strong class="text-ink dark:text-[#EBEFFA] font-semibold">kiropraktičari</strong>, <strong class="text-ink dark:text-[#EBEFFA] font-semibold">tattoo studiji</strong>, <strong class="text-ink dark:text-[#EBEFFA] font-semibold">autoservisi</strong> i drugi.</p>
   </section>
 
+
+  <section id="cjenik" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
+    <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
+      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Cjenik</p>
+      <h2 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
+        Cjenik prilagođen <span class="text-gradient">svakom proračunu.</span>
+      </h2>
+    </div>
+
+    <div class="price-grid mt-14">
+      <!-- JEDNOKRATNO -->
+      <div class="glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8 flex flex-col" data-reveal="fade-up" data-reveal-delay="0">
+        <p class="font-mono text-xs tracking-[0.14em] uppercase text-inksoft dark:text-[#A6AFC9] font-semibold">Jednokratno</p>
+        <ul class="mt-5 flex flex-col gap-3">
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Dizajn i uređivanje</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Vlasnik ste koda</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">SEO optimizacija</span>
+          </li>
+        </ul>
+
+        <div class="price-cta-wrap">
+          <p class="font-serif font-bold text-4xl mt-5">1.500 €</p>
+          <p class="text-inksoft dark:text-[#A6AFC9] text-xs mt-1">Jednokratno plaćanje</p>
+          <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+            Započnimo
+          </a>
+        </div>
+      </div>
+
+      <!-- STANDARDNA — istaknuta kao popularna -->
+      <div class="compare-win glass-panel relative rounded-2xl p-6 sm:p-8 flex flex-col" data-reveal="fade-up" data-reveal-delay="80">
+        <span class="price-badge-pos inline-flex items-center gap-1 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-mono font-bold text-[10px] tracking-[0.14em] uppercase px-3 py-1 rounded-full shadow-soft">Popularno</span>
+        <p class="font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright font-semibold">Standardna</p>
+        <ul class="mt-5 flex flex-col gap-3">
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Dizajn i uređivanje</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Hosting</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Neograničeno ažuriranje</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">SEO optimizacija</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">24/7 podrška</span>
+          </li>
+        </ul>
+
+        <div class="price-cta-wrap">
+          <p class="font-serif font-bold text-4xl mt-5">120 €</p>
+          <p class="text-inksoft dark:text-[#A6AFC9] text-xs mt-1">Mjesečno</p>
+          <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+            Zakažite konzultacije
+          </a>
+        </div>
+      </div>
+
+      <!-- PRILAGOĐENO -->
+      <div class="glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8 flex flex-col" data-reveal="fade-up" data-reveal-delay="160">
+        <p class="font-mono text-xs tracking-[0.14em] uppercase text-inksoft dark:text-[#A6AFC9] font-semibold">Prilagođeno</p>
+
+        <div class="price-cta-wrap">
+          <p class="font-serif font-bold text-4xl mt-5">Individualno</p>
+          <p class="text-inksoft dark:text-[#A6AFC9] text-xs mt-1">Ponuda skrojena za vas</p>
+          <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+            Kontaktirajte nas
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
 </main>
 
