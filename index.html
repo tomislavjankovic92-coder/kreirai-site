@@ -233,7 +233,9 @@
     mask-repeat: no-repeat;
     -webkit-mask-repeat: no-repeat;
     filter: blur(.5px);
+    --glow-angle: 120deg;
     animation: btn-ring-spin 2.8s linear infinite;
+    animation-play-state: paused;
     pointer-events: none;
     /* Forces its own GPU compositing layer — works around a real bug in
        mobile Safari/Chrome where an animated masked gradient on a ::before
@@ -247,7 +249,31 @@
   }
   .btn-glow-sm::before{ padding: 1.25px; }
 
-  @keyframes btn-ring-spin{ to{ --glow-angle: 360deg; } }
+  /* The ring only sweeps while a button is actually being interacted
+     with (hover/focus) — statically positioned at rest. A calmer,
+     more deliberate default reads as more premium than a permanent
+     spin, and it also means only the one button someone is pointing
+     at is ever animating, not every button on the page at once. */
+  .btn-glow:hover::before, .btn-glow:focus-visible::before,
+  .btn-glow-sm:hover::before, .btn-glow-sm:focus-visible::before{
+    animation-play-state: running;
+  }
+
+  /* Soft glass highlight across the top of solid/gradient buttons —
+     a thin light sheen, purely cosmetic, no motion. */
+  .btn-glow::after{
+    content: "";
+    position: absolute;
+    inset: 1.5px;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,.30), transparent 55%);
+    opacity: .55;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  html.dark .btn-glow::after{ opacity: .22; }
+
+  @keyframes btn-ring-spin{ to{ --glow-angle: 480deg; } }
 
   /* All the rotating glow rings (buttons, service cards, hero stage)
      pause while the page is actively scrolling — they run 100% of the
@@ -298,7 +324,9 @@
     mask-repeat: no-repeat;
     -webkit-mask-repeat: no-repeat;
     filter: blur(.5px);
+    --glow-angle: 200deg;
     animation: btn-ring-spin 2.8s linear infinite;
+    animation-play-state: paused;
     pointer-events: none;
     -webkit-transform: translateZ(0);
             transform: translateZ(0);
@@ -306,6 +334,9 @@
   }
   html.dark .service-card::before{
     background: conic-gradient(from var(--glow-angle), transparent 0%, rgba(62,232,245,.85) 26%, rgba(255,148,120,.85) 48%, transparent 68%);
+  }
+  .service-card:hover::before, .service-card:focus-within::before{
+    animation-play-state: running;
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -390,6 +421,131 @@
   html.dark #ptr svg{ color:#3EE8F5; }
   #ptr.spinning svg{ animation: ptr-spin .7s linear infinite; }
   @keyframes ptr-spin{ to{ transform: rotate(360deg); } }
+
+  /* ============================================================
+     Futuristic/professional polish pass — all static (no continuous
+     JS or new perpetual animations, per the earlier perf fix):
+     a faint fixed dot-grid atmosphere, glass panels, HUD-style
+     eyebrow/step badges, icon chips and gradient accent lines.
+     ============================================================ */
+
+  /* Fixed, very low-opacity dot grid behind the whole page — cheap
+     (one static background layer, GPU-composited, nothing repaints
+     on scroll) and gives sections outside the hero the same subtle
+     technical texture instead of a flat fill. */
+  body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(14,21,38,.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 78%);
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 78%);
+  }
+  html.dark body::before{
+    background-image: radial-gradient(rgba(235,239,250,.06) 1px, transparent 1px);
+  }
+
+  /* Glass panels — service cards, portfolio cards, FAQ items and the
+     contact form move from a flat fill to a translucent, blurred
+     surface so the dot grid and ambient glows read through faintly. */
+  .glass-panel{
+    background: rgba(255,255,255,.72);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+            backdrop-filter: blur(14px) saturate(140%);
+  }
+  html.dark .glass-panel{
+    background: rgba(13,18,36,.62);
+  }
+
+  /* Eyebrow labels ("Usluge", "Portfolio"...) get a small glowing
+     status dot — a quiet HUD/console cue rather than plain text. */
+  .eyebrow{ display: inline-flex; align-items: center; gap: .55em; }
+  .eyebrow::before{
+    content: "";
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 7px 1px currentColor;
+    flex: none;
+  }
+
+  /* Thin gradient underline beneath section headings for a bit more
+     structure/hierarchy than a heading floating on its own. */
+  .section-heading{ position: relative; display: inline-block; padding-bottom: .3em; }
+  .section-heading::after{
+    content: "";
+    position: absolute; left: 0; bottom: 0;
+    width: 52px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, #1FB9CC, #FF6F59);
+  }
+  html.dark .section-heading::after{
+    background: linear-gradient(90deg, #3EE8F5, #FF9478);
+  }
+
+  /* "Korak 01–04" process labels as small bordered chips. */
+  .step-badge{
+    display: inline-flex; align-items: center;
+    border: 1px solid rgba(31,185,204,.35);
+    background: rgba(31,185,204,.06);
+    border-radius: 7px;
+    padding: .3em .65em;
+  }
+  html.dark .step-badge{
+    border-color: rgba(62,232,245,.3);
+    background: rgba(62,232,245,.06);
+  }
+
+  /* "01–04" markers in O nama as small square data-readout tiles. */
+  .step-num{
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.9em; height: 1.9em; border-radius: 7px;
+    border: 1px solid rgba(255,111,89,.35);
+    background: rgba(255,111,89,.06);
+  }
+  html.dark .step-num{
+    border-color: rgba(255,148,120,.32);
+    background: rgba(255,148,120,.07);
+  }
+
+  /* Bordered icon chips above each service card. */
+  .icon-badge{
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.75rem; height: 2.75rem; border-radius: .85rem;
+    border: 1px solid rgba(31,185,204,.32);
+    background: rgba(31,185,204,.07);
+    color: #1FB9CC;
+    margin-bottom: 1rem;
+  }
+  html.dark .icon-badge{
+    border-color: rgba(62,232,245,.3);
+    background: rgba(62,232,245,.08);
+    color: #3EE8F5;
+  }
+  .icon-badge svg{ width: 1.4rem; height: 1.4rem; }
+
+  /* Thin gradient accent lines under the header and above the footer,
+     layered over the existing solid border for a bit more depth. */
+  header::after{
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(31,185,204,.55), rgba(255,111,89,.55), transparent);
+    pointer-events: none;
+  }
+  html.dark header::after{
+    background: linear-gradient(90deg, transparent, rgba(62,232,245,.6), rgba(255,148,120,.6), transparent);
+  }
+  footer{ position: relative; }
+  footer::before{
+    content: "";
+    position: absolute; left: 0; right: 0; top: -1px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(31,185,204,.5), rgba(255,111,89,.5), transparent);
+    pointer-events: none;
+  }
+  html.dark footer::before{
+    background: linear-gradient(90deg, transparent, rgba(62,232,245,.55), rgba(255,148,120,.55), transparent);
+  }
 </style>
 
 <!-- Structured data: who KreirAI is, so Google can associate the brand
@@ -548,7 +704,7 @@
        ============================================================ -->
   <section id="pocetna" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 grid md:grid-cols-2 gap-14 items-center">
     <div data-reveal="fade-right">
-      <p class="font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">— AI Studio</p>
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">— AI Studio</p>
       <h1 class="font-serif font-semibold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mt-4">
         Od ideje do <span class="text-gradient">gotovog proizvoda</span>, uz pomoć umjetne inteligencije.
       </h1>
@@ -582,25 +738,37 @@
        ============================================================ -->
   <section id="usluge" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 py-20 sm:py-28">
     <div class="max-w-[56ch]" data-reveal="fade-up">
-      <p class="font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Usluge</p>
-      <h2 class="font-serif font-semibold text-3xl sm:text-4xl mt-3">Jedan tim, cijeli digitalni opseg posla.</h2>
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Usluge</p>
+      <h2 class="section-heading font-serif font-semibold text-3xl sm:text-4xl mt-3">Jedan tim, cijeli digitalni opseg posla.</h2>
       <p class="mt-3 text-inksoft dark:text-[#A6AFC9]">Svaka usluga kombinira brzinu AI generiranja s ljudskom kontrolom kvalitete prije isporuke.</p>
     </div>
 
     <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 transition-colors">
-      <article class="service-card relative bg-white dark:bg-[#10162A] rounded-2xl p-6 sm:p-7 transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="0">
+      <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="0">
+        <span class="icon-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="13" rx="2"/><path d="M8 21h8M12 17.5V21"/></svg>
+        </span>
         <h3 class="font-semibold text-lg">Web stranice</h3>
         <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Brzo postavljanje web stranica i webshopova — prilagođeni vašem brendu i optimizirani za mobitel.</p>
       </article>
-      <article class="service-card relative bg-white dark:bg-[#10162A] rounded-2xl p-6 sm:p-7 transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="80">
+      <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="80">
+        <span class="icon-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>
+        </span>
         <h3 class="font-semibold text-lg">Web i mobilne aplikacije</h3>
         <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Interne alate, razne sustave i korisničke aplikacije gradimo uz AI - ubrzano programiranje i ljudsku kontrolu kvalitete.</p>
       </article>
-      <article class="service-card relative bg-white dark:bg-[#10162A] rounded-2xl p-6 sm:p-7 transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="160">
+      <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="160">
+        <span class="icon-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3.5M12 17.5V21M3 12h3.5M17.5 12H21M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="2.75"/></svg>
+        </span>
         <h3 class="font-semibold text-lg">Brendiranje uz AI</h3>
         <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Logotipi, vizualni identitet i predlošci za društvene mreže generirani uz AI, dorađeni ručno do finalne verzije.</p>
       </article>
-      <article class="service-card relative bg-white dark:bg-[#10162A] rounded-2xl p-6 sm:p-7 transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="240">
+      <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="240">
+        <span class="icon-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c2.8 1.6 4.8 1.9 7.2 1.9 0 7.9-3 11.8-7.2 13.6C7.8 17.2 4.8 13.3 4.8 5.4c2.4 0 4.4-.3 7.2-1.9Z"/><path d="m9.3 12 1.9 1.9 3.5-3.8"/></svg>
+        </span>
         <h3 class="font-semibold text-lg">Održavanje i podrška</h3>
         <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Redovita ažuriranja, praćenje performansi i brza podrška nakon lansiranja — bez dugih ugovornih obveza.</p>
       </article>
@@ -608,22 +776,22 @@
 
     <ol class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
       <li data-reveal="fade-up" data-reveal-delay="0">
-        <div class="font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright">Korak 01</div>
+        <div class="step-badge font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright">Korak 01</div>
         <h4 class="font-semibold text-lg mt-2">Informiranje</h4>
         <p class="mt-1.5 text-inksoft dark:text-[#A6AFC9] text-sm">Upoznajemo vaš posao, cilj i rok isporuke.</p>
       </li>
       <li data-reveal="fade-up" data-reveal-delay="120">
-        <div class="font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright">Korak 02</div>
+        <div class="step-badge font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright">Korak 02</div>
         <h4 class="font-semibold text-lg mt-2">Izrada</h4>
         <p class="mt-1.5 text-inksoft dark:text-[#A6AFC9] text-sm">Generiramo prve demo verzije.</p>
       </li>
       <li data-reveal="fade-up" data-reveal-delay="240">
-        <div class="font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright">Korak 03</div>
+        <div class="step-badge font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright">Korak 03</div>
         <h4 class="font-semibold text-lg mt-2">Dorada</h4>
         <p class="mt-1.5 text-inksoft dark:text-[#A6AFC9] text-sm">Tim ručno provjerava, dorađuje i usklađuje s brendom.</p>
       </li>
       <li data-reveal="fade-up" data-reveal-delay="360">
-        <div class="font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright">Korak 04</div>
+        <div class="step-badge font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright">Korak 04</div>
         <h4 class="font-semibold text-lg mt-2">Isporuka</h4>
         <p class="mt-1.5 text-inksoft dark:text-[#A6AFC9] text-sm">Predajemo gotov rad i dogovaramo dalje korake.</p>
       </li>
@@ -635,13 +803,13 @@
        ============================================================ -->
   <section id="portfolio" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 py-20 sm:py-28">
     <div class="max-w-[56ch]" data-reveal="fade-up">
-      <p class="font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Portfolio</p>
-      <h2 class="font-serif font-semibold text-3xl sm:text-4xl mt-3">DEMO verzije</h2>
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Portfolio</p>
+      <h2 class="section-heading font-serif font-semibold text-3xl sm:text-4xl mt-3">DEMO verzije</h2>
       <p class="mt-3 text-inksoft dark:text-[#A6AFC9]">Ovo su konceptualni primjeri koji pokazuju vrstu rada koju radimo, ne stvarne klijente.</p>
     </div>
 
     <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <a href="koncept1/" target="_blank" rel="noopener noreferrer" class="group rounded-2xl border border-line dark:border-[#232B47] bg-white dark:bg-[#10162A] overflow-hidden hover:-translate-y-1 hover:shadow-soft transition-all block" data-reveal="fade-up" data-reveal-delay="0">
+      <a href="koncept1/" target="_blank" rel="noopener noreferrer" class="group glass-panel rounded-2xl border border-line dark:border-[#232B47] overflow-hidden hover:-translate-y-1 hover:shadow-soft transition-all block" data-reveal="fade-up" data-reveal-delay="0">
         <div class="h-36 overflow-hidden">
           <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_094549_6501c40b-f295-4055-99ec-2dccfa8c20a6.png" alt="Pregled koncepta web stranice za restoran Konoba Maslina" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" width="1344" height="752">
         </div>
@@ -659,7 +827,7 @@
         </div>
       </a>
 
-      <a href="koncept2/" target="_blank" rel="noopener noreferrer" class="group rounded-2xl border border-line dark:border-[#232B47] bg-white dark:bg-[#10162A] overflow-hidden hover:-translate-y-1 hover:shadow-soft transition-all block" data-reveal="fade-up" data-reveal-delay="120">
+      <a href="koncept2/" target="_blank" rel="noopener noreferrer" class="group glass-panel rounded-2xl border border-line dark:border-[#232B47] overflow-hidden hover:-translate-y-1 hover:shadow-soft transition-all block" data-reveal="fade-up" data-reveal-delay="120">
         <div class="h-36 overflow-hidden">
           <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_104831_3f4a1f69-5a4f-49c4-a2b1-90cda10dc894.png" alt="Pregled koncepta aplikacije za praćenje narudžbi Radionica Javor" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" width="1024" height="1820">
         </div>
@@ -677,7 +845,7 @@
         </div>
       </a>
 
-      <a href="koncept3/" target="_blank" rel="noopener noreferrer" class="group rounded-2xl border border-line dark:border-[#232B47] bg-white dark:bg-[#10162A] overflow-hidden hover:-translate-y-1 hover:shadow-soft transition-all block" data-reveal="fade-up" data-reveal-delay="240">
+      <a href="koncept3/" target="_blank" rel="noopener noreferrer" class="group glass-panel rounded-2xl border border-line dark:border-[#232B47] overflow-hidden hover:-translate-y-1 hover:shadow-soft transition-all block" data-reveal="fade-up" data-reveal-delay="240">
         <div class="h-36 overflow-hidden">
           <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3J5cLTJe0G2yoCMiOX9xKNw6HFu/hf_20260912_111119_916b7bc7-4579-41e1-b58e-6c9f091bc55a.png" alt="Pregled koncepta oglasne kampanje LANEA — proljetna kolekcija" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" width="1344" height="752">
         </div>
@@ -702,27 +870,27 @@
        ============================================================ -->
   <section id="onama" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 py-20 sm:py-28 grid md:grid-cols-2 gap-14">
     <div data-reveal="fade-right">
-      <p class="font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">O nama</p>
-      <h2 class="font-serif font-semibold text-3xl sm:text-4xl mt-3">Kreiramo, uz AI.</h2>
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">O nama</p>
+      <h2 class="section-heading font-serif font-semibold text-3xl sm:text-4xl mt-3">Kreiramo, uz AI.</h2>
       <p class="mt-4 text-inksoft dark:text-[#A6AFC9] text-lg">KreirAI je digitalni studio koji AI koristi kao alat za brzinu — ne kao zamjenu za ukus, strategiju ili odgovornost prema klijentu.</p>
       <p class="mt-4 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Vjerujemo da umjetna inteligencija najviše vrijedi kada skraćuje vrijeme od ideje do prvog gotovog rješenja, a ne kada zamjenjuje ljude koji donose odluke o brendu, dizajnu i tonu komunikacije. Zato svaki projekt prolazi kroz AI-ubrzanu izradu i ručnu reviziju prije nego što stigne do vas. Radimo s malim i srednjim tvrtkama, obrtnicima i timovima koji trebaju kvalitetan digitalni rezultat u kratkom roku, bez agencijske birokracije.</p>
     </div>
 
     <ul class="flex flex-col gap-6">
       <li class="flex gap-4" data-reveal="fade-left" data-reveal-delay="0">
-        <span class="font-mono text-xs text-violet dark:text-violet-bright font-semibold pt-1">01</span>
+        <span class="step-num font-mono text-xs text-violet dark:text-violet-bright font-semibold pt-1">01</span>
         <div><h4 class="font-semibold">Brzina bez prečaca</h4><p class="mt-1 text-inksoft dark:text-[#A6AFC9] text-sm">AI ubrzava izradu prve verzije; kvaliteta konačne verzije ostaje na ljudima.</p></div>
       </li>
       <li class="flex gap-4" data-reveal="fade-left" data-reveal-delay="100">
-        <span class="font-mono text-xs text-violet dark:text-violet-bright font-semibold pt-1">02</span>
+        <span class="step-num font-mono text-xs text-violet dark:text-violet-bright font-semibold pt-1">02</span>
         <div><h4 class="font-semibold">Transparentan proces</h4><p class="mt-1 text-inksoft dark:text-[#A6AFC9] text-sm">Vidite napredak u svakom koraku, od početka do isporuke.</p></div>
       </li>
       <li class="flex gap-4" data-reveal="fade-left" data-reveal-delay="200">
-        <span class="font-mono text-xs text-violet dark:text-violet-bright font-semibold pt-1">03</span>
+        <span class="step-num font-mono text-xs text-violet dark:text-violet-bright font-semibold pt-1">03</span>
         <div><h4 class="font-semibold">Prilagođeno vašem opsegu</h4><p class="mt-1 text-inksoft dark:text-[#A6AFC9] text-sm">Od jednostavne web stranice do složenije aplikacije — opseg definiramo zajedno.</p></div>
       </li>
       <li class="flex gap-4" data-reveal="fade-left" data-reveal-delay="300">
-        <span class="font-mono text-xs text-violet dark:text-violet-bright font-semibold pt-1">04</span>
+        <span class="step-num font-mono text-xs text-violet dark:text-violet-bright font-semibold pt-1">04</span>
         <div><h4 class="font-semibold">Dugoročna suradnja</h4><p class="mt-1 text-inksoft dark:text-[#A6AFC9] text-sm">Radije gradimo odnos kroz više manjih projekata nego jedan veliki i kraj.</p></div>
       </li>
     </ul>
@@ -733,8 +901,8 @@
        ============================================================ -->
   <section id="kontakt" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 py-20 sm:py-28 grid md:grid-cols-2 gap-14">
     <div data-reveal="fade-right">
-      <p class="font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Kontakt</p>
-      <h2 class="font-serif font-semibold text-3xl sm:text-4xl mt-3">Recite nam na čemu radite.</h2>
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Kontakt</p>
+      <h2 class="section-heading font-serif font-semibold text-3xl sm:text-4xl mt-3">Recite nam na čemu radite.</h2>
       <p class="mt-3 text-inksoft dark:text-[#A6AFC9]">Kratko opišite projekt i rok — javljamo se s prijedlogom pristupa i okvirnom ponudom.</p>
 
       <div class="mt-8 flex flex-col gap-5">
@@ -755,7 +923,7 @@
       </div>
     </div>
 
-    <form id="contactForm" novalidate data-reveal="fade-left" class="bg-white dark:bg-[#10162A] border border-line dark:border-[#232B47] rounded-2xl p-6 sm:p-8 flex flex-col gap-5 transition-colors">
+    <form id="contactForm" novalidate data-reveal="fade-left" class="glass-panel border border-line dark:border-[#232B47] rounded-2xl p-6 sm:p-8 flex flex-col gap-5 transition-colors">
       <div class="grid sm:grid-cols-2 gap-5">
         <div>
           <label for="ime" class="block text-xs font-mono uppercase tracking-wide text-inksoft dark:text-[#A6AFC9] mb-2">Ime i prezime</label>
@@ -903,13 +1071,13 @@
        ============================================================ -->
   <section id="faq" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 py-20 sm:py-28">
     <div class="max-w-2xl">
-      <p class="font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Pitanja</p>
-      <h2 class="font-serif font-semibold text-3xl sm:text-4xl mt-3">Često postavljana pitanja</h2>
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Pitanja</p>
+      <h2 class="section-heading font-serif font-semibold text-3xl sm:text-4xl mt-3">Često postavljana pitanja</h2>
       <p class="mt-3 text-inksoft dark:text-[#A6AFC9]">Ako ne pronađete odgovor koji tražite, slobodno nam se javite.</p>
     </div>
 
     <div class="mt-10 flex flex-col gap-3 max-w-3xl">
-      <details class="group border border-line dark:border-[#232B47] rounded-2xl bg-white dark:bg-[#10162A] transition-colors" data-reveal="fade-up" data-reveal-delay="0">
+      <details class="group glass-panel border border-line dark:border-[#232B47] rounded-2xl transition-colors" data-reveal="fade-up" data-reveal-delay="0">
         <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-5 font-semibold">
           <span>Koliko traje izrada web stranice ili aplikacije?</span>
           <svg class="w-5 h-5 shrink-0 text-inksoft dark:text-[#A6AFC9] transition-transform group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -917,7 +1085,7 @@
         <p class="px-5 pb-5 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Ovisi o opsegu projekta — jednostavnija web stranica obično je gotova za par tjedana, dok veće aplikacije traju dulje. AI-ubrzana izrada skraćuje vrijeme do prve verzije za pregled, a preostalo vrijeme uglavnom ide na reviziju i dorade zajedno s vama.</p>
       </details>
 
-      <details class="group border border-line dark:border-[#232B47] rounded-2xl bg-white dark:bg-[#10162A] transition-colors" data-reveal="fade-up" data-reveal-delay="60">
+      <details class="group glass-panel border border-line dark:border-[#232B47] rounded-2xl transition-colors" data-reveal="fade-up" data-reveal-delay="60">
         <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-5 font-semibold">
           <span>Koliko košta izrada web stranice ili aplikacije?</span>
           <svg class="w-5 h-5 shrink-0 text-inksoft dark:text-[#A6AFC9] transition-transform group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -925,7 +1093,7 @@
         <p class="px-5 pb-5 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Cijena ovisi o opsegu i složenosti projekta, pa je ne generaliziramo unaprijed. Javite nam se s kratkim opisom onoga što vam treba i javljamo se s okvirnom ponudom, bez obveze.</p>
       </details>
 
-      <details class="group border border-line dark:border-[#232B47] rounded-2xl bg-white dark:bg-[#10162A] transition-colors" data-reveal="fade-up" data-reveal-delay="120">
+      <details class="group glass-panel border border-line dark:border-[#232B47] rounded-2xl transition-colors" data-reveal="fade-up" data-reveal-delay="120">
         <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-5 font-semibold">
           <span>Znači li korištenje AI-ja da je rezultat generički ili manje kvalitetan?</span>
           <svg class="w-5 h-5 shrink-0 text-inksoft dark:text-[#A6AFC9] transition-transform group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -933,7 +1101,7 @@
         <p class="px-5 pb-5 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Ne — AI kod nas ubrzava prvu verziju, ali svaki projekt prolazi ručnu reviziju prije isporuke. Odluke o brendu, dizajnu i tonu komunikacije uvijek donose ljudi, ne alat.</p>
       </details>
 
-      <details class="group border border-line dark:border-[#232B47] rounded-2xl bg-white dark:bg-[#10162A] transition-colors" data-reveal="fade-up" data-reveal-delay="180">
+      <details class="group glass-panel border border-line dark:border-[#232B47] rounded-2xl transition-colors" data-reveal="fade-up" data-reveal-delay="180">
         <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-5 font-semibold">
           <span>Nudite li održavanje i podršku nakon isporuke?</span>
           <svg class="w-5 h-5 shrink-0 text-inksoft dark:text-[#A6AFC9] transition-transform group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -941,7 +1109,7 @@
         <p class="px-5 pb-5 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Da, održavanje i podrška su jedna od naših redovnih usluga. Dogovaramo je posebno za svaki projekt, ovisno o tome što vam nakon lansiranja treba.</p>
       </details>
 
-      <details class="group border border-line dark:border-[#232B47] rounded-2xl bg-white dark:bg-[#10162A] transition-colors" data-reveal="fade-up" data-reveal-delay="240">
+      <details class="group glass-panel border border-line dark:border-[#232B47] rounded-2xl transition-colors" data-reveal="fade-up" data-reveal-delay="240">
         <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-5 font-semibold">
           <span>Radite li s klijentima izvan svog grada ili udaljeno?</span>
           <svg class="w-5 h-5 shrink-0 text-inksoft dark:text-[#A6AFC9] transition-transform group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
