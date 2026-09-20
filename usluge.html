@@ -176,14 +176,12 @@
   html.dark .theme-toggle .icon-moon{ display:block; }
 
   /* ============================================================
-     Glowing-border buttons
-     A thin gradient ring continuously chases around the button's
-     edge (conic-gradient + mask, rotated), with a tight ambient
-     glow behind it (much smaller radius than before) that
-     brightens slightly on hover/focus.
+     Glow buttons — a soft ambient box-shadow glow on hover/focus.
+     (Used to also spin an animated gradient ring; removed for
+     performance — it forced a permanent GPU compositing layer on
+     every button on the page.)
      .btn-glow      — full-size CTAs (primary + ghost/secondary)
      .btn-glow-sm   — compact icon buttons (theme toggle, hamburger)
-     Respects prefers-reduced-motion by freezing the ring.
      ============================================================ */
   .btn-glow, .btn-glow-sm{
     position: relative;
@@ -203,56 +201,6 @@
     box-shadow: 0 0 14px 2px rgba(62,232,245,.48);
   }
 
-  /* Kut se animira kao CSS custom property (Houdini @property), a
-     NE s "transform: rotate()" na cijelom pseudo-elementu — jer bi
-     rotacija cijele (ovalne, ne-kvadratne) maske "zaljuljala" prsten
-     izvan gumba na duguljastim tipkama. Ovako se giba samo boja
-     unutar fiksnog, mirnog prstena. */
-  @property --glow-angle{
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-  }
-  .btn-glow::before, .btn-glow-sm::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    box-sizing: border-box;
-    border-radius: inherit;
-    padding: 1.5px;
-    background: conic-gradient(from var(--glow-angle), transparent 0%, rgba(31,185,204,.85) 26%, rgba(255,111,89,.85) 48%, transparent 68%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-            mask-composite: exclude;
-    mask-repeat: no-repeat;
-    -webkit-mask-repeat: no-repeat;
-    filter: blur(.5px);
-    --glow-angle: 120deg;
-    animation: btn-ring-spin 2.8s linear infinite;
-    animation-play-state: paused;
-    pointer-events: none;
-    /* Forces its own GPU compositing layer — works around a real bug in
-       mobile Safari/Chrome where an animated masked gradient on a ::before
-       can render as fully static or fail to paint at all on phones. */
-    -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-    will-change: transform;
-  }
-  html.dark .btn-glow::before, html.dark .btn-glow-sm::before{
-    background: conic-gradient(from var(--glow-angle), transparent 0%, rgba(62,232,245,.85) 26%, rgba(255,148,120,.85) 48%, transparent 68%);
-  }
-  .btn-glow-sm::before{ padding: 1.25px; }
-
-  /* The ring only sweeps while a button is actually being interacted
-     with (hover/focus) — statically positioned at rest. A calmer,
-     more deliberate default reads as more premium than a permanent
-     spin, and it also means only the one button someone is pointing
-     at is ever animating, not every button on the page at once. */
-  .btn-glow:hover::before, .btn-glow:focus-visible::before,
-  .btn-glow-sm:hover::before, .btn-glow-sm:focus-visible::before{
-    animation-play-state: running;
-  }
-
   /* Soft glass highlight across the top of solid/gradient buttons —
      a thin light sheen, purely cosmetic, no motion. */
   .btn-glow::after{
@@ -267,31 +215,14 @@
   }
   html.dark .btn-glow::after{ opacity: .22; }
 
-  @keyframes btn-ring-spin{ to{ --glow-angle: 480deg; } }
-
-  /* All the rotating glow rings (buttons, service cards, hero stage)
-     pause while the page is actively scrolling — they run 100% of the
-     time regardless of scroll, and pausing them for the ~200ms a
-     scroll gesture takes frees up real compositing budget exactly
-     when it's needed most. Toggled by JS adding/removing
-     .is-scrolling on <body>. */
-  body.is-scrolling .btn-glow::before,
-  body.is-scrolling .btn-glow-sm::before,
-  body.is-scrolling .service-card::before,
-  body.is-scrolling .hero-stage::after{
-    animation-play-state: paused;
-  }
-
   @media (prefers-reduced-motion: reduce){
     .btn-glow, .btn-glow-sm{ transition:none; }
-    .btn-glow::before, .btn-glow-sm::before{ animation:none; }
   }
 
   /* ============================================================
-     Service cards — same chasing gradient-ring border as the
-     buttons above (reuses --glow-angle / btn-ring-spin), plus an
-     ambient glow that brightens the background just behind the
-     card on hover.
+     Service cards — a soft ambient box-shadow glow on hover.
+     (Used to also spin an animated gradient-ring border, same
+     mechanism as the buttons above; removed for performance.)
      ============================================================ */
   .service-card{
     isolation: isolate;
@@ -304,38 +235,8 @@
   html.dark .service-card:hover, html.dark .service-card:focus-within{
     box-shadow: 0 0 16px 0px rgba(255,148,120,.08);
   }
-  .service-card::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    box-sizing: border-box;
-    border-radius: inherit;
-    padding: 1.5px;
-    background: conic-gradient(from var(--glow-angle), transparent 0%, rgba(31,185,204,.85) 26%, rgba(255,111,89,.85) 48%, transparent 68%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-            mask-composite: exclude;
-    mask-repeat: no-repeat;
-    -webkit-mask-repeat: no-repeat;
-    filter: blur(.5px);
-    --glow-angle: 200deg;
-    animation: btn-ring-spin 2.8s linear infinite;
-    animation-play-state: paused;
-    pointer-events: none;
-    -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-    will-change: transform;
-  }
-  html.dark .service-card::before{
-    background: conic-gradient(from var(--glow-angle), transparent 0%, rgba(62,232,245,.85) 26%, rgba(255,148,120,.85) 48%, transparent 68%);
-  }
-  .service-card:hover::before, .service-card:focus-within::before{
-    animation-play-state: running;
-  }
-
   @media (prefers-reduced-motion: reduce){
     .service-card{ transition:none; }
-    .service-card::before{ animation:none; }
   }
 
   /* --- Hero 3D logo video ---
@@ -372,33 +273,6 @@
   .hero-tagline-overlay.is-visible{
     opacity: 1;
   }
-  /* Animated glow ring around the hero stage — same rotating-angle
-     technique as the button glow, but wider, dimmer and blurred so it
-     reads as a soft halo hugging the edge rather than a drawn line. */
-  .hero-stage::after{
-    content: "";
-    position: absolute;
-    inset: 0;
-    box-sizing: border-box;
-    border-radius: inherit;
-    padding: 2.5px;
-    background: conic-gradient(from var(--glow-angle), transparent 0%, rgba(62,232,245,.55) 26%, rgba(255,148,120,.55) 48%, transparent 70%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-            mask-composite: exclude;
-    mask-repeat: no-repeat;
-    -webkit-mask-repeat: no-repeat;
-    filter: blur(2px);
-    animation: btn-ring-spin 5.5s linear infinite;
-    pointer-events: none;
-    -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-    will-change: transform;
-  }
-  @media (prefers-reduced-motion: reduce){
-    .hero-stage::after{ animation: none; }
-  }
-
   /* --- Pull-to-refresh (mobile) --- */
   #ptr{
     position: fixed; top: 10px; left: 50%;
