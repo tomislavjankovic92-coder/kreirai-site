@@ -539,6 +539,47 @@
   html.dark footer::before{
     background: linear-gradient(90deg, transparent, rgba(62,232,245,.55), rgba(255,148,120,.55), transparent);
   }
+
+  /* ============================================================
+     Usporedba ("razlika") sekcija — mala okrugla oznaka uz svaku
+     stavku (crveni križić / cijan kvačica) i istaknuti obrub oko
+     "pobjedničke" kartice.
+     ============================================================ */
+  .mark-icon{
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.35rem; height: 1.35rem; border-radius: 50%; flex: none;
+  }
+  .mark-icon svg{ width: .75rem; height: .75rem; }
+  .mark-x{ background: rgba(239,68,68,.10); color: #ef4444; }
+  html.dark .mark-x{ background: rgba(248,113,113,.14); color: #f87171; }
+  .mark-ok{ background: rgba(31,185,204,.10); color: #1FB9CC; }
+  html.dark .mark-ok{ background: rgba(62,232,245,.14); color: #3EE8F5; }
+
+  .compare-win{
+    border: 1.5px solid rgba(255,111,89,.4);
+    box-shadow: 0 20px 44px -28px rgba(255,111,89,.35);
+  }
+  html.dark .compare-win{
+    border-color: rgba(255,148,120,.4);
+    box-shadow: 0 20px 44px -28px rgba(255,148,120,.4);
+  }
+
+  .compare-vs{
+    display: none;
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    align-items: center; justify-content: center;
+    width: 3.25rem; height: 3.25rem; border-radius: 50%;
+    background: #0A0E1A; border: 1px solid rgba(255,255,255,.1);
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: .7rem;
+    letter-spacing: .04em; color: #EBEFFA;
+    box-shadow: 0 0 0 6px var(--vs-ring, #F2F4FA);
+    z-index: 10;
+  }
+  html.dark .compare-vs{ --vs-ring: #080B14; }
+  @media (min-width: 768px){
+    .compare-vs{ display: flex; }
+  }
 </style>
 <!-- Structured data: who KreirAI is, so Google can associate the brand
      name with this site (knowledge panel / search result enrichment). -->
@@ -675,12 +716,12 @@
        ZAŠTO KREIRAI — kratka izjava povjerenja ispod hero-a
        ============================================================ -->
   <section id="zasto" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-24">
-    <div class="max-w-[62ch]" data-reveal="fade-up">
+    <div class="max-w-[56ch]" data-reveal="fade-up">
       <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Vaša web stranica — naša stručnost</p>
-      <h2 class="section-heading font-serif font-semibold text-3xl sm:text-4xl lg:text-5xl leading-[1.12] mt-4">
+      <h2 class="section-heading font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
         Vaše brige prestaju. <span class="text-gradient">Usmjerite se na svoj posao.</span>
       </h2>
-      <p class="mt-6 text-inksoft dark:text-[#A6AFC9] text-lg leading-relaxed">
+      <p class="mt-5 text-inksoft dark:text-[#A6AFC9] text-lg leading-relaxed">
         Između vođenja posla, brige o klijentima i vremena za obitelj — tko uopće ima vremena brinuti se o web stranici? Mi to preuzimamo na sebe. U potpunosti. Zamislite nas kao svoj tehnički tim čiji trošak tjedno je manji od večere za dvoje.
       </p>
     </div>
@@ -690,7 +731,7 @@
        PREDNOSTI — 4 polja, centrirano, ispod "zasto" izjave
        ============================================================ -->
   <section id="prednosti" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
-    <div class="max-w-4xl mx-auto grid sm:grid-cols-2 gap-5 sm:gap-6">
+    <div class="max-w-3xl mx-auto grid sm:grid-cols-2 gap-5 sm:gap-6">
       <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 border border-line dark:border-[#232B47] transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="0">
         <span class="icon-badge" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
@@ -721,10 +762,80 @@
         </span>
         <h3 class="font-semibold text-lg">Ne gubimo vrijeme</h3>
         <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Vaša stranica uz nas ide online unutar 10 dana. Ne nekoliko mjeseci, već baš dana. Kada je nešto potrebno ažurirati, tu smo za vas već isti dan. Vrijeme je dragocjeno i mi to razumijemo!</p>
-        <a href="kontakt.html" class="btn-glow mt-5 inline-flex items-center gap-1.5 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-xs px-4 py-2 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+        <a href="kontakt.html" class="btn-glow mt-5 inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-xs px-4 py-2 rounded-full shadow-soft hover:-translate-y-0.5 transition">
           Kontaktirajte nas
         </a>
       </article>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RAZLIKA — usporedba tipične web stranice i KreirAI stranice
+       ============================================================ -->
+  <section id="razlika" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
+    <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
+      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Razlika</p>
+      <h2 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
+        Ono s čime ste zaglavili <span class="text-gradient">naspram onoga što mi gradimo.</span>
+      </h2>
+    </div>
+
+    <div class="mt-14 relative grid md:grid-cols-2 gap-8 items-start">
+      <div class="compare-vs" aria-hidden="true">VS</div>
+
+      <div class="glass-panel rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8" data-reveal="fade-right">
+        <p class="font-mono text-xs tracking-[0.14em] uppercase text-red-500 dark:text-red-400 font-semibold">Tipična web stranica</p>
+        <h3 class="font-serif font-semibold text-2xl mt-2">Zamka gotovih predložaka</h3>
+        <ul class="mt-5 flex flex-col">
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-x mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Posjetitelji odustaju prije nego što se stranica uopće učita</span>
+          </li>
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-x mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Ne radi kako treba na mobitelu — a pola vaših klijenata je baš tamo</span>
+          </li>
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-x mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Podložna hakiranju zbog zastarjelih dodataka i softvera</span>
+          </li>
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-x mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Traži stalna ažuriranja koja koštaju i vremena i novca</span>
+          </li>
+          <li class="flex items-start gap-3 py-3">
+            <span class="mark-icon mark-x mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Nevidljiva na Googleu — zakopana ispod konkurencije</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="compare-win glass-panel relative rounded-2xl p-6 sm:p-8" data-reveal="fade-left">
+        <p class="font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright font-semibold">Vaš KreirAI website</p>
+        <h3 class="font-serif font-semibold text-2xl mt-2">Izgrađena da vam donese klijente</h3>
+        <ul class="mt-5 flex flex-col">
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Učitava se trenutno — posjetitelji ostaju i razgledavaju</span>
+          </li>
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Izgleda odlično na svakom mobitelu, tabletu i računalu</span>
+          </li>
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Nema što hakirati — čist kod, bez ranjivosti</span>
+          </li>
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Mi vodimo brigu o svim ažuriranjima — vi o tome ne razmišljate</span>
+          </li>
+          <li class="flex items-start gap-3 py-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Izgrađena da se pojavi baš kad vas klijenti pretražuju</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 
