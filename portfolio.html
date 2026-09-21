@@ -70,7 +70,7 @@
   header{ transform: translateZ(0); }
 
   body{
-    background:#FAF6EC; color:#0E1526;
+    background:#F2F4FA; color:#0E1526;
     transition: background .3s ease, color .3s ease;
     overflow-x: hidden;
     max-width: 100%;
@@ -78,11 +78,11 @@
   html.dark body{ background:#080B14; color:#EBEFFA; }
 
   .text-gradient{
-    background-image: linear-gradient(100deg, #8A6D1E 0%, #D2A94A 85%);
+    background-image: linear-gradient(100deg, #1FB9CC 0%, #FF6F59 85%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   html.dark .text-gradient{
-    background-image: linear-gradient(100deg, #E8C468 0%, #F6E3AE 85%);
+    background-image: linear-gradient(100deg, #3EE8F5 0%, #FF9478 85%);
   }
 
   /* Hero stage always keeps its own dark "stage" tone (independent of
@@ -90,9 +90,9 @@
      nothing to visibly seam against — it just dissolves into it. */
   .hero-stage{
     background:
-      radial-gradient(circle at 50% 46%, rgba(232,196,104,.20), transparent 42%),
-      radial-gradient(circle at 30% 20%, rgba(246,227,174,.16), transparent 60%),
-      radial-gradient(circle at 75% 80%, rgba(232,196,104,.14), transparent 55%),
+      radial-gradient(circle at 50% 46%, rgba(62,232,245,.20), transparent 42%),
+      radial-gradient(circle at 30% 20%, rgba(255,148,120,.16), transparent 60%),
+      radial-gradient(circle at 75% 80%, rgba(62,232,245,.14), transparent 55%),
       #0A0E1A;
   }
   .hero-grid{
@@ -109,10 +109,10 @@
       linear-gradient(90deg, rgba(235,239,250,.05) 1px, transparent 1px);
   }
 
-  .pf-card-2{ background:linear-gradient(135deg, rgba(201,154,61,.16), #fff); }
-  html.dark .pf-card-2{ background:linear-gradient(135deg, rgba(246,227,174,.22), #10162A); }
-  .pf-card-3{ background:linear-gradient(135deg, rgba(138,109,30,.14), rgba(201,154,61,.12)); }
-  html.dark .pf-card-3{ background:linear-gradient(135deg, rgba(232,196,104,.18), rgba(246,227,174,.16)); }
+  .pf-card-2{ background:linear-gradient(135deg, rgba(255,111,89,.16), #fff); }
+  html.dark .pf-card-2{ background:linear-gradient(135deg, rgba(255,148,120,.22), #10162A); }
+  .pf-card-3{ background:linear-gradient(135deg, rgba(31,185,204,.14), rgba(255,111,89,.12)); }
+  html.dark .pf-card-3{ background:linear-gradient(135deg, rgba(62,232,245,.18), rgba(255,148,120,.16)); }
 
   /* --- Scroll-triggered reveal system ---
      Add data-reveal="fade-up | fade-down | fade-left | fade-right | zoom-in"
@@ -153,12 +153,12 @@
     z-index: 45;
     opacity: 0;
     transition: opacity .5s ease;
-    background: radial-gradient(circle, rgba(232,196,104,.055) 0%, rgba(246,227,174,.03) 35%, transparent 70%);
+    background: radial-gradient(circle, rgba(62,232,245,.055) 0%, rgba(255,148,120,.03) 35%, transparent 70%);
     mix-blend-mode: screen;
     will-change: transform, opacity;
   }
   html:not(.dark) #cursorGlow{
-    background: radial-gradient(circle, rgba(138,109,30,.03) 0%, rgba(201,154,61,.02) 40%, transparent 70%);
+    background: radial-gradient(circle, rgba(31,185,204,.03) 0%, rgba(255,111,89,.02) 40%, transparent 70%);
     mix-blend-mode: normal;
   }
   #cursorGlow.is-active{ opacity: 1; }
@@ -187,19 +187,19 @@
   .btn-glow, .btn-glow-sm{
     position: relative;
     isolation: isolate;
-    box-shadow: 0 0 6px 0 rgba(138,109,30,.28);
+    box-shadow: 0 0 6px 0 rgba(31,185,204,.28);
     transition: box-shadow .3s ease, transform .2s ease;
   }
   html.dark .btn-glow, html.dark .btn-glow-sm{
-    box-shadow: 0 0 8px 0 rgba(232,196,104,.32);
+    box-shadow: 0 0 8px 0 rgba(62,232,245,.32);
   }
   .btn-glow:hover, .btn-glow:focus-visible,
   .btn-glow-sm:hover, .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 11px 1px rgba(138,109,30,.42);
+    box-shadow: 0 0 11px 1px rgba(31,185,204,.42);
   }
   html.dark .btn-glow:hover, html.dark .btn-glow:focus-visible,
   html.dark .btn-glow-sm:hover, html.dark .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 14px 2px rgba(232,196,104,.48);
+    box-shadow: 0 0 14px 2px rgba(62,232,245,.48);
   }
 
   /* Soft glass highlight across the top of solid/gradient buttons —
@@ -227,14 +227,14 @@
      ============================================================ */
   .service-card{
     isolation: isolate;
-    box-shadow: 0 0 0 0 rgba(201,154,61,0);
+    box-shadow: 0 0 0 0 rgba(255,111,89,0);
     transition: box-shadow .4s ease, transform .3s ease;
   }
   .service-card:hover, .service-card:focus-within{
-    box-shadow: 0 0 14px 0px rgba(201,154,61,.10);
+    box-shadow: 0 0 14px 0px rgba(255,111,89,.06);
   }
   html.dark .service-card:hover, html.dark .service-card:focus-within{
-    box-shadow: 0 0 16px 0px rgba(246,227,174,.10);
+    box-shadow: 0 0 16px 0px rgba(255,148,120,.08);
   }
   @media (prefers-reduced-motion: reduce){
     .service-card{ transition:none; }
@@ -250,7 +250,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% 46%, rgba(232,196,104,.40) 0%, rgba(246,227,174,.28) 28%, rgba(232,196,104,.10) 48%, transparent 68%);
+    background: radial-gradient(circle at 50% 46%, rgba(62,232,245,.40) 0%, rgba(255,148,120,.28) 28%, rgba(62,232,245,.10) 48%, transparent 68%);
     filter: blur(38px);
     pointer-events: none;
   }
@@ -286,8 +286,8 @@
   }
   html.dark #ptr{ background:#10162A; border-color:#232B47; box-shadow: 0 10px 24px -12px rgba(0,0,0,.5); }
   #ptr.snap{ transition: transform .25s ease, opacity .25s ease; }
-  #ptr svg{ width: 20px; height: 20px; color:#8A6D1E; }
-  html.dark #ptr svg{ color:#E8C468; }
+  #ptr svg{ width: 20px; height: 20px; color:#1FB9CC; }
+  html.dark #ptr svg{ color:#3EE8F5; }
   #ptr.spinning svg{ animation: ptr-spin .7s linear infinite; }
   @keyframes ptr-spin{ to{ transform: rotate(360deg); } }
 
@@ -375,50 +375,50 @@
     content: "";
     position: absolute; left: 0; bottom: 0;
     width: 52px; height: 2px; border-radius: 2px;
-    background: linear-gradient(90deg, #8A6D1E, #D2A94A);
+    background: linear-gradient(90deg, #1FB9CC, #FF6F59);
   }
   html.dark .section-heading::after{
-    background: linear-gradient(90deg, #E8C468, #F6E3AE);
+    background: linear-gradient(90deg, #3EE8F5, #FF9478);
   }
 
   /* "Korak 01–04" process labels as small bordered chips. */
   .step-badge{
     display: inline-flex; align-items: center;
-    border: 1px solid rgba(138,109,30,.35);
-    background: rgba(138,109,30,.06);
+    border: 1px solid rgba(31,185,204,.35);
+    background: rgba(31,185,204,.06);
     border-radius: 7px;
     padding: .3em .65em;
   }
   html.dark .step-badge{
-    border-color: rgba(232,196,104,.3);
-    background: rgba(232,196,104,.06);
+    border-color: rgba(62,232,245,.3);
+    background: rgba(62,232,245,.06);
   }
 
   /* "01–04" markers in O nama as small square data-readout tiles. */
   .step-num{
     display: inline-flex; align-items: center; justify-content: center;
     width: 1.9em; height: 1.9em; border-radius: 7px;
-    border: 1px solid rgba(201,154,61,.35);
-    background: rgba(201,154,61,.06);
+    border: 1px solid rgba(255,111,89,.35);
+    background: rgba(255,111,89,.06);
   }
   html.dark .step-num{
-    border-color: rgba(246,227,174,.32);
-    background: rgba(246,227,174,.07);
+    border-color: rgba(255,148,120,.32);
+    background: rgba(255,148,120,.07);
   }
 
   /* Bordered icon chips above each service card. */
   .icon-badge{
     display: inline-flex; align-items: center; justify-content: center;
     width: 2.75rem; height: 2.75rem; border-radius: .85rem;
-    border: 1px solid rgba(138,109,30,.32);
-    background: rgba(138,109,30,.07);
-    color: #8A6D1E;
+    border: 1px solid rgba(31,185,204,.32);
+    background: rgba(31,185,204,.07);
+    color: #1FB9CC;
     margin-bottom: 1rem;
   }
   html.dark .icon-badge{
-    border-color: rgba(232,196,104,.3);
-    background: rgba(232,196,104,.08);
-    color: #E8C468;
+    border-color: rgba(62,232,245,.3);
+    background: rgba(62,232,245,.08);
+    color: #3EE8F5;
   }
   .icon-badge svg{ width: 1.4rem; height: 1.4rem; }
 
@@ -427,61 +427,22 @@
   header::after{
     content: "";
     position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(138,109,30,.55), rgba(201,154,61,.55), transparent);
+    background: linear-gradient(90deg, transparent, rgba(31,185,204,.55), rgba(255,111,89,.55), transparent);
     pointer-events: none;
   }
   html.dark header::after{
-    background: linear-gradient(90deg, transparent, rgba(232,196,104,.6), rgba(246,227,174,.6), transparent);
+    background: linear-gradient(90deg, transparent, rgba(62,232,245,.6), rgba(255,148,120,.6), transparent);
   }
   footer{ position: relative; }
   footer::before{
     content: "";
     position: absolute; left: 0; right: 0; top: -1px; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(138,109,30,.5), rgba(201,154,61,.5), transparent);
+    background: linear-gradient(90deg, transparent, rgba(31,185,204,.5), rgba(255,111,89,.5), transparent);
     pointer-events: none;
   }
   html.dark footer::before{
-    background: linear-gradient(90deg, transparent, rgba(232,196,104,.55), rgba(246,227,174,.55), transparent);
+    background: linear-gradient(90deg, transparent, rgba(62,232,245,.55), rgba(255,148,120,.55), transparent);
   }
-  /* ============================================================
-     GOLD PALETTE OVERRIDE
-     Recolors the site's cyan/coral ("violet") Tailwind utility classes
-     to a gold/champagne family. These selectors are copied exactly as
-     Tailwind compiled them in tailwind.css; because this <style> block
-     loads after that stylesheet, an identical selector here wins the
-     cascade for the properties it sets — so every from-cyan / to-violet
-     / text-cyan usage across the page recolors without touching a
-     single HTML class name or tailwind.css itself.
-     ============================================================ */
-  .from-cyan{--tw-gradient-from:#8A6D1E var(--tw-gradient-from-position);--tw-gradient-to:rgba(138,109,30,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}
-  .to-violet{--tw-gradient-to:#D2A94A var(--tw-gradient-to-position)}
-  .text-cyan{--tw-text-opacity:1;color:rgb(138 109 30/var(--tw-text-opacity,1))}
-  .text-cyan-bright{--tw-text-opacity:1;color:rgb(232 196 104/var(--tw-text-opacity,1))}
-  .text-violet{--tw-text-opacity:1;color:rgb(201 154 61/var(--tw-text-opacity,1))}
-  .hover\:text-cyan:hover{--tw-text-opacity:1;color:rgb(138 109 30/var(--tw-text-opacity,1))}
-  .focus\:border-cyan:focus{--tw-border-opacity:1;border-color:rgb(138 109 30/var(--tw-border-opacity,1))}
-  .focus\:ring-cyan\/40:focus{--tw-ring-color:rgba(138,109,30,.4)}
-  .group:hover .group-hover\:text-cyan{--tw-text-opacity:1;color:rgb(138 109 30/var(--tw-text-opacity,1))}
-  .group:hover .group-hover\:text-violet{--tw-text-opacity:1;color:rgb(201 154 61/var(--tw-text-opacity,1))}
-  .dark\:from-cyan-bright:is(.dark *){--tw-gradient-from:#E8C468 var(--tw-gradient-from-position);--tw-gradient-to:rgba(232,196,104,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}
-  .dark\:to-violet-bright:is(.dark *){--tw-gradient-to:#F6E3AE var(--tw-gradient-to-position)}
-  .dark\:text-cyan-bright:is(.dark *){--tw-text-opacity:1;color:rgb(232 196 104/var(--tw-text-opacity,1))}
-  .dark\:text-violet-bright:is(.dark *){--tw-text-opacity:1;color:rgb(246 227 174/var(--tw-text-opacity,1))}
-  .dark\:hover\:text-cyan-bright:hover:is(.dark *){--tw-text-opacity:1;color:rgb(232 196 104/var(--tw-text-opacity,1))}
-  .group:hover .dark\:group-hover\:text-cyan-bright:is(.dark *){--tw-text-opacity:1;color:rgb(232 196 104/var(--tw-text-opacity,1))}
-  .group:hover .dark\:group-hover\:text-violet-bright:is(.dark *){--tw-text-opacity:1;color:rgb(246 227 174/var(--tw-text-opacity,1))}
-
-  /* Buttons and the "Popularno" badge (the only elements using
-     bg-gradient-to-r) get a richer 5-stop metallic gold-foil sweep
-     instead of a flat two-tone gradient — same in light and dark mode,
-     like a fixed brand chip. */
-  .bg-gradient-to-r{
-    background-image: linear-gradient(105deg, #BF953F 0%, #FCF6BA 22%, #B38728 45%, #FBF5B7 68%, #AA771C 100%);
-  }
-
-  /* Warm the translucent header glass to match the new ivory body
-     background (light mode only — dark header stays near-black). */
-  .bg-\[\#F2F4FA\]\/85{ background-color: rgba(250,246,236,.85); }
 </style>
 </head>
 <body>
