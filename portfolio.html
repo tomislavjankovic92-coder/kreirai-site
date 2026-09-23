@@ -254,11 +254,19 @@
     filter: blur(38px);
     pointer-events: none;
   }
-  .hero-logo-video{
-    position: relative;
-    object-fit: cover;
+  .hero-logo-mask{
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
     -webkit-mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, #000 90%, transparent 100%);
             mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, #000 90%, transparent 100%);
+  }
+  .hero-logo-video{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   /* "Ideja u posao." baked into the hero video's final logo-reveal
      moment — a text overlay (not part of the video file itself) faded
