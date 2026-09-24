@@ -266,8 +266,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: scale(.8);
-    transform-origin: center center;
   }
   /* "Ideja u posao." baked into the hero video's final logo-reveal
      moment — a text overlay (not part of the video file itself) faded
@@ -642,7 +640,7 @@
             class="hero-logo-video border-0 outline-none"
             src="assets/hero-video.mp4"
             poster="assets/hero-poster.jpg"
-            autoplay muted playsinline webkit-playsinline preload="metadata"
+            autoplay muted loop playsinline webkit-playsinline preload="metadata"
             aria-label="Promotivni video KreirAI — od koda do gotovog proizvoda"
           ></video>
         </div>
@@ -1031,7 +1029,6 @@
     var heroVideo = document.getElementById('heroLogoVideo');
     if (heroVideo) {
       var HERO_RATE = 1;
-      var HERO_END_HOLD_MS = 3000; // hold on the last frame this long before the next loop starts
       heroVideo.muted = true;
       heroVideo.defaultMuted = true;
       heroVideo.defaultPlaybackRate = HERO_RATE;
@@ -1044,23 +1041,15 @@
         var p = heroVideo.play();
         if (p && typeof p.catch === 'function') { p.catch(function () {}); }
       };
-      // No native "loop" attribute here on purpose: looping is handled by
-      // hand so the last frame can be held for a few seconds before the
-      // clip restarts, instead of jumping straight back to the start.
-      heroVideo.removeAttribute('loop');
-      heroVideo.addEventListener('ended', function () {
-        setTimeout(function () {
-          heroVideo.currentTime = 0;
-          tryPlayHeroVideo();
-        }, HERO_END_HOLD_MS);
-      });
-      // "Ideja u posao." fades in only during the video's final logo-reveal
+      // Native "loop" attribute handles seamless looping — no manual
+      // end-hold pause, it jumps straight back to the start.
+      // "Ideja u posao." fades in earlier during the video's logo-reveal
       // moment, and fades out again as soon as it loops back to the start —
       // a plain text overlay kept in sync by playback time, not baked into
       // the video file itself.
       var heroTagline = document.getElementById('heroTaglineOverlay');
       if (heroTagline) {
-        var TAGLINE_WINDOW = 1.3; // seconds before the end where it appears
+        var TAGLINE_WINDOW = 3; // seconds before the end where it appears
         heroVideo.addEventListener('timeupdate', function () {
           var dur = heroVideo.duration;
           var showTagline = isFinite(dur) && (dur - heroVideo.currentTime) <= TAGLINE_WINDOW;
