@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cjenik>
+  <tvrtka>KreirAI</tvrtka>
+  <web>kreirai.hr</web>
+  <valuta>EUR</valuta>
+  <azurirano>2026-10-03</azurirano>
+
+  <paket id="jednokratno">
+    <naziv>Jednokratno</naziv>
+    <tipNaplate>jednokratno</tipNaplate>
+    <cijena>1500</cijena>
+    <cijenaOpis>Jednokratno plaćanje</cijenaOpis>
+    <istaknuto>false</istaknuto>
+    <znacajke>
+      <znacajka>Dizajn i uređivanje</znacajka>
+      <znacajka>Vlasnik ste koda</znacajka>
+      <znacajka>SEO optimizacija</znacajka>
+    </znacajke>
+    <pozivNaAkciju>Započnimo</pozivNaAkciju>
+  </paket>
+
+  <paket id="standardna">
+    <naziv>Standardna</naziv>
+    <tipNaplate>mjesecno</tipNaplate>
+    <cijena>120</cijena>
+    <cijenaOpis>Mjesečno</cijenaOpis>
+    <istaknuto>true</istaknuto>
+    <oznaka>Popularno</oznaka>
+    <znacajke>
+      <znacajka>Dizajn i uređivanje</znacajka>
+      <znacajka>Hosting</znacajka>
+      <znacajka>Neograničeno ažuriranje</znacajka>
+      <znacajka>SEO optimizacija</znacajka>
+      <znacajka>24/7 podrška</znacajka>
+    </znacajke>
+    <pozivNaAkciju>Zakažite konzultacije</pozivNaAkciju>
+  </paket>
+
+  <paket id="prilagodjeno">
+    <naziv>Prilagođeno</naziv>
+    <tipNaplate>individualno</tipNaplate>
+    <cijena>Na upit</cijena>
+    <cijenaOpis>Ponuda skrojena za vas</cijenaOpis>
+    <istaknuto>false</istaknuto>
+    <znacajke>
+      <znacajka>Ponuda skrojena za vas</znacajka>
+    </znacajke>
+    <pozivNaAkciju>Kontaktirajte nas</pozivNaAkciju>
+  </paket>
+
+  <usluge>
+    <usluga>
+      <naziv>Web stranice</naziv>
+      <opis>Brzo postavljanje web stranica i webshopova — prilagođeni vašem brendu i optimizirani za mobitel.</opis>
+    </usluga>
+    <usluga>
+      <naziv>Web i mobilne aplikacije</naziv>
+      <opis>Interne alate, razne sustave i korisničke aplikacije gradimo uz AI — ubrzano programiranje i ljudska kontrola kvalitete.</opis>
+    </usluga>
+    <usluga>
+      <naziv>Brendiranje uz AI</naziv>
+      <opis>Logotipi, vizualni identitet i predlošci za društvene mreže generirani uz AI, dorađeni ručno do finalne verzije.</opis>
+    </usluga>
+    <usluga>
+      <naziv>Održavanje i podrška</naziv>
+      <opis>Redovita ažuriranja, praćenje performansi i brza podrška nakon lansiranja — bez dugih ugovornih obveza.</opis>
+    </usluga>
+  </usluge>
+</cjenik>
