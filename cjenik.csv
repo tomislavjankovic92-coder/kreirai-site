@@ -1,0 +1,4 @@
+﻿id,naziv,tip_naplate,cijena,valuta,cijena_opis,istaknuto,oznaka,znacajke,poziv_na_akciju
+jednokratno,Jednokratno,jednokratno,1500,EUR,Jednokratno plaćanje,ne,,Dizajn i uređivanje; Vlasnik ste koda; SEO optimizacija,Započnimo
+standardna,Standardna,mjesecno,120,EUR,Mjesečno,da,Popularno,Dizajn i uređivanje; Hosting; Neograničeno ažuriranje; SEO optimizacija; 24/7 podrška,Zakažite konzultacije
+prilagodjeno,Prilagođeno,individualno,Na upit,,Ponuda skrojena za vas,ne,,Ponuda skrojena za vas,Kontaktirajte nas
