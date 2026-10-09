@@ -47,6 +47,31 @@
   })();
 </script>
 
+<!-- KreirAI intro — zalijepiti u <head> SAMO index.html, odmah ispod postojeće theme <script> -->
+<style>
+  html.ki-intro-on::before{content:"";position:fixed;inset:0;z-index:2147483000;background:#080B14;pointer-events:none;animation:kiIntroFailsafe 0s linear 7s forwards}
+  @keyframes kiIntroFailsafe{to{visibility:hidden}}
+</style>
+<script>
+  (function () {
+    try {
+      var h = document.documentElement, mm = window.matchMedia;
+      var forced = /[?&]intro=1\b/.test(location.search);
+      if (!forced) {
+        if (mm && mm('(prefers-reduced-motion: reduce)').matches) return;
+        if (sessionStorage.getItem('kreiraiIntroSeen')) return;           // jednom po posjetu
+        var c = navigator.connection;
+        if (c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ''))) return;
+      }
+      h.classList.add('ki-intro-on');
+      var small = mm && mm('(max-width: 767px), (pointer: coarse)').matches;
+      var weak = (navigator.hardwareConcurrency || 8) <= 2 || (navigator.deviceMemory || 8) <= 2;
+      if (small || weak) h.classList.add('ki-intro-lite');
+    } catch (e) {}
+  })();
+</script>
+<link rel="stylesheet" href="assets/intro/kreirai-intro.css">
+<script src="assets/intro/kreirai-intro.js" defer></script>
 <link rel="stylesheet" href="tailwind.css">
 
 <style>

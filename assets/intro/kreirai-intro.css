@@ -1,0 +1,220 @@
+/* KreirAI — intro "build u terminalu"
+   Boje i fontovi preuzeti s kreirai.hr (index.html / tailwind.css). */
+
+.ki-intro {
+  --ki-bg: #080B14;
+  --ki-panel: #10162A;
+  --ki-panel-2: #161D34;
+  --ki-line: #232B47;
+  --ki-ink: #EBEFFA;
+  --ki-mute: #A6AFC9;
+  --ki-dim: #6B7493;
+  --ki-cyan: #2FD8EC;
+  --ki-coral: #FF9478;
+  --ki-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+  --ki-serif: 'Fraunces', Georgia, serif;
+  position: fixed;
+  inset: 0;
+  z-index: 2147483100;
+  pointer-events: none;
+  font-family: var(--ki-mono);
+  color: var(--ki-ink);
+}
+
+/* ---------- zastor od traka (otvara se na kraju) ---------- */
+.ki-intro__strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: var(--ki-bg);
+  border-top: 1px solid rgba(47, 216, 236, .07);
+  animation: var(--ki-strip-anim) .55s cubic-bezier(.7, 0, .2, 1) var(--ki-strip-at) both;
+}
+.ki-intro__strip:first-child { border-top: 0; }
+
+/* blaga mreža kao u hero-stage */
+.ki-intro__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(235, 239, 250, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(235, 239, 250, .045) 1px, transparent 1px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 70%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 70%);
+  animation: ki-fade-out .18s linear var(--ki-out) both;
+}
+.ki-intro__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(47, 216, 236, .14), transparent 45%),
+    radial-gradient(circle at 30% 22%, rgba(255, 148, 120, .10), transparent 55%);
+  animation: ki-fade-out .18s linear var(--ki-out) both;
+}
+.ki-intro__scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 160px;
+  background: linear-gradient(180deg, transparent, rgba(47, 216, 236, .05), transparent);
+  animation: ki-scan 2.4s linear .2s 2, ki-fade-out .15s linear var(--ki-out) both;
+}
+
+/* ---------- terminal ---------- */
+.ki-intro__stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: ki-fade-out .18s linear var(--ki-out) both;
+}
+.ki-intro__jitter { width: min(760px, 100%); animation: ki-jitter .3s steps(2) var(--ki-glitch) 1; }
+.ki-intro__win {
+  border-radius: 18px;
+  border: 1px solid var(--ki-line);
+  background: var(--ki-panel);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, .6), 0 0 0 1px rgba(0, 0, 0, .35), 0 0 80px rgba(47, 216, 236, .06);
+  overflow: hidden;
+  animation: ki-win-in .6s cubic-bezier(.16, 1, .3, 1) both;
+}
+.ki-intro__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ki-line);
+  background: var(--ki-panel-2);
+}
+.ki-intro__dot { width: 11px; height: 11px; border-radius: 50%; background: #2A3254; }
+.ki-intro__title { flex: 1; text-align: center; font-size: 12px; color: var(--ki-dim); margin-right: 46px; }
+.ki-intro__body {
+  padding: clamp(18px, 3vw, 28px);
+  font-size: clamp(12px, 1.6vw, 15px);
+  line-height: 1.75;
+  min-height: 330px;
+}
+.ki-intro__prompt { display: flex; flex-wrap: wrap; align-items: center; gap: 0 10px; }
+.ki-intro__user { color: var(--ki-cyan); }
+.ki-intro__path { color: var(--ki-dim); }
+.ki-intro__cmd {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  vertical-align: bottom;
+  animation: ki-type var(--ki-type-dur) steps(var(--ki-type-steps)) .35s forwards;
+}
+.ki-intro__caret {
+  display: inline-block;
+  width: .6em;
+  height: 1.15em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--ki-cyan);
+  animation: ki-blink .9s step-end infinite;
+}
+.ki-intro__log { margin-top: 10px; display: flex; flex-direction: column; }
+.ki-intro__row { display: flex; align-items: baseline; gap: 10px; opacity: 0; animation: ki-line .25s ease-out both; }
+.ki-intro__row i { font-style: normal; color: var(--ki-dim); }
+.ki-intro__row span { color: #C9CFE3; }
+.ki-intro__row u { flex: 1; min-width: 20px; text-decoration: none; border-bottom: 1px dotted rgba(166, 175, 201, .28); transform: translateY(-4px); }
+.ki-intro__row b { font-weight: 600; color: var(--ki-cyan); }
+.ki-intro__row b.is-human {
+  background: linear-gradient(100deg, #3EE8F5 0%, #FF9478 85%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.ki-intro__progress { margin-top: 14px; display: flex; align-items: center; gap: 12px; animation: ki-fade .2s linear var(--ki-bar) both; }
+.ki-intro__progress > span:first-child { color: var(--ki-dim); }
+.ki-intro__track { flex: 1; height: 6px; border-radius: 3px; background: rgba(166, 175, 201, .12); overflow: hidden; position: relative; }
+.ki-intro__fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #2FD8EC, #FF9478);
+  transform-origin: left;
+  animation: ki-grow-x var(--ki-bar-dur) cubic-bezier(.6, 0, .2, 1) var(--ki-bar) both;
+}
+.ki-intro__pct { color: var(--ki-cyan); animation: ki-fade .1s linear var(--ki-done) both; }
+.ki-intro__done {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 18px;
+  animation: ki-fade .1s linear var(--ki-done) both;
+}
+.ki-intro__mark {
+  font-family: var(--ki-serif);
+  font-weight: 600;
+  font-size: clamp(46px, 8vw, 86px);
+  letter-spacing: -.02em;
+  line-height: 1;
+  white-space: pre;
+  animation: ki-glitch .38s steps(5) var(--ki-glitch) 1;
+}
+.ki-intro__mark .ki-k { color: var(--ki-ink); }
+.ki-intro__mark .ki-ai {
+  background: linear-gradient(100deg, #3EE8F5 0%, #FF9478 85%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.ki-intro__sub { color: var(--ki-mute); font-size: .92em; }
+
+/* ---------- preskoči ---------- */
+.ki-intro__skip {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2147483102;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid #232B47;
+  background: rgba(16, 22, 42, .85);
+  color: #EBEFFA;
+  font: 600 12px/1 'JetBrains Mono', ui-monospace, Consolas, monospace;
+  letter-spacing: .08em;
+  cursor: pointer;
+  animation: ki-fade .3s ease .4s both;
+}
+.ki-intro__skip:hover { border-color: #2FD8EC; }
+.ki-intro__skip:focus-visible { outline: 2px solid #2FD8EC; outline-offset: 3px; }
+
+/* hero stranice čeka da se zastor otvori, pa tek onda odradi svoj
+   postojeći data-reveal ulaz (prijelaz je već definiran na stranici) */
+html.ki-intro-on #pocetna [data-reveal] { opacity: 0 !important; }
+
+/* ================= LAKA VERZIJA (mobitel / slabiji uređaji) ================= */
+.ki-intro--lite .ki-intro__scan { display: none; }
+.ki-intro--lite .ki-intro__jitter { animation: none; }
+.ki-intro--lite .ki-intro__win { box-shadow: 0 20px 50px rgba(0, 0, 0, .5); }
+.ki-intro--lite .ki-intro__body { min-height: 0; }
+.ki-intro--lite .ki-intro__title { display: none; }
+.ki-intro--lite ~ .ki-intro__skip { right: 14px; bottom: 14px; }
+
+/* ================= animacije ================= */
+@keyframes ki-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ki-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes ki-win-in { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes ki-type { from { width: 0; } to { width: var(--ki-type-w); } }
+@keyframes ki-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes ki-line { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+@keyframes ki-grow-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes ki-scan { from { transform: translateY(-100%); } to { transform: translateY(100vh); } }
+@keyframes ki-strip-l { from { transform: translateX(0); } to { transform: translateX(-105%); } }
+@keyframes ki-strip-r { from { transform: translateX(0); } to { transform: translateX(105%); } }
+@keyframes ki-jitter { 0%, 100% { transform: none; } 25% { transform: translate(2px, -1px); } 50% { transform: translate(-3px, 1px); } 75% { transform: translate(1px, 2px); } }
+@keyframes ki-glitch {
+  0%, 100% { transform: none; filter: none; }
+  15% { transform: translate(-4px, 1px) skewX(-6deg); filter: drop-shadow(-5px 0 #FF9478) drop-shadow(5px 0 #2FD8EC); }
+  35% { transform: translate(3px, -2px); filter: drop-shadow(4px 0 #FF9478) drop-shadow(-4px 0 #2FD8EC); }
+  55% { transform: translate(-2px, 0) skewX(4deg); filter: drop-shadow(-2px 0 #FF9478) drop-shadow(2px 0 #2FD8EC); }
+  80% { transform: none; filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ki-intro, .ki-intro__skip { display: none !important; }
+  html.ki-intro-on #pocetna [data-reveal] { opacity: 1 !important; }
+}
