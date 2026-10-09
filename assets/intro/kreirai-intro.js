@@ -25,7 +25,7 @@
     logAt: 1.0, logStep: 0.12, bar: 1.65, barDur: 0.45,
     done: 2.15, decodeStep: 0.06, glitch: 2.65, out: 2.75,
     strips: 6, stripAt: 2.8, stripStep: 0.04, end: 3.5,
-    heroDecode: false
+    heroDecode: true
   };
   var LOG = [
     ['čitam ideju', 'ok'],
@@ -121,7 +121,7 @@
     var win = el('div', 'ki-intro__win', jitter);
     win.innerHTML =
       '<div class="ki-intro__bar"><span class="ki-intro__dot"></span><span class="ki-intro__dot"></span><span class="ki-intro__dot"></span>' +
-      '<span class="ki-intro__title">kreirai — studio — zsh</span></div>' +
+      '<span class="ki-intro__title">kreirai — studio</span></div>' +
       '<div class="ki-intro__body">' +
         '<div class="ki-intro__prompt"><span class="ki-intro__user">studio@kreirai</span><span class="ki-intro__path">~</span><span>$</span>' +
         '<span><span class="ki-intro__cmd"></span><span class="ki-intro__caret"></span></span></div>' +
