@@ -23,10 +23,7 @@
 <meta name="twitter:description" content="Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, aplikacije i oglasne kampanje — brzo i bez agencijske birokracije.">
 <meta name="twitter:image" content="https://kreirai.hr/og-image.png">
 
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzNFRThGNSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5QjdCRkYiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9IiMwQTBFMUEiLz4KICA8cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHJ4PSI4IiBmaWxsPSJ1cmwoI2cpIiBmaWxsLW9wYWNpdHk9IjAuMTQiLz4KICA8dGV4dCB4PSIxNiIgeT0iMjMiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCAnVGltZXMgTmV3IFJvbWFuJywgc2VyaWYiIGZvbnQtc2l6ZT0iMTkiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InVybCgjZykiPks8L3RleHQ+Cjwvc3ZnPgo=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -47,31 +44,6 @@
   })();
 </script>
 
-<!-- KreirAI intro — zalijepiti u <head> SAMO index.html, odmah ispod postojeće theme <script> -->
-<style>
-  html.ki-intro-on::before{content:"";position:fixed;inset:0;z-index:2147483000;background:#080B14;pointer-events:none;animation:kiIntroFailsafe 0s linear 7s forwards}
-  @keyframes kiIntroFailsafe{to{visibility:hidden}}
-</style>
-<script>
-  (function () {
-    try {
-      var h = document.documentElement, mm = window.matchMedia;
-      var forced = /[?&]intro=1\b/.test(location.search);
-      if (!forced) {
-        if (mm && mm('(prefers-reduced-motion: reduce)').matches) return;
-        if (sessionStorage.getItem('kreiraiIntroSeen')) return;           // jednom po posjetu
-        var c = navigator.connection;
-        if (c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ''))) return;
-      }
-      h.classList.add('ki-intro-on');
-      var small = mm && mm('(max-width: 767px), (pointer: coarse)').matches;
-      var weak = (navigator.hardwareConcurrency || 8) <= 2 || (navigator.deviceMemory || 8) <= 2;
-      if (small || weak) h.classList.add('ki-intro-lite');
-    } catch (e) {}
-  })();
-</script>
-<link rel="stylesheet" href="assets/intro/kreirai-intro.css">
-<script src="assets/intro/kreirai-intro.js" defer></script>
 <link rel="stylesheet" href="tailwind.css">
 
 <style>
@@ -894,6 +866,48 @@
     </div>
   </section>
 
+  <!-- ============================================================
+       RECENZIJE — Google recenzije klijenata
+       ============================================================ -->
+  <section id="recenzije" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
+    <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
+      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Recenzije</p>
+      <h2 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
+        Što kažu <span class="text-gradient">klijenti.</span>
+      </h2>
+    </div>
+
+    <div class="max-w-2xl mx-auto mt-14" data-reveal="fade-up" data-reveal-delay="0">
+      <figure class="glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1 text-[#FBBC05]" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2.5 14.9 9l7.1.6-5.4 4.7 1.7 6.9L12 17.6 5.7 21.2l1.7-6.9-5.4-4.7L9.1 9Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2.5 14.9 9l7.1.6-5.4 4.7 1.7 6.9L12 17.6 5.7 21.2l1.7-6.9-5.4-4.7L9.1 9Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2.5 14.9 9l7.1.6-5.4 4.7 1.7 6.9L12 17.6 5.7 21.2l1.7-6.9-5.4-4.7L9.1 9Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2.5 14.9 9l7.1.6-5.4 4.7 1.7 6.9L12 17.6 5.7 21.2l1.7-6.9-5.4-4.7L9.1 9Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2.5 14.9 9l7.1.6-5.4 4.7 1.7 6.9L12 17.6 5.7 21.2l1.7-6.9-5.4-4.7L9.1 9Z"/></svg>
+          </div>
+          <span class="font-mono text-xs text-inksoft dark:text-[#A6AFC9]">5,0 na Googleu</span>
+        </div>
+        <blockquote class="mt-5 font-serif text-lg sm:text-xl leading-snug text-ink dark:text-[#EBEFFA]">
+          „Super komunikacija, vrlo fleksibilni za sve korekcije i nove ideje… Preporuka apsolutna.”
+        </blockquote>
+        <figcaption class="mt-5 flex items-center gap-2 text-sm text-inksoft dark:text-[#A6AFC9]">
+          <span class="font-semibold text-ink dark:text-[#EBEFFA]">Tin Ostrošić</span>
+          <span aria-hidden="true">·</span>
+          <span>Google recenzija</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="mt-8 text-center" data-reveal="fade-up" data-reveal-delay="80">
+      <a href="https://www.google.com/maps?cid=9429391216034258674" target="_blank" rel="noopener"
+        class="btn-glow inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+        Pogledajte sve recenzije na Googleu
+      </a>
+    </div>
+  </section>
+
 </main>
 
 <footer class="border-t border-line dark:border-[#232B47] transition-colors">
@@ -902,8 +916,6 @@
     <nav class="flex items-center gap-4">
       <a href="uvjeti.html" class="hover:text-ink dark:hover:text-[#EBEFFA] transition">Uvjeti korištenja</a>
       <a href="privatnost.html" class="hover:text-ink dark:hover:text-[#EBEFFA] transition">Pravila privatnosti</a>
-      <a href="cjenik.xml" class="hover:text-ink dark:hover:text-[#EBEFFA] transition">Cjenik (XML)</a>
-      <a href="cjenik.csv" class="hover:text-ink dark:hover:text-[#EBEFFA] transition">Cjenik (CSV)</a>
     </nav>
     <span>© 2026 KreirAI. Sva prava pridržana.</span>
   </div>
