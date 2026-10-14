@@ -263,6 +263,7 @@
      malo tamnija nijansa svijetle podloge (#E1E5F1 umjesto #F2F4FA)
      da traka vizualno dođe do izražaja. */
   #razlika{ background:#E1E5F1; }
+  #recenzije{ background:#E1E5F1; }
   .cut-fill-band{ fill:#E1E5F1; }
 
   /* ============================================================
@@ -1222,10 +1223,12 @@
   </section>
 
   <!-- Dekorativna kosina iznad Recenzija — suprotan smjer od heroja
-       (isti "/" nagib kao gornji rez Razlike), samo koraljna linija
-       bez promjene pozadine; dno sekcije ostaje netaknuto. -->
+       (isti "/" nagib kao gornji rez Razlike), ista malo tamnija
+       pozadina (#E1E5F1) koja se bez prekida nastavlja do podnožja;
+       dno sekcije ostaje netaknuto. -->
   <div class="hero-cut" aria-hidden="true">
     <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path class="cut-fill-band" d="M0,90 L1440,90 L1440,6 L0,84 Z"></path>
       <path class="hero-cut__line" d="M0,84 L1440,6"></path>
     </svg>
   </div>
@@ -1233,7 +1236,8 @@
   <!-- ============================================================
        RECENZIJE — Google recenzije klijenata
        ============================================================ -->
-  <section id="recenzije" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
+  <section id="recenzije" class="scroll-mt-20 relative">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-20 pb-20 sm:pb-28">
     <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
       <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-coral">Recenzije</p>
       <h2 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
@@ -1270,6 +1274,7 @@
         Pogledajte sve recenzije na Googleu
       </a>
     </div>
+  </div>
   </section>
 
 </main>
