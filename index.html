@@ -129,6 +129,65 @@
       radial-gradient(circle at 75% 80%, rgba(255,148,120,.14), transparent 55%),
       #0A0E1A;
   }
+  /* Koraljni obrub oko hero videa s animacijom: tanki, lagani
+     koraljni rub (stalno vidljiv) + svjetleća "kometa" koja polako
+     kruži obrubom. Kometa je conic-gradient čiji se početni kut
+     (--hs-angle, registriran preko @property da se može animirati)
+     okreće u krug; maska (content-box XOR) ostavlja vidljiv samo
+     rub debljine 1.5px. Ispod oštrog ruba je zamućena kopija komete
+     (.hero-frame__glow) koja daje mekani sjaj izvan okvira.
+     Bez podrške za @property (stariji preglednici) ostaje statičan
+     koraljni rub; reduced-motion također dobiva statičan rub. */
+  @property --hs-angle{ syntax:'<angle>'; inherits:true; initial-value:0deg; }
+  .hero-frame{
+    --hs-angle: 0deg;
+    isolation: isolate;
+    box-shadow: 0 30px 80px -40px rgba(255,111,89,.45);
+    animation: hero-frame-spin 7s linear infinite;
+  }
+  @keyframes hero-frame-spin{ to{ --hs-angle: 360deg; } }
+  .hero-frame__ring,
+  .hero-frame__glow::before{
+    content: "";
+    position: absolute;
+    border-radius: inherit;
+    pointer-events: none;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  .hero-frame__ring{
+    inset: 0; z-index: 3;
+    padding: 1.5px;
+    background: conic-gradient(from var(--hs-angle),
+      rgba(255,111,89,.34) 0deg,
+      rgba(255,111,89,.34) 230deg,
+      rgba(255,148,120,.70) 300deg,
+      #FFE6DD 350deg,
+      rgba(255,111,89,.34) 358deg);
+  }
+  .hero-frame__glow{
+    position: absolute; inset: -3px; z-index: 0;
+    border-radius: calc(1.5rem + 3px);
+    pointer-events: none;
+    filter: blur(9px);
+    opacity: .9;
+  }
+  .hero-frame__glow::before{
+    inset: 0;
+    padding: 5px;
+    background: conic-gradient(from var(--hs-angle),
+      transparent 0deg,
+      transparent 250deg,
+      rgba(255,111,89,.55) 310deg,
+      rgba(255,180,160,.95) 350deg,
+      transparent 358deg);
+  }
+  .hero-frame .hero-stage{ z-index: 1; }
+  @media (prefers-reduced-motion: reduce){
+    .hero-frame{ animation: none; }
+    .hero-frame__glow{ display: none; }
+  }
   .hero-grid{
     background-image:
       linear-gradient(rgba(235,239,250,.05) 1px, transparent 1px),
@@ -1160,7 +1219,9 @@
   <canvas class="hero-field" aria-hidden="true"></canvas>
   <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 grid md:grid-cols-2 gap-14 items-center">
     <div data-reveal="zoom-in" class="relative md:self-stretch md:flex md:flex-col">
-      <div class="hero-stage relative rounded-3xl overflow-hidden aspect-[2/1] max-w-[420px] sm:max-w-[480px] mx-auto md:max-w-none md:w-full md:aspect-auto md:flex-1 transition-colors">
+      <div class="hero-frame relative rounded-3xl aspect-[2/1] max-w-[420px] sm:max-w-[480px] mx-auto md:max-w-none md:w-full md:aspect-auto md:flex-1">
+      <span class="hero-frame__glow" aria-hidden="true"></span>
+      <div class="hero-stage absolute inset-0 rounded-3xl overflow-hidden transition-colors">
         <div class="hero-grid absolute inset-0"></div>
         <div class="hero-logo-mask">
           <video
@@ -1173,6 +1234,8 @@
           ></video>
         </div>
         <p id="heroTaglineOverlay" class="hero-tagline-overlay absolute inset-x-0 bottom-[14%] font-mono font-semibold text-[10px] sm:text-sm tracking-[0.28em] uppercase text-coral text-center pointer-events-none" aria-hidden="true">Ideja u posao.</p>
+      </div>
+      <span class="hero-frame__ring" aria-hidden="true"></span>
       </div>
     </div>
 
