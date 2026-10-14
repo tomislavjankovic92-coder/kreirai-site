@@ -2,6 +2,28 @@
 <html lang="hr">
 <head>
 <meta charset="UTF-8">
+<script>
+  // Intro "build u terminalu" (kreirai-intro.js) — ovo mora ići što prije
+  // u <head>, PRIJE prvog crtanja stranice, jer samo tako CSS ispod
+  // (html.ki-intro-on body{visibility:hidden}) stigne sakriti stranicu
+  // prije nego je korisnik stigne vidjeti (sprječava "flash" sadržaja).
+  // Intro se prikazuje jednom po tabu/sesiji (sessionStorage) i poštuje
+  // "prefers-reduced-motion". Prisilno pokretanje za testiranje: ?intro=1
+  (function () {
+    try {
+      var q = location.search;
+      var forced = /[?&]intro=1\b/.test(q);
+      if (!forced) {
+        if (sessionStorage.getItem('kreiraiIntroSeen')) return;
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      }
+      document.documentElement.classList.add('ki-intro-on');
+      if (/[?&]lite=1\b/.test(q) || matchMedia('(max-width: 640px)').matches) {
+        document.documentElement.classList.add('ki-intro-lite');
+      }
+    } catch (e) {}
+  })();
+</script>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -515,6 +537,205 @@
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
+  }
+
+  /* ============================================================
+     Intro — "build u terminalu" (kreirai-intro.js). Klasa ki-intro-on
+     se stavlja na <html> PRIJE prvog crtanja (vidi <script> na vrhu
+     <head>), pa sakrivamo cijeli <body> i otkrivamo samo direktnu
+     djecu koja čine sam intro (.ki-intro i .ki-intro__skip), kako bi
+     spriječili "flash" pravog sadržaja stranice prije intra.
+     ============================================================ */
+  html.ki-intro-on{ background:#080B14; }
+  html.ki-intro-on body{ visibility:hidden; }
+  html.ki-intro-on body > .ki-intro,
+  html.ki-intro-on body > .ki-intro__skip{ visibility:visible; }
+
+  @keyframes ki-fade-in{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .ki-intro{
+    position:fixed; inset:0; z-index:9999;
+    background:#080B14;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+    animation: ki-out .55s ease-in forwards;
+    animation-delay: var(--ki-out);
+  }
+  @keyframes ki-out{
+    0%{ opacity:1; transform:scale(1); }
+    100%{ opacity:0; transform:scale(1.04); }
+  }
+
+  .ki-intro__glow{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(circle at 50% 42%, rgba(47,216,236,.22), transparent 45%),
+      radial-gradient(circle at 70% 70%, rgba(155,123,255,.16), transparent 55%);
+    pointer-events:none;
+  }
+  .ki-intro__grid{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(235,239,250,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(235,239,250,.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(circle at 50% 42%, black 0%, transparent 70%);
+    mask-image: radial-gradient(circle at 50% 42%, black 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .ki-intro__scan{
+    position:absolute; left:0; right:0; height:2px;
+    background: linear-gradient(90deg, transparent, rgba(47,216,236,.5), transparent);
+    animation: ki-scan 2.6s linear infinite;
+    opacity:.6;
+    pointer-events:none;
+  }
+  @keyframes ki-scan{ 0%{ top:-2px; } 100%{ top:100%; } }
+
+  .ki-intro__stage{
+    position:relative; width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    padding:1.5rem; box-sizing:border-box;
+    animation: ki-glitch .3s steps(2,end) both;
+    animation-delay: var(--ki-glitch);
+  }
+  @keyframes ki-glitch{
+    0%{ transform:translate(0,0); filter:none; }
+    20%{ transform:translate(-6px,2px); filter:hue-rotate(8deg); }
+    40%{ transform:translate(5px,-2px); filter:hue-rotate(-6deg); }
+    60%{ transform:translate(-3px,1px); filter:none; }
+    80%{ transform:translate(2px,-1px); }
+    100%{ transform:translate(0,0); filter:none; }
+  }
+  .ki-intro__jitter{
+    display:block;
+    animation: ki-idle-jitter 3.2s ease-in-out infinite;
+  }
+  @keyframes ki-idle-jitter{
+    0%,100%{ transform:translate(0,0); }
+    25%{ transform:translate(.4px,-.3px); }
+    50%{ transform:translate(-.3px,.4px); }
+    75%{ transform:translate(.3px,.3px); }
+  }
+
+  .ki-intro__win{
+    width:min(560px,92vw);
+    background: rgba(13,18,36,.88);
+    border:1px solid rgba(62,232,245,.22);
+    border-radius:14px;
+    box-shadow: 0 30px 80px -24px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.03) inset;
+    overflow:hidden;
+    backdrop-filter: blur(6px);
+  }
+  .ki-intro__bar{
+    display:flex; align-items:center; gap:.5rem;
+    padding:.65rem .9rem;
+    background: rgba(255,255,255,.03);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .ki-intro__dot{ width:.6rem; height:.6rem; border-radius:50%; background:#4B5574; flex:none; }
+  .ki-intro__dot:nth-child(1){ background:#FF5F57; }
+  .ki-intro__dot:nth-child(2){ background:#FEBC2E; }
+  .ki-intro__dot:nth-child(3){ background:#28C840; }
+  .ki-intro__title{
+    flex:1; text-align:center;
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.08em;
+    color:#A6AFC9; margin-right:1.6rem;
+  }
+  .ki-intro__body{
+    padding: 1.1rem 1.2rem 1.3rem;
+    font-family:'JetBrains Mono',monospace; font-size:.82rem; line-height:1.6;
+    color:#EBEFFA;
+  }
+  .ki-intro__prompt{ display:flex; align-items:center; gap:.4em; flex-wrap:wrap; }
+  .ki-intro__user{ color:#2FD8EC; font-weight:600; }
+  .ki-intro__path{ color:#9B7BFF; }
+  .ki-intro__cmd{
+    display:inline-block; overflow:hidden; white-space:nowrap;
+    width:0; vertical-align:bottom;
+    animation: ki-type var(--ki-type-dur) steps(var(--ki-type-steps)) forwards;
+  }
+  @keyframes ki-type{ from{width:0} to{width:var(--ki-type-w)} }
+  .ki-intro__caret{
+    display:inline-block; width:.55ch; height:1em; margin-left:1px;
+    background:#2FD8EC; vertical-align:text-bottom;
+    animation: ki-caret 1s steps(1) infinite;
+  }
+  @keyframes ki-caret{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+
+  .ki-intro__log{ margin-top:.9rem; display:flex; flex-direction:column; gap:.42rem; }
+  .ki-intro__row{
+    display:flex; align-items:center; gap:.5em;
+    opacity:0; transform:translateY(4px);
+    animation: ki-fade-in .4s ease-out forwards;
+  }
+  .ki-intro__row i{ font-style:normal; color:#3EE8F5; opacity:.7; }
+  .ki-intro__row > span{ color:#C7CEE3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ki-intro__row u{ flex:1; min-width:1rem; align-self:flex-end; height:.55em; margin:0 .3em;
+    border-bottom:1px dotted rgba(166,175,201,.3); text-decoration:none; }
+  .ki-intro__row b{ font-weight:600; color:#3EE8F5; white-space:nowrap; }
+  .ki-intro__row b.is-human{ color:#9B7BFF; }
+
+  .ki-intro__progress{ display:flex; align-items:center; gap:.6em; margin-top:1rem; }
+  .ki-intro__progress > span:first-child{ color:#8893AD; font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; }
+  .ki-intro__track{ flex:1; height:5px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
+  .ki-intro__fill{
+    display:block; height:100%; width:0; border-radius:inherit;
+    background: linear-gradient(90deg,#2FD8EC,#9B7BFF);
+    animation: ki-fill var(--ki-bar-dur) ease-out forwards;
+    animation-delay: var(--ki-bar);
+  }
+  @keyframes ki-fill{ from{width:0} to{width:100%} }
+  .ki-intro__pct{ color:#8893AD; font-size:.72rem; font-variant-numeric:tabular-nums; }
+
+  .ki-intro__done{
+    opacity:0; display:flex; align-items:baseline; gap:.6em; margin-top:1.3rem;
+    animation: ki-fade-in .5s ease-out forwards; animation-delay: var(--ki-done);
+  }
+  .ki-intro__mark{ font-family:Georgia,serif; font-weight:700; font-size:1.5rem; }
+  .ki-k{ color:#EBEFFA; }
+  .ki-ai{ background-image:linear-gradient(100deg,#2FD8EC 0%,#9B7BFF 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .ki-intro__sub{ color:#8893AD; font-size:.74rem; }
+
+  .ki-intro__strip{
+    position:absolute; left:0; right:0;
+    background: linear-gradient(90deg, transparent, rgba(47,216,236,.55), rgba(155,123,255,.55), transparent);
+    mix-blend-mode: screen;
+    opacity:0;
+    animation-name: var(--ki-strip-anim);
+    animation-duration: .45s;
+    animation-timing-function: cubic-bezier(.3,.6,.3,1);
+    animation-fill-mode: forwards;
+    animation-delay: var(--ki-strip-at);
+    pointer-events:none;
+  }
+  @keyframes ki-strip-l{
+    0%{ opacity:0; transform:translateX(-100%); }
+    12%{ opacity:1; }
+    88%{ opacity:1; }
+    100%{ opacity:0; transform:translateX(100%); }
+  }
+  @keyframes ki-strip-r{
+    0%{ opacity:0; transform:translateX(100%); }
+    12%{ opacity:1; }
+    88%{ opacity:1; }
+    100%{ opacity:0; transform:translateX(-100%); }
+  }
+
+  .ki-intro__skip{
+    position:fixed; right:1.25rem; bottom:1.25rem; z-index:10000;
+    font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.04em;
+    color:#A6AFC9; background:rgba(13,18,36,.6); border:1px solid rgba(166,175,201,.25);
+    border-radius:999px; padding:.5em 1em; cursor:pointer;
+    opacity:0; animation: ki-fade-in .5s ease-out forwards; animation-delay:.6s;
+  }
+  .ki-intro__skip:hover{ color:#EBEFFA; border-color:rgba(166,175,201,.45); }
+
+  @media (max-width:640px){
+    .ki-intro__win{ width:94vw; }
+    .ki-intro__body{ font-size:.74rem; padding:.9rem 1rem 1.1rem; }
+    .ki-intro__mark{ font-size:1.25rem; }
   }
 
 </style>
@@ -1172,5 +1393,6 @@
     });
   })();
 </script>
+<script src="kreirai-intro.js"></script>
 </body>
 </html>
