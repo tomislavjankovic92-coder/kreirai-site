@@ -262,7 +262,7 @@
      Tamni tekst (dobar kontrast na koraljnoj) s blagim reljefom,
      bijele ✦ zvjezdice kao razdjelnici. Traka je šira od ekrana pa
      njeni krajevi (ni pod nagibom) nikad ne ulaze u kadar.
-     Pauzira se na hover/fokus/scroll, poštuje reduced-motion.
+     Vrti se uvijek, bez pauze (ni na hover ni na scroll).
      ============================================================ */
   .services-ticker-wrap{
     --tk-pull: -66px;
@@ -336,12 +336,6 @@
     animation: services-ticker-scroll 40s linear infinite;
   }
   @media (min-width:640px){ .services-ticker__track{ padding: 1.75rem 0; } }
-  .services-ticker:hover .services-ticker__track,
-  .services-ticker:focus-within .services-ticker__track{
-    animation-play-state: paused;
-  }
-  body.is-scrolling .services-ticker__track,
-  body.is-scrolling .services-ticker::after{ animation-play-state: paused; }
   @keyframes services-ticker-scroll{ to{ transform: translateX(-50%); } }
   .services-ticker__item{
     display: inline-flex; align-items: center;
@@ -363,10 +357,6 @@
     text-shadow: 0 0 10px rgba(255,255,255,.85), 0 0 22px rgba(255,220,205,.6);
   }
   @media (min-width:640px){ .services-ticker__dot{ font-size: 1.3rem; padding: 0 1.1em; } }
-  @media (prefers-reduced-motion: reduce){
-    .services-ticker__track, .services-ticker::after{ animation: none; }
-    .services-ticker::after{ display: none; }
-  }
   .sr-only{
     position: absolute; width: 1px; height: 1px;
     padding: 0; margin: -1px; overflow: hidden;
@@ -1220,7 +1210,7 @@
        ============================================================ -->
   <div class="services-ticker-wrap">
   <div class="services-ticker">
-    <p class="sr-only">Usluge: Web stranice za 10 dana, Web i mobilne aplikacije, Hosting i podrška 24/7, SEO optimizacija, Jednokratno ili mjesečno.</p>
+    <p class="sr-only">Usluge: Web stranice za 10 dana, Web i mobilne aplikacije, Hosting i podrška 24/7, SEO optimizacija, Web trgovine.</p>
     <div class="services-ticker__track" aria-hidden="true">
       <span class="services-ticker__item">Web stranice za 10 dana</span>
       <span class="services-ticker__dot">✦</span>
@@ -1230,7 +1220,7 @@
       <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">SEO optimizacija</span>
       <span class="services-ticker__dot">✦</span>
-      <span class="services-ticker__item">Jednokratno ili mjesečno</span>
+      <span class="services-ticker__item">Web trgovine</span>
       <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">Web stranice za 10 dana</span>
       <span class="services-ticker__dot">✦</span>
@@ -1240,7 +1230,7 @@
       <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">SEO optimizacija</span>
       <span class="services-ticker__dot">✦</span>
-      <span class="services-ticker__item">Jednokratno ili mjesečno</span>
+      <span class="services-ticker__item">Web trgovine</span>
       <span class="services-ticker__dot">✦</span>
     </div>
   </div>
