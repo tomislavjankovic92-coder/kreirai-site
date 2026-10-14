@@ -45,7 +45,7 @@
 <meta name="twitter:description" content="Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, aplikacije i oglasne kampanje — brzo i bez agencijske birokracije.">
 <meta name="twitter:image" content="https://kreirai.hr/og-image.png">
 
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzNFRThGNSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5QjdCRkYiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9IiMwQTBFMUEiLz4KICA8cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHJ4PSI4IiBmaWxsPSJ1cmwoI2cpIiBmaWxsLW9wYWNpdHk9IjAuMTQiLz4KICA8dGV4dCB4PSIxNiIgeT0iMjMiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCAnVGltZXMgTmV3IFJvbWFuJywgc2VyaWYiIGZvbnQtc2l6ZT0iMTkiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InVybCgjZykiPks8L3RleHQ+Cjwvc3ZnPgo=">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzBBMEUxQSIvPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9IiNGRjk0NzgiIGZpbGwtb3BhY2l0eT0iMC4xNCIvPgogIDx0ZXh0IHg9IjE2IiB5PSIyMyIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsICdUaW1lcyBOZXcgUm9tYW4nLCBzZXJpZiIgZm9udC1zaXplPSIxOSIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI0ZGOTQ3OCI+SzwvdGV4dD4KPC9zdmc+Cg==">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -95,14 +95,25 @@
   .bg-coral{ background-image: none; background-color: #FF6F59; }
   .dark .bg-coral{ background-color: #FF9478; }
 
+  /* Koraljna varijanta bivših text-cyan/dark:text-cyan-bright oznaka
+     (eyebrow labele, hero tagline overlay) — zamjena za drugu, cyan
+     "tech" boju brenda; sad je koralj jedina isticajna boja na cijeloj
+     stranici. */
+  .text-coral{ color: #FF6F59; }
+  .dark .text-coral{ color: #FF9478; }
+
+  /* Koraljni hover (bivši hover-coral). */
+  .hover-coral:hover{ color: #FF6F59; }
+  .dark .hover-coral:hover{ color: #FF9478; }
+
   /* Hero stage always keeps its own dark "stage" tone (independent of
      site light/dark mode) so the 3D logo video's dark background has
      nothing to visibly seam against — it just dissolves into it. */
   .hero-stage{
     background:
-      radial-gradient(circle at 50% 46%, rgba(62,232,245,.20), transparent 42%),
+      radial-gradient(circle at 50% 46%, rgba(255,148,120,.20), transparent 42%),
       radial-gradient(circle at 30% 20%, rgba(255,148,120,.16), transparent 60%),
-      radial-gradient(circle at 75% 80%, rgba(62,232,245,.14), transparent 55%),
+      radial-gradient(circle at 75% 80%, rgba(255,148,120,.14), transparent 55%),
       #0A0E1A;
   }
   .hero-grid{
@@ -121,8 +132,8 @@
 
   .pf-card-2{ background:linear-gradient(135deg, rgba(255,111,89,.16), #fff); }
   .dark .pf-card-2{ background:linear-gradient(135deg, rgba(255,148,120,.22), #10162A); }
-  .pf-card-3{ background:linear-gradient(135deg, rgba(31,185,204,.14), rgba(255,111,89,.12)); }
-  .dark .pf-card-3{ background:linear-gradient(135deg, rgba(62,232,245,.18), rgba(255,148,120,.16)); }
+  .pf-card-3{ background:linear-gradient(135deg, rgba(255,111,89,.14), rgba(255,111,89,.12)); }
+  .dark .pf-card-3{ background:linear-gradient(135deg, rgba(255,148,120,.18), rgba(255,148,120,.16)); }
 
   /* --- Scroll-triggered reveal system ---
      Add data-reveal="fade-up | fade-down | fade-left | fade-right | zoom-in"
@@ -163,12 +174,12 @@
     z-index: 45;
     opacity: 0;
     transition: opacity .5s ease;
-    background: radial-gradient(circle, rgba(62,232,245,.055) 0%, rgba(255,148,120,.03) 35%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,148,120,.055) 0%, rgba(255,148,120,.03) 35%, transparent 70%);
     mix-blend-mode: screen;
     will-change: transform, opacity;
   }
   html:not(.dark) #cursorGlow{
-    background: radial-gradient(circle, rgba(31,185,204,.03) 0%, rgba(255,111,89,.02) 40%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,111,89,.03) 0%, rgba(255,111,89,.02) 40%, transparent 70%);
     mix-blend-mode: normal;
   }
   #cursorGlow.is-active{ opacity: 1; }
@@ -201,7 +212,7 @@
   .hero-cut{ position:relative; width:100%; height:44px; margin-top:-1px; pointer-events:none; }
   .hero-cut svg{ display:block; width:100%; height:100%; }
   .hero-cut__fill{ fill:#080B14; }
-  .hero-cut__line{ fill:none; stroke:url(#heroCutGrad); stroke-width:2.5; filter:drop-shadow(0 0 5px rgba(47,216,236,.45)); }
+  .hero-cut__line{ fill:none; stroke:url(#heroCutGrad); stroke-width:2.5; filter:drop-shadow(0 0 5px rgba(255,148,120,.45)); }
   @media (min-width:640px){ .hero-cut{ height:72px; } }
 
   /* ============================================================
@@ -215,19 +226,19 @@
   .btn-glow, .btn-glow-sm{
     position: relative;
     isolation: isolate;
-    box-shadow: 0 0 6px 0 rgba(31,185,204,.28);
+    box-shadow: 0 0 6px 0 rgba(255,111,89,.28);
     transition: box-shadow .3s ease, transform .2s ease;
   }
   .dark .btn-glow, .dark .btn-glow-sm{
-    box-shadow: 0 0 8px 0 rgba(62,232,245,.32);
+    box-shadow: 0 0 8px 0 rgba(255,148,120,.32);
   }
   .btn-glow:hover, .btn-glow:focus-visible,
   .btn-glow-sm:hover, .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 11px 1px rgba(31,185,204,.42);
+    box-shadow: 0 0 11px 1px rgba(255,111,89,.42);
   }
   .dark .btn-glow:hover, .dark .btn-glow:focus-visible,
   .dark .btn-glow-sm:hover, .dark .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 14px 2px rgba(62,232,245,.48);
+    box-shadow: 0 0 14px 2px rgba(255,148,120,.48);
   }
 
   /* Soft glass highlight across the top of solid/gradient buttons —
@@ -278,7 +289,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% 46%, rgba(62,232,245,.40) 0%, rgba(255,148,120,.28) 28%, rgba(62,232,245,.10) 48%, transparent 68%);
+    background: radial-gradient(circle at 50% 46%, rgba(255,148,120,.40) 0%, rgba(255,148,120,.28) 28%, rgba(255,148,120,.10) 48%, transparent 68%);
     filter: blur(38px);
     pointer-events: none;
   }
@@ -322,8 +333,8 @@
   }
   .dark #ptr{ background:#10162A; border-color:#232B47; box-shadow: 0 10px 24px -12px rgba(0,0,0,.5); }
   #ptr.snap{ transition: transform .25s ease, opacity .25s ease; }
-  #ptr svg{ width: 20px; height: 20px; color:#1FB9CC; }
-  .dark #ptr svg{ color:#3EE8F5; }
+  #ptr svg{ width: 20px; height: 20px; color:#FF6F59; }
+  .dark #ptr svg{ color:#FF9478; }
   #ptr.spinning svg{ animation: ptr-spin .7s linear infinite; }
   @keyframes ptr-spin{ to{ transform: rotate(360deg); } }
 
@@ -404,30 +415,30 @@
     flex: none;
   }
 
-  /* Thin gradient underline beneath section headings for a bit more
-     structure/hierarchy than a heading floating on its own. */
+  /* Koraljna podcrta ispod section naslova (bio gradient cyan→koralj,
+     sad jednobojni koralj). */
   .section-heading{ position: relative; display: inline-block; padding-bottom: .3em; }
   .section-heading::after{
     content: "";
     position: absolute; left: 0; bottom: 0;
     width: 52px; height: 2px; border-radius: 2px;
-    background: linear-gradient(90deg, #1FB9CC, #FF6F59);
+    background: #FF6F59;
   }
   .dark .section-heading::after{
-    background: linear-gradient(90deg, #3EE8F5, #FF9478);
+    background: #FF9478;
   }
 
   /* "Korak 01–04" process labels as small bordered chips. */
   .step-badge{
     display: inline-flex; align-items: center;
-    border: 1px solid rgba(31,185,204,.35);
-    background: rgba(31,185,204,.06);
+    border: 1px solid rgba(255,111,89,.35);
+    background: rgba(255,111,89,.06);
     border-radius: 7px;
     padding: .3em .65em;
   }
   .dark .step-badge{
-    border-color: rgba(62,232,245,.3);
-    background: rgba(62,232,245,.06);
+    border-color: rgba(255,148,120,.3);
+    background: rgba(255,148,120,.06);
   }
 
   /* "01–04" markers in O nama as small square data-readout tiles. */
@@ -446,38 +457,39 @@
   .icon-badge{
     display: inline-flex; align-items: center; justify-content: center;
     width: 2.75rem; height: 2.75rem; border-radius: .85rem;
-    border: 1px solid rgba(31,185,204,.32);
-    background: rgba(31,185,204,.07);
-    color: #1FB9CC;
+    border: 1px solid rgba(255,111,89,.32);
+    background: rgba(255,111,89,.07);
+    color: #FF6F59;
     margin-bottom: 1rem;
   }
   .dark .icon-badge{
-    border-color: rgba(62,232,245,.3);
-    background: rgba(62,232,245,.08);
-    color: #3EE8F5;
+    border-color: rgba(255,148,120,.3);
+    background: rgba(255,148,120,.08);
+    color: #FF9478;
   }
   .icon-badge svg{ width: 1.4rem; height: 1.4rem; }
 
-  /* Thin gradient accent lines under the header and above the footer,
-     layered over the existing solid border for a bit more depth. */
+  /* Tanka koraljna isticajna linija ispod headera i iznad footera,
+     preko postojećeg punog obruba — bio dvobojni cyan→koralj gradient,
+     sad jednobojni koralj koji se gubi (fade) prema rubovima. */
   header::after{
     content: "";
     position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(31,185,204,.55), rgba(255,111,89,.55), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,111,89,.55), transparent);
     pointer-events: none;
   }
   .dark header::after{
-    background: linear-gradient(90deg, transparent, rgba(62,232,245,.6), rgba(255,148,120,.6), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,148,120,.6), transparent);
   }
   footer{ position: relative; }
   footer::before{
     content: "";
     position: absolute; left: 0; right: 0; top: -1px; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(31,185,204,.5), rgba(255,111,89,.5), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,111,89,.5), transparent);
     pointer-events: none;
   }
   .dark footer::before{
-    background: linear-gradient(90deg, transparent, rgba(62,232,245,.55), rgba(255,148,120,.55), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,148,120,.55), transparent);
   }
 
   /* ============================================================
@@ -492,8 +504,8 @@
   .mark-icon svg{ width: .75rem; height: .75rem; }
   .mark-x{ background: rgba(239,68,68,.10); color: #ef4444; }
   .dark .mark-x{ background: rgba(248,113,113,.14); color: #f87171; }
-  .mark-ok{ background: rgba(31,185,204,.10); color: #1FB9CC; }
-  .dark .mark-ok{ background: rgba(62,232,245,.14); color: #3EE8F5; }
+  .mark-ok{ background: rgba(255,111,89,.10); color: #FF6F59; }
+  .dark .mark-ok{ background: rgba(255,148,120,.14); color: #FF9478; }
 
   .compare-win{
     border: 1.5px solid rgba(255,111,89,.4);
@@ -574,8 +586,8 @@
   .ki-intro__glow{
     position:absolute; inset:0;
     background:
-      radial-gradient(circle at 50% 42%, rgba(47,216,236,.22), transparent 45%),
-      radial-gradient(circle at 70% 70%, rgba(155,123,255,.16), transparent 55%);
+      radial-gradient(circle at 50% 42%, rgba(255,148,120,.22), transparent 45%),
+      radial-gradient(circle at 70% 70%, rgba(255,148,120,.16), transparent 55%);
     pointer-events:none;
   }
   .ki-intro__grid{
@@ -590,7 +602,7 @@
   }
   .ki-intro__scan{
     position:absolute; left:0; right:0; height:2px;
-    background: linear-gradient(90deg, transparent, rgba(47,216,236,.5), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,148,120,.5), transparent);
     animation: ki-scan 2.6s linear infinite;
     opacity:.6;
     pointer-events:none;
@@ -626,7 +638,7 @@
   .ki-intro__win{
     width:min(560px,92vw);
     background: rgba(13,18,36,.88);
-    border:1px solid rgba(62,232,245,.22);
+    border:1px solid rgba(255,148,120,.22);
     border-radius:14px;
     box-shadow: 0 30px 80px -24px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.03) inset;
     overflow:hidden;
@@ -653,8 +665,8 @@
     color:#EBEFFA;
   }
   .ki-intro__prompt{ display:flex; align-items:center; gap:.4em; flex-wrap:wrap; }
-  .ki-intro__user{ color:#2FD8EC; font-weight:600; }
-  .ki-intro__path{ color:#9B7BFF; }
+  .ki-intro__user{ color:#FF9478; font-weight:600; }
+  .ki-intro__path{ color:#FF9478; }
   .ki-intro__cmd{
     display:inline-block; overflow:hidden; white-space:nowrap;
     width:0; vertical-align:bottom;
@@ -663,7 +675,7 @@
   @keyframes ki-type{ from{width:0} to{width:var(--ki-type-w)} }
   .ki-intro__caret{
     display:inline-block; width:.55ch; height:1em; margin-left:1px;
-    background:#2FD8EC; vertical-align:text-bottom;
+    background:#FF9478; vertical-align:text-bottom;
     animation: ki-caret 1s steps(1) infinite;
   }
   @keyframes ki-caret{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
@@ -674,19 +686,19 @@
     opacity:0; transform:translateY(4px);
     animation: ki-fade-in .4s ease-out forwards;
   }
-  .ki-intro__row i{ font-style:normal; color:#3EE8F5; opacity:.7; }
+  .ki-intro__row i{ font-style:normal; color:#FF9478; opacity:.7; }
   .ki-intro__row > span{ color:#C7CEE3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .ki-intro__row u{ flex:1; min-width:1rem; align-self:flex-end; height:.55em; margin:0 .3em;
     border-bottom:1px dotted rgba(166,175,201,.3); text-decoration:none; }
-  .ki-intro__row b{ font-weight:600; color:#3EE8F5; white-space:nowrap; }
-  .ki-intro__row b.is-human{ color:#9B7BFF; }
+  .ki-intro__row b{ font-weight:600; color:#FF9478; white-space:nowrap; }
+  .ki-intro__row b.is-human{ color:#FF9478; }
 
   .ki-intro__progress{ display:flex; align-items:center; gap:.6em; margin-top:1rem; }
   .ki-intro__progress > span:first-child{ color:#8893AD; font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; }
   .ki-intro__track{ flex:1; height:5px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
   .ki-intro__fill{
     display:block; height:100%; width:0; border-radius:inherit;
-    background: linear-gradient(90deg,#2FD8EC,#9B7BFF);
+    background: #FF9478; /* bio cyan→violet gradient, sad jednobojni koralj */
     animation: ki-fill var(--ki-bar-dur) ease-out forwards;
     animation-delay: var(--ki-bar);
   }
@@ -704,7 +716,7 @@
 
   .ki-intro__strip{
     position:absolute; left:0; right:0;
-    background: linear-gradient(90deg, transparent, rgba(47,216,236,.55), rgba(155,123,255,.55), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,148,120,.55), transparent);
     mix-blend-mode: screen;
     opacity:0;
     animation-name: var(--ki-strip-anim);
@@ -840,7 +852,7 @@
 <section id="pocetna" class="dark scroll-mt-20 relative bg-[#080B14] text-[#EBEFFA]">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 grid md:grid-cols-2 gap-14 items-center">
     <div data-reveal="fade-right">
-      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">— AI Studio</p>
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-coral">— AI Studio</p>
       <h1 class="font-serif font-semibold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mt-4">
         Od ideje do <span class="text-gradient">gotovog proizvoda</span>, uz pomoć umjetne inteligencije.
       </h1>
@@ -866,7 +878,7 @@
             aria-label="Promotivni video KreirAI — od koda do gotovog proizvoda"
           ></video>
         </div>
-        <p id="heroTaglineOverlay" class="hero-tagline-overlay absolute inset-x-0 bottom-[14%] font-mono font-semibold text-[10px] sm:text-sm tracking-[0.28em] uppercase text-cyan-bright text-center pointer-events-none" aria-hidden="true">Ideja u posao.</p>
+        <p id="heroTaglineOverlay" class="hero-tagline-overlay absolute inset-x-0 bottom-[14%] font-mono font-semibold text-[10px] sm:text-sm tracking-[0.28em] uppercase text-coral text-center pointer-events-none" aria-hidden="true">Ideja u posao.</p>
       </div>
     </div>
   </div>
@@ -881,8 +893,8 @@
     <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
       <defs>
         <linearGradient id="heroCutGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#2FD8EC"/>
-          <stop offset="100%" stop-color="#9B7BFF"/>
+          <stop offset="0%" stop-color="#FF6F59"/>
+          <stop offset="100%" stop-color="#FF9478"/>
         </linearGradient>
       </defs>
       <path class="hero-cut__fill" d="M0,0 L1440,0 L1440,64 L0,16 Z"></path>
@@ -895,7 +907,7 @@
        ============================================================ -->
   <section id="zasto" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-24">
     <div class="max-w-[56ch]" data-reveal="fade-up">
-      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Vaša web stranica — naša stručnost</p>
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-coral">Vaša web stranica — naša stručnost</p>
       <h2 class="section-heading font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
         Vaše brige prestaju. <span class="text-gradient">Usmjerite se na svoj posao.</span>
       </h2>
@@ -952,7 +964,7 @@
        ============================================================ -->
   <section id="razlika" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
     <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
-      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Razlika</p>
+      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-coral">Razlika</p>
       <h2 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
         Ono s čime ste zaglavili <span class="text-gradient">u odnosu na ono što mi gradimo.</span>
       </h2>
@@ -989,7 +1001,7 @@
       </div>
 
       <div class="compare-win glass-panel relative rounded-2xl p-6 sm:p-8" data-reveal="fade-left">
-        <p class="font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright font-semibold">Vaša KreirAI stranica</p>
+        <p class="font-mono text-xs tracking-[0.14em] uppercase text-coral font-semibold">Vaša KreirAI stranica</p>
         <h3 class="font-serif font-semibold text-2xl mt-2">Izgrađena da vam donese klijente</h3>
         <ul class="mt-5 flex flex-col">
           <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
@@ -1022,7 +1034,7 @@
        ============================================================ -->
   <section id="cjenik" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
     <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
-      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Cjenik</p>
+      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-coral">Cjenik</p>
       <h2 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
         Cjenik prilagođen <span class="text-gradient">svakom proračunu.</span>
       </h2>
@@ -1059,7 +1071,7 @@
       <!-- STANDARDNA — istaknuta kao popularna -->
       <div class="compare-win glass-panel relative rounded-2xl p-6 sm:p-8 flex flex-col" data-reveal="fade-up" data-reveal-delay="80">
         <span class="price-badge-pos inline-flex items-center gap-1 bg-coral text-[#0A0E1A] font-mono font-bold text-[10px] tracking-[0.14em] uppercase px-3 py-1 rounded-full shadow-soft">Popularno</span>
-        <p class="font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright font-semibold">Standardna</p>
+        <p class="font-mono text-xs tracking-[0.14em] uppercase text-coral font-semibold">Standardna</p>
         <ul class="mt-5 flex flex-col gap-3">
           <li class="flex items-start gap-3">
             <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
@@ -1112,7 +1124,7 @@
        ============================================================ -->
   <section id="recenzije" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
     <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
-      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Recenzije</p>
+      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-coral">Recenzije</p>
       <h2 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
         Što kažu <span class="text-gradient">klijenti.</span>
       </h2>
@@ -1375,7 +1387,7 @@
 <div id="cookieBanner" hidden role="dialog" aria-live="polite" aria-label="Obavijest o kolačićima" class="fixed inset-x-0 bottom-0 z-50 border-t border-line dark:border-[#232B47] bg-white dark:bg-[#10162A] shadow-soft transition-colors">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex flex-col sm:flex-row items-center gap-4">
     <p class="text-sm text-inksoft dark:text-[#A6AFC9] flex-1">
-      Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje vašeg pristanka na ovu obavijest). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html" class="underline hover:text-cyan dark:hover:text-cyan-bright">Pravilima privatnosti</a>.
+      Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje vašeg pristanka na ovu obavijest). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html" class="underline hover-coral">Pravilima privatnosti</a>.
     </p>
     <button id="cookieAccept" type="button" class="btn-glow shrink-0 inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
       Slažem se
