@@ -130,6 +130,35 @@
       linear-gradient(90deg, rgba(235,239,250,.05) 1px, transparent 1px);
   }
 
+  /* Circuit-trace pozadinska animacija u heroju — tanke koraljne
+     "tiskane pločice" linije iza sadržaja, s dvije staze kojima
+     putuje sjajni puls svjetla (stroke-dashoffset petlja). Čisto
+     dekorativno, iza .hero-grid i sadržaja (content wrapper dobiva
+     relative z-10 da uvijek ostane iznad). */
+  .hero-circuit{
+    position:absolute; inset:0; z-index:0; pointer-events:none;
+    opacity:.5;
+  }
+  .hero-circuit svg{ display:block; width:100%; height:100%; }
+  .hero-circuit .trace-line{
+    fill:none; stroke:rgba(255,148,120,.22); stroke-width:1.5;
+    stroke-linecap:round; stroke-linejoin:round;
+  }
+  .hero-circuit .trace-pulse{
+    fill:none; stroke:#FF9478; stroke-width:2;
+    stroke-linecap:round; stroke-linejoin:round;
+    stroke-dasharray:6 220;
+    filter:drop-shadow(0 0 4px rgba(255,148,120,.75));
+    animation:hero-circuit-flow 5s linear infinite;
+  }
+  .hero-circuit .trace-pulse.d2{ animation-delay:-2.3s; }
+  .hero-circuit .node{ fill:#FF9478; filter:drop-shadow(0 0 4px rgba(255,148,120,.7)); }
+  @keyframes hero-circuit-flow{ to{ stroke-dashoffset:-520; } }
+  @media (prefers-reduced-motion: reduce){
+    .hero-circuit .trace-pulse{ animation:none; stroke-dasharray:none; opacity:.35; }
+  }
+  @media (max-width:640px){ .hero-circuit{ opacity:.32; } }
+
   .pf-card-2{ background:linear-gradient(135deg, rgba(255,111,89,.16), #fff); }
   .dark .pf-card-2{ background:linear-gradient(135deg, rgba(255,148,120,.22), #10162A); }
   .pf-card-3{ background:linear-gradient(135deg, rgba(255,111,89,.14), rgba(255,111,89,.12)); }
@@ -850,7 +879,27 @@
 <main>
 
 <section id="pocetna" class="dark scroll-mt-20 relative bg-[#080B14] text-[#EBEFFA]">
-  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 grid md:grid-cols-2 gap-14 items-center">
+  <div class="hero-circuit" aria-hidden="true">
+    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+      <g>
+        <path class="trace-line" d="M980 360 L840 360 L840 200 L700 200" />
+        <path class="trace-line" d="M980 360 L1100 360 L1100 160" />
+        <path class="trace-line" d="M980 360 L1120 360 L1120 500 L1000 500" />
+        <path class="trace-line" d="M980 360 L980 500 L860 500 L860 580" />
+        <path class="trace-line" d="M980 360 L840 360 L840 500 L720 500" />
+        <path class="trace-line" d="M980 360 L1060 360 L1060 240" />
+        <path class="trace-pulse" d="M980 360 L840 360 L840 200 L700 200" />
+        <path class="trace-pulse d2" d="M980 360 L1120 360 L1120 500 L1000 500" />
+        <circle class="node" cx="700" cy="200" r="3.5"/>
+        <circle class="node" cx="1100" cy="160" r="3.5"/>
+        <circle class="node" cx="1000" cy="500" r="3.5"/>
+        <circle class="node" cx="860" cy="580" r="3.5"/>
+        <circle class="node" cx="720" cy="500" r="3.5"/>
+        <circle class="node" cx="1060" cy="240" r="3.5"/>
+      </g>
+    </svg>
+  </div>
+  <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 grid md:grid-cols-2 gap-14 items-center">
     <div data-reveal="fade-right">
       <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-coral">— AI Studio</p>
       <h1 class="font-serif font-semibold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mt-4">
