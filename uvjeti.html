@@ -2,6 +2,13 @@
 <html lang="hr">
 <head>
 <meta charset="UTF-8">
+<script>
+  // Spriječi preglednik da pri osvježavanju (refresh) stranice vrati
+  // korisnika na mjesto gdje je zadnje skrolao — stranica uvijek kreće
+  // od vrha. Mora se postaviti što prije, prije nego preglednik stigne
+  // primijeniti svoje zadano ponašanje vraćanja scroll pozicije.
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+</script>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'none'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <script>
+  // Spriječi preglednik da pri osvježavanju (refresh) stranice vrati
+  // korisnika na mjesto gdje je zadnje skrolao — stranica uvijek kreće
+  // od vrha. Mora se postaviti što prije, prije nego preglednik stigne
+  // primijeniti svoje zadano ponašanje vraćanja scroll pozicije.
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+</script>
+<script>
   // Intro "build u terminalu" (kreirai-intro.js) — ovo mora ići što prije
   // u <head>, PRIJE prvog crtanja stranice, jer samo tako CSS ispod
   // (html.ki-intro-on body{visibility:hidden}) stigne sakriti stranicu
