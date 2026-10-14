@@ -14,23 +14,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-<script>
-  // Set the theme class on <html> as early as possible (before Tailwind
-  // loads / first paint) so there is no flash of the wrong theme.
-  // Dark is the primary/default look; light only applies once the
-  // visitor explicitly picks it (remembered in localStorage) — same
-  // preference key as the main one-pager, so the choice carries over.
-  (function () {
-    try {
-      var stored = localStorage.getItem('kreirai-theme');
-      var dark = stored ? stored === 'dark' : true;
-      document.documentElement.classList.toggle('dark', dark);
-    } catch (e) {
-      document.documentElement.classList.add('dark');
-    }
-  })();
-</script>
-
 <link rel="stylesheet" href="tailwind.css">
 
 <style>
@@ -42,19 +25,10 @@
     overflow-x: hidden;
     max-width: 100%;
   }
-  html.dark body{ background:#080B14; color:#EBEFFA; }
+  .dark body{ background:#080B14; color:#EBEFFA; }
 
-  .text-gradient{
-    background-image: linear-gradient(100deg, #1FB9CC 0%, #7C5CE0 85%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  html.dark .text-gradient{
-    background-image: linear-gradient(100deg, #3EE8F5 0%, #9B7BFF 85%);
-  }
-
-  .theme-toggle .icon-moon{ display:none; }
-  html.dark .theme-toggle .icon-sun{ display:none; }
-  html.dark .theme-toggle .icon-moon{ display:block; }
+  .text-gradient{ color: #FF6F59; }
+  .dark .text-gradient{ color: #FF9478; }
 
   /* ============================================================
      Glowing-border button (compact icon variant)
@@ -65,17 +39,17 @@
   .btn-glow-sm{
     position: relative;
     isolation: isolate;
-    box-shadow: 0 0 6px 0 rgba(31,185,204,.28);
+    box-shadow: 0 0 6px 0 rgba(255,111,89,.28);
     transition: box-shadow .3s ease, transform .2s ease;
   }
-  html.dark .btn-glow-sm{
-    box-shadow: 0 0 8px 0 rgba(62,232,245,.32);
+  .dark .btn-glow-sm{
+    box-shadow: 0 0 8px 0 rgba(255,148,120,.32);
   }
   .btn-glow-sm:hover, .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 11px 1px rgba(31,185,204,.42);
+    box-shadow: 0 0 11px 1px rgba(255,111,89,.42);
   }
-  html.dark .btn-glow-sm:hover, html.dark .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 14px 2px rgba(62,232,245,.48);
+  .dark .btn-glow-sm:hover, .dark .btn-glow-sm:focus-visible{
+    box-shadow: 0 0 14px 2px rgba(255,148,120,.48);
   }
 
   @property --glow-angle{
@@ -90,7 +64,7 @@
     box-sizing: border-box;
     border-radius: inherit;
     padding: 1.25px;
-    background: conic-gradient(from var(--glow-angle), transparent 0%, #1FB9CC 22%, #7C5CE0 45%, transparent 60%);
+    background: conic-gradient(from var(--glow-angle), transparent 0%, #FF6F59 22%, #FF6F59 45%, transparent 60%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -99,8 +73,8 @@
     animation: btn-ring-spin 2.8s linear infinite;
     pointer-events: none;
   }
-  html.dark .btn-glow-sm::before{
-    background: conic-gradient(from var(--glow-angle), transparent 0%, #3EE8F5 22%, #9B7BFF 45%, transparent 60%);
+  .dark .btn-glow-sm::before{
+    background: conic-gradient(from var(--glow-angle), transparent 0%, #FF9478 22%, #FF9478 45%, transparent 60%);
   }
 
   @keyframes btn-ring-spin{ to{ --glow-angle: 360deg; } }
@@ -120,12 +94,35 @@
     z-index: 70; opacity: 0; pointer-events: none;
     transform: translate(-50%, -60px) rotate(0deg);
   }
-  html.dark #ptr{ background:#10162A; border-color:#232B47; box-shadow: 0 10px 24px -12px rgba(0,0,0,.5); }
+  .dark #ptr{ background:#10162A; border-color:#232B47; box-shadow: 0 10px 24px -12px rgba(0,0,0,.5); }
   #ptr.snap{ transition: transform .25s ease, opacity .25s ease; }
-  #ptr svg{ width: 20px; height: 20px; color:#1FB9CC; }
-  html.dark #ptr svg{ color:#3EE8F5; }
+  #ptr svg{ width: 20px; height: 20px; color:#FF6F59; }
+  .dark #ptr svg{ color:#FF9478; }
   #ptr.spinning svg{ animation: ptr-spin .7s linear infinite; }
   @keyframes ptr-spin{ to{ transform: rotate(360deg); } }
+
+  /* Header je zauvijek u "dark" izgledu i nosi class="dark" da svaki potomkov postojeći dark: utility to uhvati — ali Tailwindov dark: selektor je ":is(.dark *)", DESCENDANT selektor, pa nikad ne pogađa element koji sam nosi class="dark" (element nije svoj vlastiti potomak). Forsirano izravno ovdje (header.dark da nadjača svoju bg-[#F2F4FA]/85 utility klasu). */
+  header.dark{ background: rgba(8,11,20,.85); border-bottom-color: #232B47; }
+
+  /* Koraljna podloga za CTA gumbe/značke (bivši cyan->violet gradient). */
+  .bg-coral{ background-image: none; background-color: #FF6F59; }
+  .dark .bg-coral{ background-color: #FF9478; }
+
+  /* Koraljna varijanta bivših text-cyan/dark:text-coral oznaka. */
+  .text-coral{ color: #FF6F59; }
+  .dark .text-coral{ color: #FF9478; }
+
+  /* Koraljni hover (bivši hover-coral). */
+  .hover-coral:hover{ color: #FF6F59; }
+  .dark .hover-coral:hover{ color: #FF9478; }
+
+  /* Koraljni group-hover (bivši group-hover:text-cyan/violet + dark varijante). */
+  .group:hover .group-hover-coral{ color: #FF6F59; }
+  .dark .group:hover .group-hover-coral{ color: #FF9478; }
+
+  /* Koraljni focus prsten na poljima forme (bivši focus:ring-cyan/40 focus:border-cyan). */
+  .focus-coral:focus{ border-color: #FF6F59; box-shadow: 0 0 0 2px rgba(255,111,89,.4); }
+  .dark .focus-coral:focus{ border-color: #FF9478; box-shadow: 0 0 0 2px rgba(255,148,120,.4); }
 </style>
 </head>
 <body>
@@ -137,7 +134,7 @@
 <!-- ============================================================
      NAV
      ============================================================ -->
-<header class="sticky top-0 z-50 bg-[#F2F4FA]/85 dark:bg-[#080B14]/85 backdrop-blur border-b border-line dark:border-[#232B47] transition-colors">
+<header class="dark sticky top-0 z-50 bg-[#F2F4FA]/85 dark:bg-[#080B14]/85 backdrop-blur border-b border-line dark:border-[#232B47] transition-colors">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
     <a href="index.html" class="font-serif font-semibold text-xl tracking-tight shrink-0">
       <span class="text-ink dark:text-[#EBEFFA]">Kreir</span><span class="text-gradient">AI</span>
@@ -148,11 +145,6 @@
         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         Natrag na početnu
       </a>
-      <button id="themeToggle" type="button" aria-label="Promijeni izgled stranice"
-        class="theme-toggle btn-glow-sm w-10 h-10 shrink-0 flex items-center justify-center rounded-lg border border-[#12182D] bg-[#12182D] text-[#F5F7FC] dark:bg-transparent dark:border-[#232B47] dark:text-[#EBEFFA] hover:opacity-90 transition">
-        <svg class="icon-sun w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.4M12 19.1v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2 12h2.4M19.6 12H22M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7"/></svg>
-        <svg class="icon-moon w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg>
-      </button>
     </div>
   </div>
 </header>
@@ -160,7 +152,7 @@
 <main>
   <section class="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-24">
     <div class="max-w-[70ch]">
-      <p class="font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Privatnost</p>
+      <p class="font-mono text-xs tracking-[0.18em] uppercase text-coral">Privatnost</p>
       <h1 class="font-serif font-semibold text-3xl sm:text-4xl mt-3">Pravila privatnosti</h1>
       <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Zadnje ažurirano: rujan 2026.</p>
 
@@ -195,7 +187,7 @@
         </li>
         <li>
           <h2 class="font-semibold text-lg">8. Vaša prava</h2>
-          <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Sukladno Općoj uredbi o zaštiti podataka (GDPR), imate pravo zatražiti pristup podacima koje o vama imamo, njihov ispravak ili brisanje, ograničiti obradu, uložiti prigovor na obradu te podnijeti pritužbu Agenciji za zaštitu osobnih podataka (AZOP). Za ostvarivanje bilo kojeg od ovih prava javite nam se na <a href="mailto:info@kreirai.hr" class="text-violet dark:text-violet-bright font-semibold">info@kreirai.hr</a>.</p>
+          <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Sukladno Općoj uredbi o zaštiti podataka (GDPR), imate pravo zatražiti pristup podacima koje o vama imamo, njihov ispravak ili brisanje, ograničiti obradu, uložiti prigovor na obradu te podnijeti pritužbu Agenciji za zaštitu osobnih podataka (AZOP). Za ostvarivanje bilo kojeg od ovih prava javite nam se na <a href="mailto:info@kreirai.hr" class="text-coral font-semibold">info@kreirai.hr</a>.</p>
         </li>
         <li>
           <h2 class="font-semibold text-lg">9. Sigurnost</h2>
@@ -207,7 +199,7 @@
         </li>
         <li>
           <h2 class="font-semibold text-lg">11. Kontakt</h2>
-          <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Za sva pitanja vezana uz privatnost i vaše podatke obratite nam se na <a href="mailto:info@kreirai.hr" class="text-violet dark:text-violet-bright font-semibold">info@kreirai.hr</a>.</p>
+          <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Za sva pitanja vezana uz privatnost i vaše podatke obratite nam se na <a href="mailto:info@kreirai.hr" class="text-coral font-semibold">info@kreirai.hr</a>.</p>
         </li>
       </ol>
     </div>
@@ -228,16 +220,6 @@
 </footer>
 
 <script>
-  (function () {
-    var THEME_KEY = 'kreirai-theme';
-    var themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
-      themeToggle.addEventListener('click', function () {
-        var isDark = document.documentElement.classList.toggle('dark');
-        try { localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light'); } catch (e) {}
-      });
-    }
-  })();
 
   // ---- pull-to-refresh (mobile) ----
   (function () {
@@ -296,9 +278,9 @@
 <div id="cookieBanner" hidden role="dialog" aria-live="polite" aria-label="Obavijest o kolačićima" class="fixed inset-x-0 bottom-0 z-50 border-t border-line dark:border-[#232B47] bg-white dark:bg-[#10162A] shadow-soft transition-colors">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex flex-col sm:flex-row items-center gap-4">
     <p class="text-sm text-inksoft dark:text-[#A6AFC9] flex-1">
-      Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje odabira tamne/svijetle teme). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html" class="underline hover:text-cyan dark:hover:text-cyan-bright">Pravilima privatnosti</a>.
+      Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje odabira tamne/svijetle teme). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html" class="underline hover-coral">Pravilima privatnosti</a>.
     </p>
-    <button id="cookieAccept" type="button" class="btn-glow shrink-0 inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+    <button id="cookieAccept" type="button" class="btn-glow shrink-0 inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
       Slažem se
     </button>
   </div>

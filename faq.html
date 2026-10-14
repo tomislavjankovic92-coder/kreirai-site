@@ -31,22 +31,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-<script>
-  // Set the theme class on <html> as early as possible (before Tailwind
-  // loads / first paint) so there is no flash of the wrong theme.
-  // Dark is the primary/default look; light only applies once the
-  // visitor explicitly picks it (remembered in localStorage).
-  (function () {
-    try {
-      var stored = localStorage.getItem('kreirai-theme');
-      var dark = stored ? stored === 'dark' : true;
-      document.documentElement.classList.toggle('dark', dark);
-    } catch (e) {
-      document.documentElement.classList.add('dark');
-    }
-  })();
-</script>
-
 <link rel="stylesheet" href="tailwind.css">
 
 <style>
@@ -77,24 +61,19 @@
     overflow-x: hidden;
     max-width: 100%;
   }
-  html.dark body{ background:#080B14; color:#EBEFFA; }
+  .dark body{ background:#080B14; color:#EBEFFA; }
 
-  .text-gradient{
-    background-image: linear-gradient(100deg, #1FB9CC 0%, #FF6F59 85%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  html.dark .text-gradient{
-    background-image: linear-gradient(100deg, #3EE8F5 0%, #FF9478 85%);
-  }
+  .text-gradient{ color: #FF6F59; }
+  .dark .text-gradient{ color: #FF9478; }
 
   /* Hero stage always keeps its own dark "stage" tone (independent of
      site light/dark mode) so the 3D logo video's dark background has
      nothing to visibly seam against — it just dissolves into it. */
   .hero-stage{
     background:
-      radial-gradient(circle at 50% 46%, rgba(62,232,245,.20), transparent 42%),
+      radial-gradient(circle at 50% 46%, rgba(255,148,120,.20), transparent 42%),
       radial-gradient(circle at 30% 20%, rgba(255,148,120,.16), transparent 60%),
-      radial-gradient(circle at 75% 80%, rgba(62,232,245,.14), transparent 55%),
+      radial-gradient(circle at 75% 80%, rgba(255,148,120,.14), transparent 55%),
       #0A0E1A;
   }
   .hero-grid{
@@ -105,16 +84,16 @@
     -webkit-mask-image:radial-gradient(circle at 50% 45%, black 0%, transparent 72%);
     mask-image:radial-gradient(circle at 50% 45%, black 0%, transparent 72%);
   }
-  html.dark .hero-grid{
+  .dark .hero-grid{
     background-image:
       linear-gradient(rgba(235,239,250,.05) 1px, transparent 1px),
       linear-gradient(90deg, rgba(235,239,250,.05) 1px, transparent 1px);
   }
 
   .pf-card-2{ background:linear-gradient(135deg, rgba(255,111,89,.16), #fff); }
-  html.dark .pf-card-2{ background:linear-gradient(135deg, rgba(255,148,120,.22), #10162A); }
-  .pf-card-3{ background:linear-gradient(135deg, rgba(31,185,204,.14), rgba(255,111,89,.12)); }
-  html.dark .pf-card-3{ background:linear-gradient(135deg, rgba(62,232,245,.18), rgba(255,148,120,.16)); }
+  .dark .pf-card-2{ background:linear-gradient(135deg, rgba(255,148,120,.22), #10162A); }
+  .pf-card-3{ background:linear-gradient(135deg, rgba(255,111,89,.14), rgba(255,111,89,.12)); }
+  .dark .pf-card-3{ background:linear-gradient(135deg, rgba(255,148,120,.18), rgba(255,148,120,.16)); }
 
   /* --- Scroll-triggered reveal system ---
      Add data-reveal="fade-up | fade-down | fade-left | fade-right | zoom-in"
@@ -155,12 +134,12 @@
     z-index: 45;
     opacity: 0;
     transition: opacity .5s ease;
-    background: radial-gradient(circle, rgba(62,232,245,.055) 0%, rgba(255,148,120,.03) 35%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,148,120,.055) 0%, rgba(255,148,120,.03) 35%, transparent 70%);
     mix-blend-mode: screen;
     will-change: transform, opacity;
   }
   html:not(.dark) #cursorGlow{
-    background: radial-gradient(circle, rgba(31,185,204,.03) 0%, rgba(255,111,89,.02) 40%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,111,89,.03) 0%, rgba(255,111,89,.02) 40%, transparent 70%);
     mix-blend-mode: normal;
   }
   #cursorGlow.is-active{ opacity: 1; }
@@ -172,11 +151,7 @@
   .mobile-nav.open{ max-height:460px; }
 
   .nav-link.is-active{ background:#fff; color:#0E1526; box-shadow:0 1px 2px rgba(14,21,38,.08); }
-  html.dark .nav-link.is-active{ background:#10162A; color:#EBEFFA; box-shadow:0 1px 2px rgba(0,0,0,.35); }
-
-  .theme-toggle .icon-moon{ display:none; }
-  html.dark .theme-toggle .icon-sun{ display:none; }
-  html.dark .theme-toggle .icon-moon{ display:block; }
+  .dark .nav-link.is-active{ background:#10162A; color:#EBEFFA; box-shadow:0 1px 2px rgba(0,0,0,.35); }
 
   /* ============================================================
      Glow buttons — a soft ambient box-shadow glow on hover/focus.
@@ -189,19 +164,19 @@
   .btn-glow, .btn-glow-sm{
     position: relative;
     isolation: isolate;
-    box-shadow: 0 0 6px 0 rgba(31,185,204,.28);
+    box-shadow: 0 0 6px 0 rgba(255,111,89,.28);
     transition: box-shadow .3s ease, transform .2s ease;
   }
-  html.dark .btn-glow, html.dark .btn-glow-sm{
-    box-shadow: 0 0 8px 0 rgba(62,232,245,.32);
+  .dark .btn-glow, .dark .btn-glow-sm{
+    box-shadow: 0 0 8px 0 rgba(255,148,120,.32);
   }
   .btn-glow:hover, .btn-glow:focus-visible,
   .btn-glow-sm:hover, .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 11px 1px rgba(31,185,204,.42);
+    box-shadow: 0 0 11px 1px rgba(255,111,89,.42);
   }
-  html.dark .btn-glow:hover, html.dark .btn-glow:focus-visible,
-  html.dark .btn-glow-sm:hover, html.dark .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 14px 2px rgba(62,232,245,.48);
+  .dark .btn-glow:hover, .dark .btn-glow:focus-visible,
+  .dark .btn-glow-sm:hover, .dark .btn-glow-sm:focus-visible{
+    box-shadow: 0 0 14px 2px rgba(255,148,120,.48);
   }
 
   /* Soft glass highlight across the top of solid/gradient buttons —
@@ -216,7 +191,7 @@
     mix-blend-mode: overlay;
     pointer-events: none;
   }
-  html.dark .btn-glow::after{ opacity: .22; }
+  .dark .btn-glow::after{ opacity: .22; }
 
   @media (prefers-reduced-motion: reduce){
     .btn-glow, .btn-glow-sm{ transition:none; }
@@ -235,7 +210,7 @@
   .service-card:hover, .service-card:focus-within{
     box-shadow: 0 0 14px 0px rgba(255,111,89,.06);
   }
-  html.dark .service-card:hover, html.dark .service-card:focus-within{
+  .dark .service-card:hover, .dark .service-card:focus-within{
     box-shadow: 0 0 16px 0px rgba(255,148,120,.08);
   }
   @media (prefers-reduced-motion: reduce){
@@ -252,7 +227,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% 46%, rgba(62,232,245,.40) 0%, rgba(255,148,120,.28) 28%, rgba(62,232,245,.10) 48%, transparent 68%);
+    background: radial-gradient(circle at 50% 46%, rgba(255,148,120,.40) 0%, rgba(255,148,120,.28) 28%, rgba(255,148,120,.10) 48%, transparent 68%);
     filter: blur(38px);
     pointer-events: none;
   }
@@ -294,10 +269,10 @@
     z-index: 70; opacity: 0; pointer-events: none;
     transform: translate(-50%, -60px) rotate(0deg);
   }
-  html.dark #ptr{ background:#10162A; border-color:#232B47; box-shadow: 0 10px 24px -12px rgba(0,0,0,.5); }
+  .dark #ptr{ background:#10162A; border-color:#232B47; box-shadow: 0 10px 24px -12px rgba(0,0,0,.5); }
   #ptr.snap{ transition: transform .25s ease, opacity .25s ease; }
-  #ptr svg{ width: 20px; height: 20px; color:#1FB9CC; }
-  html.dark #ptr svg{ color:#3EE8F5; }
+  #ptr svg{ width: 20px; height: 20px; color:#FF6F59; }
+  .dark #ptr svg{ color:#FF9478; }
   #ptr.spinning svg{ animation: ptr-spin .7s linear infinite; }
   @keyframes ptr-spin{ to{ transform: rotate(360deg); } }
 
@@ -323,7 +298,7 @@
     -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 78%);
             mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 78%);
   }
-  html.dark body::before{
+  .dark body::before{
     background-image: radial-gradient(rgba(235,239,250,.06) 1px, transparent 1px);
   }
 
@@ -341,7 +316,7 @@
        offset) and paint containment would clip it. */
     contain: layout style;
   }
-  html.dark .glass-panel{
+  .dark .glass-panel{
     background: rgba(13,18,36,.62);
   }
   /* Backdrop-blur is one of the more expensive things a browser paints,
@@ -385,23 +360,23 @@
     content: "";
     position: absolute; left: 0; bottom: 0;
     width: 52px; height: 2px; border-radius: 2px;
-    background: linear-gradient(90deg, #1FB9CC, #FF6F59);
+    background: #FF6F59;
   }
-  html.dark .section-heading::after{
-    background: linear-gradient(90deg, #3EE8F5, #FF9478);
+  .dark .section-heading::after{
+    background: #FF9478;
   }
 
   /* "Korak 01–04" process labels as small bordered chips. */
   .step-badge{
     display: inline-flex; align-items: center;
-    border: 1px solid rgba(31,185,204,.35);
-    background: rgba(31,185,204,.06);
+    border: 1px solid rgba(255,111,89,.35);
+    background: rgba(255,111,89,.06);
     border-radius: 7px;
     padding: .3em .65em;
   }
-  html.dark .step-badge{
-    border-color: rgba(62,232,245,.3);
-    background: rgba(62,232,245,.06);
+  .dark .step-badge{
+    border-color: rgba(255,148,120,.3);
+    background: rgba(255,148,120,.06);
   }
 
   /* "01–04" markers in O nama as small square data-readout tiles. */
@@ -411,7 +386,7 @@
     border: 1px solid rgba(255,111,89,.35);
     background: rgba(255,111,89,.06);
   }
-  html.dark .step-num{
+  .dark .step-num{
     border-color: rgba(255,148,120,.32);
     background: rgba(255,148,120,.07);
   }
@@ -420,15 +395,15 @@
   .icon-badge{
     display: inline-flex; align-items: center; justify-content: center;
     width: 2.75rem; height: 2.75rem; border-radius: .85rem;
-    border: 1px solid rgba(31,185,204,.32);
-    background: rgba(31,185,204,.07);
-    color: #1FB9CC;
+    border: 1px solid rgba(255,111,89,.32);
+    background: rgba(255,111,89,.07);
+    color: #FF6F59;
     margin-bottom: 1rem;
   }
-  html.dark .icon-badge{
-    border-color: rgba(62,232,245,.3);
-    background: rgba(62,232,245,.08);
-    color: #3EE8F5;
+  .dark .icon-badge{
+    border-color: rgba(255,148,120,.3);
+    background: rgba(255,148,120,.08);
+    color: #FF9478;
   }
   .icon-badge svg{ width: 1.4rem; height: 1.4rem; }
 
@@ -437,22 +412,45 @@
   header::after{
     content: "";
     position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(31,185,204,.55), rgba(255,111,89,.55), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,111,89,.55), transparent);
     pointer-events: none;
   }
-  html.dark header::after{
-    background: linear-gradient(90deg, transparent, rgba(62,232,245,.6), rgba(255,148,120,.6), transparent);
+  .dark header::after{
+    background: linear-gradient(90deg, transparent, rgba(255,148,120,.6), transparent);
   }
   footer{ position: relative; }
   footer::before{
     content: "";
     position: absolute; left: 0; right: 0; top: -1px; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(31,185,204,.5), rgba(255,111,89,.5), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,111,89,.5), transparent);
     pointer-events: none;
   }
-  html.dark footer::before{
-    background: linear-gradient(90deg, transparent, rgba(62,232,245,.55), rgba(255,148,120,.55), transparent);
+  .dark footer::before{
+    background: linear-gradient(90deg, transparent, rgba(255,148,120,.55), transparent);
   }
+
+  /* Header je zauvijek u "dark" izgledu i nosi class="dark" da svaki potomkov postojeći dark: utility to uhvati — ali Tailwindov dark: selektor je ":is(.dark *)", DESCENDANT selektor, pa nikad ne pogađa element koji sam nosi class="dark" (element nije svoj vlastiti potomak). Forsirano izravno ovdje (header.dark da nadjača svoju bg-[#F2F4FA]/85 utility klasu). */
+  header.dark{ background: rgba(8,11,20,.85); border-bottom-color: #232B47; }
+
+  /* Koraljna podloga za CTA gumbe/značke (bivši cyan->violet gradient). */
+  .bg-coral{ background-image: none; background-color: #FF6F59; }
+  .dark .bg-coral{ background-color: #FF9478; }
+
+  /* Koraljna varijanta bivših text-cyan/dark:text-coral oznaka. */
+  .text-coral{ color: #FF6F59; }
+  .dark .text-coral{ color: #FF9478; }
+
+  /* Koraljni hover (bivši hover-coral). */
+  .hover-coral:hover{ color: #FF6F59; }
+  .dark .hover-coral:hover{ color: #FF9478; }
+
+  /* Koraljni group-hover (bivši group-hover:text-cyan/violet + dark varijante). */
+  .group:hover .group-hover-coral{ color: #FF6F59; }
+  .dark .group:hover .group-hover-coral{ color: #FF9478; }
+
+  /* Koraljni focus prsten na poljima forme (bivši focus:ring-cyan/40 focus:border-cyan). */
+  .focus-coral:focus{ border-color: #FF6F59; box-shadow: 0 0 0 2px rgba(255,111,89,.4); }
+  .dark .focus-coral:focus{ border-color: #FF9478; box-shadow: 0 0 0 2px rgba(255,148,120,.4); }
 </style>
 <!-- Structured data for the FAQ section below — mirrors that visible
      text exactly (search engines require the two to match). -->
@@ -525,7 +523,7 @@
 <!-- ============================================================
      NAV
      ============================================================ -->
-<header class="fixed top-0 inset-x-0 z-50 bg-[#F2F4FA]/85 dark:bg-[#080B14]/85 backdrop-blur border-b border-line dark:border-[#232B47] transition-colors">
+<header class="dark fixed top-0 inset-x-0 z-50 bg-[#F2F4FA]/85 dark:bg-[#080B14]/85 backdrop-blur border-b border-line dark:border-[#232B47] transition-colors">
   <div id="headerBar" class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
     <a href="index.html" class="font-serif font-semibold text-xl tracking-tight shrink-0">
       <span class="text-ink dark:text-[#EBEFFA]">Kreir</span><span class="text-gradient">AI</span>
@@ -541,13 +539,7 @@
     </nav>
 
     <div class="flex items-center gap-3">
-      <button id="themeToggle" type="button" aria-label="Promijeni izgled stranice"
-        class="theme-toggle btn-glow-sm w-10 h-10 shrink-0 flex items-center justify-center rounded-lg border border-[#12182D] bg-[#12182D] text-[#F5F7FC] dark:bg-transparent dark:border-[#232B47] dark:text-[#EBEFFA] hover:opacity-90 transition">
-        <svg class="icon-sun w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.4M12 19.1v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2 12h2.4M19.6 12H22M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7"/></svg>
-        <svg class="icon-moon w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg>
-      </button>
-
-      <a href="kontakt.html" class="btn-glow hidden md:inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+      <a href="kontakt.html" class="btn-glow hidden md:inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
         Zatražite ponudu
       </a>
 
@@ -600,7 +592,7 @@
 
 <section id="faq" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 py-20 sm:py-28">
     <div class="max-w-2xl">
-      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">Pitanja</p>
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-coral">Pitanja</p>
       <h1 class="section-heading font-serif font-semibold text-3xl sm:text-4xl mt-3">Često postavljana pitanja</h1>
       <p class="mt-3 text-inksoft dark:text-[#A6AFC9]">Ako ne pronađete odgovor koji tražite, slobodno nam se javite.</p>
     </div>
@@ -699,17 +691,6 @@
     document.querySelectorAll('.mob-link').forEach(function (link) {
       link.addEventListener('click', closeMobileNav);
     });
-
-    // ---- light / dark theme toggle ----
-    // <html>'s "dark" class is already set by the tiny boot script at
-    // the top of <head> (before first paint). This just handles the
-    // click + persists the choice; dark is the default/primary theme.
-    var THEME_KEY = 'kreirai-theme';
-    document.querySelectorAll('.theme-toggle').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var isDark = document.documentElement.classList.toggle('dark');
-        try { localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light'); } catch (e) {}
-      });
     });
 
     // ---- pause the always-on glow-ring animations while scrolling ----
@@ -847,9 +828,9 @@
 <div id="cookieBanner" hidden role="dialog" aria-live="polite" aria-label="Obavijest o kolačićima" class="fixed inset-x-0 bottom-0 z-50 border-t border-line dark:border-[#232B47] bg-white dark:bg-[#10162A] shadow-soft transition-colors">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex flex-col sm:flex-row items-center gap-4">
     <p class="text-sm text-inksoft dark:text-[#A6AFC9] flex-1">
-      Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje odabira tamne/svijetle teme). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html" class="underline hover:text-cyan dark:hover:text-cyan-bright">Pravilima privatnosti</a>.
+      Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje odabira tamne/svijetle teme). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html" class="underline hover-coral">Pravilima privatnosti</a>.
     </p>
-    <button id="cookieAccept" type="button" class="btn-glow shrink-0 inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+    <button id="cookieAccept" type="button" class="btn-glow shrink-0 inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
       Slažem se
     </button>
   </div>
