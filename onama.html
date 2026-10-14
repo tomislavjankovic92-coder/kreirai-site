@@ -161,29 +161,54 @@
   .dark .nav-link.is-active{ background:#10162A; color:#EBEFFA; box-shadow:0 1px 2px rgba(0,0,0,.35); }
 
   /* ============================================================
-     Glow buttons — a soft ambient box-shadow glow on hover/focus.
-     (Used to also spin an animated gradient ring; removed for
-     performance — it forced a permanent GPU compositing layer on
-     every button on the page.)
+     Glow buttons — premium layered shadow (ambient coral glow +
+     tight contact shadow for real depth), a one-shot diagonal shine
+     that sweeps across on hover/focus (plays only during that
+     transition, not a perpetual animation — no ongoing GPU cost
+     while idle), and a pressed/tap state on :active alone so touch
+     devices — which never trigger :hover — still get feedback.
      .btn-glow      — full-size CTAs (primary + ghost/secondary)
-     .btn-glow-sm   — compact icon buttons (theme toggle, hamburger)
+     .btn-glow-sm   — compact icon buttons (hamburger)
      ============================================================ */
   .btn-glow, .btn-glow-sm{
     position: relative;
     isolation: isolate;
-    box-shadow: 0 0 6px 0 rgba(255,111,89,.28);
-    transition: box-shadow .3s ease, transform .2s ease;
+    overflow: hidden;
+    box-shadow:
+      0 1px 2px 0 rgba(14,21,38,.16),
+      0 0 6px 0 rgba(255,111,89,.28);
+    transition: box-shadow .3s ease, transform .15s ease;
   }
   .dark .btn-glow, .dark .btn-glow-sm{
-    box-shadow: 0 0 8px 0 rgba(255,148,120,.32);
+    box-shadow:
+      0 1px 2px 0 rgba(0,0,0,.35),
+      0 0 8px 0 rgba(255,148,120,.32);
   }
   .btn-glow:hover, .btn-glow:focus-visible,
   .btn-glow-sm:hover, .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 11px 1px rgba(255,111,89,.42);
+    box-shadow:
+      0 8px 20px -6px rgba(14,21,38,.25),
+      0 0 14px 1px rgba(255,111,89,.46);
   }
   .dark .btn-glow:hover, .dark .btn-glow:focus-visible,
   .dark .btn-glow-sm:hover, .dark .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 14px 2px rgba(255,148,120,.48);
+    box-shadow:
+      0 8px 22px -6px rgba(0,0,0,.45),
+      0 0 16px 2px rgba(255,148,120,.52);
+  }
+  /* Pressed/tap feedback — fires on :active alone (no :hover
+     dependency), so a finger tap on mobile gets the same tactile
+     response a mouse click gets on desktop. */
+  .btn-glow:active, .btn-glow-sm:active{
+    transform: scale(.96);
+    box-shadow:
+      0 1px 3px 0 rgba(14,21,38,.2),
+      0 0 6px 0 rgba(255,111,89,.3);
+  }
+  .dark .btn-glow:active, .dark .btn-glow-sm:active{
+    box-shadow:
+      0 1px 3px 0 rgba(0,0,0,.4),
+      0 0 8px 0 rgba(255,148,120,.34);
   }
 
   /* Soft glass highlight across the top of solid/gradient buttons —
@@ -200,8 +225,30 @@
   }
   .dark .btn-glow::after{ opacity: .22; }
 
+  /* One-shot diagonal shine — sweeps across on hover/focus only
+     (the transition itself is the whole animation), so it costs
+     nothing while a button just sits on the page. */
+  .btn-glow::before, .btn-glow-sm::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.55) 48%, transparent 66%);
+    mix-blend-mode: overlay;
+    transform: translateX(-130%);
+    transition: transform .65s cubic-bezier(.2,.7,.2,1);
+    pointer-events: none;
+  }
+  .dark .btn-glow::before, .dark .btn-glow-sm::before{
+    background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.25) 48%, transparent 66%);
+  }
+  .btn-glow:hover::before, .btn-glow:focus-visible::before,
+  .btn-glow-sm:hover::before, .btn-glow-sm:focus-visible::before{
+    transform: translateX(130%);
+  }
+
   @media (prefers-reduced-motion: reduce){
     .btn-glow, .btn-glow-sm{ transition:none; }
+    .btn-glow::before, .btn-glow-sm::before{ transition:none; }
   }
 
   /* ============================================================
@@ -440,8 +487,14 @@
   header.dark{ background: rgba(8,11,20,.85); border-bottom-color: #232B47; }
 
   /* Koraljna podloga za CTA gumbe/značke (bivši cyan->violet gradient). */
-  .bg-coral{ background-image: none; background-color: #FF6F59; }
-  .dark .bg-coral{ background-color: #FF9478; }
+  .bg-coral{
+    background-image: linear-gradient(135deg, #FF8469, #FF6F59 55%, #F0573F);
+    background-color: #FF6F59;
+  }
+  .dark .bg-coral{
+    background-image: linear-gradient(135deg, #FFAB92, #FF9478 55%, #FF7D5E);
+    background-color: #FF9478;
+  }
 
   /* Koraljna varijanta bivših text-cyan/dark:text-coral oznaka. */
   .text-coral{ color: #FF6F59; }
@@ -488,8 +541,9 @@
     </nav>
 
     <div class="flex items-center gap-3">
-      <a href="kontakt.html" class="btn-glow hidden md:inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
-        Zatražite ponudu
+      <a href="kontakt.html" class="btn-glow inline-flex items-center gap-1.5 sm:gap-2 bg-coral text-[#0A0E1A] font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+        <span class="sm:hidden">Ponuda</span>
+        <span class="hidden sm:inline">Zatražite ponudu</span>
       </a>
 
       <button id="navToggle" type="button" aria-label="Otvori izbornik" aria-expanded="false"

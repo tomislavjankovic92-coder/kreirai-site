@@ -38,61 +38,94 @@
   .dark .text-gradient{ color: #FF9478; }
 
   /* ============================================================
-     Glowing-border button (compact icon variant)
-     A thin gradient ring continuously chases around the button's
-     edge, with a tight ambient glow (small radius) that brightens
-     slightly on hover/focus.
+     Glow buttons — premium layered shadow (ambient coral glow +
+     tight contact shadow for real depth), a one-shot diagonal shine
+     that sweeps across on hover/focus (plays only during that
+     transition, not a perpetual animation — no ongoing GPU cost
+     while idle), and a pressed/tap state on :active alone so touch
+     devices — which never trigger :hover — still get feedback.
+     .btn-glow      — full-size CTAs (primary + ghost/secondary)
+     .btn-glow-sm   — compact icon buttons (hamburger)
      ============================================================ */
-  .btn-glow-sm{
+  .btn-glow, .btn-glow-sm{
     position: relative;
     isolation: isolate;
-    box-shadow: 0 0 6px 0 rgba(255,111,89,.28);
-    transition: box-shadow .3s ease, transform .2s ease;
+    overflow: hidden;
+    box-shadow:
+      0 1px 2px 0 rgba(14,21,38,.16),
+      0 0 6px 0 rgba(255,111,89,.28);
+    transition: box-shadow .3s ease, transform .15s ease;
   }
-  .dark .btn-glow-sm{
-    box-shadow: 0 0 8px 0 rgba(255,148,120,.32);
+  .dark .btn-glow, .dark .btn-glow-sm{
+    box-shadow:
+      0 1px 2px 0 rgba(0,0,0,.35),
+      0 0 8px 0 rgba(255,148,120,.32);
   }
+  .btn-glow:hover, .btn-glow:focus-visible,
   .btn-glow-sm:hover, .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 11px 1px rgba(255,111,89,.42);
+    box-shadow:
+      0 8px 20px -6px rgba(14,21,38,.25),
+      0 0 14px 1px rgba(255,111,89,.46);
   }
+  .dark .btn-glow:hover, .dark .btn-glow:focus-visible,
   .dark .btn-glow-sm:hover, .dark .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 14px 2px rgba(255,148,120,.48);
+    box-shadow:
+      0 8px 22px -6px rgba(0,0,0,.45),
+      0 0 16px 2px rgba(255,148,120,.52);
+  }
+  /* Pressed/tap feedback — fires on :active alone (no :hover
+     dependency), so a finger tap on mobile gets the same tactile
+     response a mouse click gets on desktop. */
+  .btn-glow:active, .btn-glow-sm:active{
+    transform: scale(.96);
+    box-shadow:
+      0 1px 3px 0 rgba(14,21,38,.2),
+      0 0 6px 0 rgba(255,111,89,.3);
+  }
+  .dark .btn-glow:active, .dark .btn-glow-sm:active{
+    box-shadow:
+      0 1px 3px 0 rgba(0,0,0,.4),
+      0 0 8px 0 rgba(255,148,120,.34);
   }
 
-  /* Kut se animira kao CSS custom property (Houdini @property), a
-     NE s "transform: rotate()" na cijelom pseudo-elementu — jer bi
-     rotacija cijele maske "zaljuljala" prsten izvan gumba. Ovako se
-     giba samo boja unutar fiksnog, mirnog prstena. */
-  @property --glow-angle{
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
+  /* Soft glass highlight across the top of solid/gradient buttons —
+     a thin light sheen, purely cosmetic, no motion. */
+  .btn-glow::after{
+    content: "";
+    position: absolute;
+    inset: 1.5px;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,.30), transparent 55%);
+    opacity: .55;
+    mix-blend-mode: overlay;
+    pointer-events: none;
   }
-  .btn-glow-sm::before{
+  .dark .btn-glow::after{ opacity: .22; }
+
+  /* One-shot diagonal shine — sweeps across on hover/focus only
+     (the transition itself is the whole animation), so it costs
+     nothing while a button just sits on the page. */
+  .btn-glow::before, .btn-glow-sm::before{
     content: "";
     position: absolute;
     inset: 0;
-    box-sizing: border-box;
-    border-radius: inherit;
-    padding: 1.25px;
-    background: conic-gradient(from var(--glow-angle), transparent 0%, #FF6F59 22%, #FF6F59 45%, transparent 60%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-            mask-composite: exclude;
-    mask-repeat: no-repeat;
-    -webkit-mask-repeat: no-repeat;
-    animation: btn-ring-spin 2.8s linear infinite;
+    background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.55) 48%, transparent 66%);
+    mix-blend-mode: overlay;
+    transform: translateX(-130%);
+    transition: transform .65s cubic-bezier(.2,.7,.2,1);
     pointer-events: none;
   }
-  .dark .btn-glow-sm::before{
-    background: conic-gradient(from var(--glow-angle), transparent 0%, #FF9478 22%, #FF9478 45%, transparent 60%);
+  .dark .btn-glow::before, .dark .btn-glow-sm::before{
+    background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.25) 48%, transparent 66%);
+  }
+  .btn-glow:hover::before, .btn-glow:focus-visible::before,
+  .btn-glow-sm:hover::before, .btn-glow-sm:focus-visible::before{
+    transform: translateX(130%);
   }
 
-  @keyframes btn-ring-spin{ to{ --glow-angle: 360deg; } }
-
   @media (prefers-reduced-motion: reduce){
-    .btn-glow-sm{ transition:none; }
-    .btn-glow-sm::before{ animation:none; }
+    .btn-glow, .btn-glow-sm{ transition:none; }
+    .btn-glow::before, .btn-glow-sm::before{ transition:none; }
   }
 
   /* --- Pull-to-refresh (mobile) --- */
@@ -116,8 +149,14 @@
   header.dark{ background: rgba(8,11,20,.85); border-bottom-color: #232B47; }
 
   /* Koraljna podloga za CTA gumbe/značke (bivši cyan->violet gradient). */
-  .bg-coral{ background-image: none; background-color: #FF6F59; }
-  .dark .bg-coral{ background-color: #FF9478; }
+  .bg-coral{
+    background-image: linear-gradient(135deg, #FF8469, #FF6F59 55%, #F0573F);
+    background-color: #FF6F59;
+  }
+  .dark .bg-coral{
+    background-image: linear-gradient(135deg, #FFAB92, #FF9478 55%, #FF7D5E);
+    background-color: #FF9478;
+  }
 
   /* Koraljna varijanta bivših text-cyan/dark:text-coral oznaka. */
   .text-coral{ color: #FF6F59; }

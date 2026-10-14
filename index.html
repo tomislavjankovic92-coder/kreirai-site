@@ -99,8 +99,14 @@
   /* Jednobojna koraljna podloga za CTA gumbe i "Popularno" značku —
      zamjena za bivši cyan→violet gradient (klase from-cyan/to-violet
      se više ne koriste, ali ostaju definirane u tailwind.css). */
-  .bg-coral{ background-image: none; background-color: #FF6F59; }
-  .dark .bg-coral{ background-color: #FF9478; }
+  .bg-coral{
+    background-image: linear-gradient(135deg, #FF8469, #FF6F59 55%, #F0573F);
+    background-color: #FF6F59;
+  }
+  .dark .bg-coral{
+    background-image: linear-gradient(135deg, #FFAB92, #FF9478 55%, #FF7D5E);
+    background-color: #FF9478;
+  }
 
   /* Koraljna varijanta bivših text-cyan/dark:text-cyan-bright oznaka
      (eyebrow labele, hero tagline overlay) — zamjena za drugu, cyan
@@ -159,6 +165,10 @@
     animation:hero-circuit-flow 5s linear infinite;
   }
   .hero-circuit .trace-pulse.d2{ animation-delay:-2.3s; }
+  .hero-circuit .trace-pulse.d3{ animation-delay:-0.8s; }
+  .hero-circuit .trace-pulse.d4{ animation-delay:-3.6s; }
+  .hero-circuit .trace-pulse.d5{ animation-delay:-1.6s; }
+  .hero-circuit .trace-pulse.d6{ animation-delay:-4.4s; }
   /* Duža iskra koja putuje cijelom vodoravnom "kičmom" preko čitave
      hero sekcije — iza teksta I iza videa, ne samo u jednom klasteru. */
   .hero-circuit .trace-pulse-long{
@@ -169,6 +179,10 @@
     animation:hero-circuit-flow-long 7s linear infinite;
   }
   .hero-circuit .node{ fill:#FF9478; filter:drop-shadow(0 0 4px rgba(255,148,120,.7)); }
+  /* Finije/tiše pozadinske spojnice — gušća mreža (dojam čipa) koja
+     ostaje suptilnija od glavnih klastera i kičme. */
+  .hero-circuit .trace-line.fine{ stroke-opacity:.55; stroke-width:1.1; }
+  .hero-circuit .node.fine{ r:2.4; opacity:.7; }
   @keyframes hero-circuit-flow{ to{ stroke-dashoffset:-520; } }
   @keyframes hero-circuit-flow-long{ to{ stroke-dashoffset:-2260; } }
   @media (prefers-reduced-motion: reduce){
@@ -274,29 +288,54 @@
   .cut-fill-band{ fill:#E1E5F1; }
 
   /* ============================================================
-     Glow buttons — a soft ambient box-shadow glow on hover/focus.
-     (Used to also spin an animated gradient ring; removed for
-     performance — it forced a permanent GPU compositing layer on
-     every button on the page.)
+     Glow buttons — premium layered shadow (ambient coral glow +
+     tight contact shadow for real depth), a one-shot diagonal shine
+     that sweeps across on hover/focus (plays only during that
+     transition, not a perpetual animation — no ongoing GPU cost
+     while idle), and a pressed/tap state on :active alone so touch
+     devices — which never trigger :hover — still get feedback.
      .btn-glow      — full-size CTAs (primary + ghost/secondary)
      .btn-glow-sm   — compact icon buttons (hamburger)
      ============================================================ */
   .btn-glow, .btn-glow-sm{
     position: relative;
     isolation: isolate;
-    box-shadow: 0 0 6px 0 rgba(255,111,89,.28);
-    transition: box-shadow .3s ease, transform .2s ease;
+    overflow: hidden;
+    box-shadow:
+      0 1px 2px 0 rgba(14,21,38,.16),
+      0 0 6px 0 rgba(255,111,89,.28);
+    transition: box-shadow .3s ease, transform .15s ease;
   }
   .dark .btn-glow, .dark .btn-glow-sm{
-    box-shadow: 0 0 8px 0 rgba(255,148,120,.32);
+    box-shadow:
+      0 1px 2px 0 rgba(0,0,0,.35),
+      0 0 8px 0 rgba(255,148,120,.32);
   }
   .btn-glow:hover, .btn-glow:focus-visible,
   .btn-glow-sm:hover, .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 11px 1px rgba(255,111,89,.42);
+    box-shadow:
+      0 8px 20px -6px rgba(14,21,38,.25),
+      0 0 14px 1px rgba(255,111,89,.46);
   }
   .dark .btn-glow:hover, .dark .btn-glow:focus-visible,
   .dark .btn-glow-sm:hover, .dark .btn-glow-sm:focus-visible{
-    box-shadow: 0 0 14px 2px rgba(255,148,120,.48);
+    box-shadow:
+      0 8px 22px -6px rgba(0,0,0,.45),
+      0 0 16px 2px rgba(255,148,120,.52);
+  }
+  /* Pressed/tap feedback — fires on :active alone (no :hover
+     dependency), so a finger tap on mobile gets the same tactile
+     response a mouse click gets on desktop. */
+  .btn-glow:active, .btn-glow-sm:active{
+    transform: scale(.96);
+    box-shadow:
+      0 1px 3px 0 rgba(14,21,38,.2),
+      0 0 6px 0 rgba(255,111,89,.3);
+  }
+  .dark .btn-glow:active, .dark .btn-glow-sm:active{
+    box-shadow:
+      0 1px 3px 0 rgba(0,0,0,.4),
+      0 0 8px 0 rgba(255,148,120,.34);
   }
 
   /* Soft glass highlight across the top of solid/gradient buttons —
@@ -313,8 +352,30 @@
   }
   .dark .btn-glow::after{ opacity: .22; }
 
+  /* One-shot diagonal shine — sweeps across on hover/focus only
+     (the transition itself is the whole animation), so it costs
+     nothing while a button just sits on the page. */
+  .btn-glow::before, .btn-glow-sm::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.55) 48%, transparent 66%);
+    mix-blend-mode: overlay;
+    transform: translateX(-130%);
+    transition: transform .65s cubic-bezier(.2,.7,.2,1);
+    pointer-events: none;
+  }
+  .dark .btn-glow::before, .dark .btn-glow-sm::before{
+    background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.25) 48%, transparent 66%);
+  }
+  .btn-glow:hover::before, .btn-glow:focus-visible::before,
+  .btn-glow-sm:hover::before, .btn-glow-sm:focus-visible::before{
+    transform: translateX(130%);
+  }
+
   @media (prefers-reduced-motion: reduce){
     .btn-glow, .btn-glow-sm{ transition:none; }
+    .btn-glow::before, .btn-glow-sm::before{ transition:none; }
   }
 
   /* ============================================================
@@ -614,6 +675,36 @@
     white-space: nowrap;
   }
 
+  /* Jači "glassy" efekt specifično na cjeniku — veći blur i
+     saturacija, prozirnija podloga i tanka sjajna refleksija pri
+     vrhu kartice. Skalirano samo na #cjenik .glass-panel, da ne
+     dirne glass-panel korišten drugdje (portfolio, FAQ, recenzije,
+     kontakt forma). */
+  #cjenik .glass-panel{
+    background: rgba(255,255,255,.52);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+            backdrop-filter: blur(22px) saturate(170%);
+    box-shadow: inset 0 1px 0 0 rgba(255,255,255,.55), 0 24px 48px -28px rgba(14,21,38,.2);
+  }
+  .dark #cjenik .glass-panel{
+    background: rgba(13,18,36,.38);
+    box-shadow: inset 0 1px 0 0 rgba(255,255,255,.07), 0 24px 48px -28px rgba(0,0,0,.55);
+  }
+  #cjenik .glass-panel::before{
+    content: "";
+    position: absolute; inset: 0; border-radius: inherit;
+    background: linear-gradient(165deg, rgba(255,255,255,.4), transparent 42%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .dark #cjenik .glass-panel::before{
+    background: linear-gradient(165deg, rgba(255,255,255,.14), transparent 42%);
+  }
+  body.is-scrolling #cjenik .glass-panel{
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+  }
+
   /* ============================================================
      Intro — "build u terminalu" (kreirai-intro.js). Klasa ki-intro-on
      se stavlja na <html> PRIJE prvog crtanja (vidi <script> na vrhu
@@ -857,8 +948,9 @@
     </nav>
 
     <div class="flex items-center gap-3">
-      <a href="kontakt.html" class="btn-glow hidden md:inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
-        Zatražite ponudu
+      <a href="kontakt.html" class="btn-glow inline-flex items-center gap-1.5 sm:gap-2 bg-coral text-[#0A0E1A] font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+        <span class="sm:hidden">Ponuda</span>
+        <span class="hidden sm:inline">Zatražite ponudu</span>
       </a>
 
       <button id="navToggle" type="button" aria-label="Otvori izbornik" aria-expanded="false"
@@ -913,31 +1005,67 @@
   <div class="hero-circuit" aria-hidden="true">
     <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
       <g>
-        <!-- Glavna vodoravna "kičma" preko cijele sekcije, rub do ruba —
-             iskra putuje njome iza teksta I iza videa. -->
+        <!-- Tri vodoravne "sabirnice" preko cijele sekcije, rub do ruba —
+             iskre putuju njima iza teksta I iza videa, svaka svojim tempom. -->
+        <path class="trace-line fine" d="M60 150 L1140 150" />
+        <path class="trace-pulse d3" d="M60 150 L1140 150" />
+
         <path class="trace-line" d="M20 350 L1180 350" />
         <path class="trace-pulse-long" d="M20 350 L1180 350" />
+
+        <path class="trace-line fine" d="M60 560 L1140 560" />
+        <path class="trace-pulse d4" d="M60 560 L1140 560" />
 
         <!-- Lijevi klaster (iza teksta) -->
         <path class="trace-line" d="M180 350 L180 190 L340 190" />
         <path class="trace-line" d="M260 350 L260 540 L420 540" />
         <path class="trace-line" d="M360 350 L360 240" />
+        <path class="trace-line fine" d="M120 150 L120 350" />
+        <path class="trace-line fine" d="M220 560 L220 480 L380 480" />
+        <path class="trace-line fine" d="M300 150 L300 100" />
         <path class="trace-pulse" d="M180 350 L180 190 L340 190" />
+        <path class="trace-pulse d5" d="M220 560 L220 480 L380 480" />
         <circle class="node" cx="340" cy="190" r="3.5"/>
         <circle class="node" cx="420" cy="540" r="3.5"/>
         <circle class="node" cx="360" cy="240" r="3.5"/>
+        <circle class="node fine" cx="380" cy="480" r="3"/>
+        <circle class="node fine" cx="120" cy="150" r="3"/>
+        <circle class="node fine" cx="300" cy="100" r="3"/>
 
         <!-- Desni klaster (iza videa) -->
         <path class="trace-line" d="M860 350 L860 190 L1020 190" />
         <path class="trace-line" d="M940 350 L940 540 L1080 540" />
         <path class="trace-line" d="M1040 350 L1040 240" />
+        <path class="trace-line fine" d="M1080 150 L1080 350" />
+        <path class="trace-line fine" d="M980 560 L980 480 L820 480" />
+        <path class="trace-line fine" d="M900 150 L900 100" />
         <path class="trace-pulse d2" d="M940 350 L940 540 L1080 540" />
+        <path class="trace-pulse d6" d="M980 560 L980 480 L820 480" />
         <circle class="node" cx="1020" cy="190" r="3.5"/>
         <circle class="node" cx="1080" cy="540" r="3.5"/>
         <circle class="node" cx="1040" cy="240" r="3.5"/>
+        <circle class="node fine" cx="820" cy="480" r="3"/>
+        <circle class="node fine" cx="1080" cy="150" r="3"/>
+        <circle class="node fine" cx="900" cy="100" r="3"/>
 
-        <!-- Središnji "čip" na sredini kičme -->
+        <!-- Sitnije spojnice preko sredine — gušći dojam mreže/čipa, ali
+             tiše (fine) od glavnih klastera, da ukupni dojam ostane suptilan. -->
+        <path class="trace-line fine" d="M500 150 L500 250" />
+        <path class="trace-line fine" d="M700 150 L700 250" />
+        <path class="trace-line fine" d="M500 560 L500 460" />
+        <path class="trace-line fine" d="M700 560 L700 460" />
+        <circle class="node fine" cx="500" cy="250" r="2.6"/>
+        <circle class="node fine" cx="700" cy="250" r="2.6"/>
+        <circle class="node fine" cx="500" cy="460" r="2.6"/>
+        <circle class="node fine" cx="700" cy="460" r="2.6"/>
+
+        <!-- Središnji "čip" na sredini kičme + manji čipovi na ostalim
+             presjecištima mreže. -->
         <rect x="580" y="330" width="40" height="40" rx="8" fill="none" stroke="rgba(255,148,120,.3)" stroke-width="1.4"/>
+        <rect x="100" y="130" width="24" height="24" rx="6" fill="none" stroke="rgba(255,148,120,.2)" stroke-width="1.1"/>
+        <rect x="1076" y="130" width="24" height="24" rx="6" fill="none" stroke="rgba(255,148,120,.2)" stroke-width="1.1"/>
+        <rect x="480" y="440" width="24" height="24" rx="6" fill="none" stroke="rgba(255,148,120,.2)" stroke-width="1.1"/>
+        <rect x="696" y="440" width="24" height="24" rx="6" fill="none" stroke="rgba(255,148,120,.2)" stroke-width="1.1"/>
       </g>
     </svg>
   </div>
