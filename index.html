@@ -28,22 +28,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-<script>
-  // Set the theme class on <html> as early as possible (before Tailwind
-  // loads / first paint) so there is no flash of the wrong theme.
-  // Dark is the primary/default look; light only applies once the
-  // visitor explicitly picks it (remembered in localStorage).
-  (function () {
-    try {
-      var stored = localStorage.getItem('kreirai-theme');
-      var dark = stored ? stored === 'dark' : true;
-      document.documentElement.classList.toggle('dark', dark);
-    } catch (e) {
-      document.documentElement.classList.add('dark');
-    }
-  })();
-</script>
-
 <link rel="stylesheet" href="tailwind.css">
 
 <style>
@@ -74,13 +58,13 @@
     overflow-x: hidden;
     max-width: 100%;
   }
-  html.dark body{ background:#080B14; color:#EBEFFA; }
+  .dark body{ background:#080B14; color:#EBEFFA; }
 
   .text-gradient{
     background-image: linear-gradient(100deg, #1FB9CC 0%, #FF6F59 85%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  html.dark .text-gradient{
+  .dark .text-gradient{
     background-image: linear-gradient(100deg, #3EE8F5 0%, #FF9478 85%);
   }
 
@@ -102,16 +86,16 @@
     -webkit-mask-image:radial-gradient(circle at 50% 45%, black 0%, transparent 72%);
     mask-image:radial-gradient(circle at 50% 45%, black 0%, transparent 72%);
   }
-  html.dark .hero-grid{
+  .dark .hero-grid{
     background-image:
       linear-gradient(rgba(235,239,250,.05) 1px, transparent 1px),
       linear-gradient(90deg, rgba(235,239,250,.05) 1px, transparent 1px);
   }
 
   .pf-card-2{ background:linear-gradient(135deg, rgba(255,111,89,.16), #fff); }
-  html.dark .pf-card-2{ background:linear-gradient(135deg, rgba(255,148,120,.22), #10162A); }
+  .dark .pf-card-2{ background:linear-gradient(135deg, rgba(255,148,120,.22), #10162A); }
   .pf-card-3{ background:linear-gradient(135deg, rgba(31,185,204,.14), rgba(255,111,89,.12)); }
-  html.dark .pf-card-3{ background:linear-gradient(135deg, rgba(62,232,245,.18), rgba(255,148,120,.16)); }
+  .dark .pf-card-3{ background:linear-gradient(135deg, rgba(62,232,245,.18), rgba(255,148,120,.16)); }
 
   /* --- Scroll-triggered reveal system ---
      Add data-reveal="fade-up | fade-down | fade-left | fade-right | zoom-in"
@@ -169,11 +153,16 @@
   .mobile-nav.open{ max-height:460px; }
 
   .nav-link.is-active{ background:#fff; color:#0E1526; box-shadow:0 1px 2px rgba(14,21,38,.08); }
-  html.dark .nav-link.is-active{ background:#10162A; color:#EBEFFA; box-shadow:0 1px 2px rgba(0,0,0,.35); }
+  .dark .nav-link.is-active{ background:#10162A; color:#EBEFFA; box-shadow:0 1px 2px rgba(0,0,0,.35); }
 
-  .theme-toggle .icon-moon{ display:none; }
-  html.dark .theme-toggle .icon-sun{ display:none; }
-  html.dark .theme-toggle .icon-moon{ display:block; }
+  /* Diagonal "cut" seam where the permanently-dark hero bleeds into
+     the light sections below — purely decorative, sits right after
+     the hero section, never clips real content. */
+  .hero-cut{ position:relative; width:100%; height:44px; margin-top:-1px; pointer-events:none; }
+  .hero-cut svg{ display:block; width:100%; height:100%; }
+  .hero-cut__fill{ fill:#080B14; }
+  .hero-cut__line{ fill:none; stroke:url(#heroCutGrad); stroke-width:2.5; filter:drop-shadow(0 0 5px rgba(47,216,236,.45)); }
+  @media (min-width:640px){ .hero-cut{ height:72px; } }
 
   /* ============================================================
      Glow buttons — a soft ambient box-shadow glow on hover/focus.
@@ -181,7 +170,7 @@
      performance — it forced a permanent GPU compositing layer on
      every button on the page.)
      .btn-glow      — full-size CTAs (primary + ghost/secondary)
-     .btn-glow-sm   — compact icon buttons (theme toggle, hamburger)
+     .btn-glow-sm   — compact icon buttons (hamburger)
      ============================================================ */
   .btn-glow, .btn-glow-sm{
     position: relative;
@@ -189,15 +178,15 @@
     box-shadow: 0 0 6px 0 rgba(31,185,204,.28);
     transition: box-shadow .3s ease, transform .2s ease;
   }
-  html.dark .btn-glow, html.dark .btn-glow-sm{
+  .dark .btn-glow, .dark .btn-glow-sm{
     box-shadow: 0 0 8px 0 rgba(62,232,245,.32);
   }
   .btn-glow:hover, .btn-glow:focus-visible,
   .btn-glow-sm:hover, .btn-glow-sm:focus-visible{
     box-shadow: 0 0 11px 1px rgba(31,185,204,.42);
   }
-  html.dark .btn-glow:hover, html.dark .btn-glow:focus-visible,
-  html.dark .btn-glow-sm:hover, html.dark .btn-glow-sm:focus-visible{
+  .dark .btn-glow:hover, .dark .btn-glow:focus-visible,
+  .dark .btn-glow-sm:hover, .dark .btn-glow-sm:focus-visible{
     box-shadow: 0 0 14px 2px rgba(62,232,245,.48);
   }
 
@@ -213,7 +202,7 @@
     mix-blend-mode: overlay;
     pointer-events: none;
   }
-  html.dark .btn-glow::after{ opacity: .22; }
+  .dark .btn-glow::after{ opacity: .22; }
 
   @media (prefers-reduced-motion: reduce){
     .btn-glow, .btn-glow-sm{ transition:none; }
@@ -232,7 +221,7 @@
   .service-card:hover, .service-card:focus-within{
     box-shadow: 0 0 14px 0px rgba(255,111,89,.06);
   }
-  html.dark .service-card:hover, html.dark .service-card:focus-within{
+  .dark .service-card:hover, .dark .service-card:focus-within{
     box-shadow: 0 0 16px 0px rgba(255,148,120,.08);
   }
   @media (prefers-reduced-motion: reduce){
@@ -291,10 +280,10 @@
     z-index: 70; opacity: 0; pointer-events: none;
     transform: translate(-50%, -60px) rotate(0deg);
   }
-  html.dark #ptr{ background:#10162A; border-color:#232B47; box-shadow: 0 10px 24px -12px rgba(0,0,0,.5); }
+  .dark #ptr{ background:#10162A; border-color:#232B47; box-shadow: 0 10px 24px -12px rgba(0,0,0,.5); }
   #ptr.snap{ transition: transform .25s ease, opacity .25s ease; }
   #ptr svg{ width: 20px; height: 20px; color:#1FB9CC; }
-  html.dark #ptr svg{ color:#3EE8F5; }
+  .dark #ptr svg{ color:#3EE8F5; }
   #ptr.spinning svg{ animation: ptr-spin .7s linear infinite; }
   @keyframes ptr-spin{ to{ transform: rotate(360deg); } }
 
@@ -320,7 +309,7 @@
     -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 78%);
             mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 78%);
   }
-  html.dark body::before{
+  .dark body::before{
     background-image: radial-gradient(rgba(235,239,250,.06) 1px, transparent 1px);
   }
 
@@ -338,7 +327,7 @@
        offset) and paint containment would clip it. */
     contain: layout style;
   }
-  html.dark .glass-panel{
+  .dark .glass-panel{
     background: rgba(13,18,36,.62);
   }
   /* Backdrop-blur is one of the more expensive things a browser paints,
@@ -384,7 +373,7 @@
     width: 52px; height: 2px; border-radius: 2px;
     background: linear-gradient(90deg, #1FB9CC, #FF6F59);
   }
-  html.dark .section-heading::after{
+  .dark .section-heading::after{
     background: linear-gradient(90deg, #3EE8F5, #FF9478);
   }
 
@@ -396,7 +385,7 @@
     border-radius: 7px;
     padding: .3em .65em;
   }
-  html.dark .step-badge{
+  .dark .step-badge{
     border-color: rgba(62,232,245,.3);
     background: rgba(62,232,245,.06);
   }
@@ -408,7 +397,7 @@
     border: 1px solid rgba(255,111,89,.35);
     background: rgba(255,111,89,.06);
   }
-  html.dark .step-num{
+  .dark .step-num{
     border-color: rgba(255,148,120,.32);
     background: rgba(255,148,120,.07);
   }
@@ -422,7 +411,7 @@
     color: #1FB9CC;
     margin-bottom: 1rem;
   }
-  html.dark .icon-badge{
+  .dark .icon-badge{
     border-color: rgba(62,232,245,.3);
     background: rgba(62,232,245,.08);
     color: #3EE8F5;
@@ -437,7 +426,7 @@
     background: linear-gradient(90deg, transparent, rgba(31,185,204,.55), rgba(255,111,89,.55), transparent);
     pointer-events: none;
   }
-  html.dark header::after{
+  .dark header::after{
     background: linear-gradient(90deg, transparent, rgba(62,232,245,.6), rgba(255,148,120,.6), transparent);
   }
   footer{ position: relative; }
@@ -447,7 +436,7 @@
     background: linear-gradient(90deg, transparent, rgba(31,185,204,.5), rgba(255,111,89,.5), transparent);
     pointer-events: none;
   }
-  html.dark footer::before{
+  .dark footer::before{
     background: linear-gradient(90deg, transparent, rgba(62,232,245,.55), rgba(255,148,120,.55), transparent);
   }
 
@@ -462,15 +451,15 @@
   }
   .mark-icon svg{ width: .75rem; height: .75rem; }
   .mark-x{ background: rgba(239,68,68,.10); color: #ef4444; }
-  html.dark .mark-x{ background: rgba(248,113,113,.14); color: #f87171; }
+  .dark .mark-x{ background: rgba(248,113,113,.14); color: #f87171; }
   .mark-ok{ background: rgba(31,185,204,.10); color: #1FB9CC; }
-  html.dark .mark-ok{ background: rgba(62,232,245,.14); color: #3EE8F5; }
+  .dark .mark-ok{ background: rgba(62,232,245,.14); color: #3EE8F5; }
 
   .compare-win{
     border: 1.5px solid rgba(255,111,89,.4);
     box-shadow: 0 20px 44px -28px rgba(255,111,89,.35);
   }
-  html.dark .compare-win{
+  .dark .compare-win{
     border-color: rgba(255,148,120,.4);
     box-shadow: 0 20px 44px -28px rgba(255,148,120,.4);
   }
@@ -487,7 +476,7 @@
     box-shadow: 0 0 0 6px var(--vs-ring, #F2F4FA);
     z-index: 10;
   }
-  html.dark .compare-vs{ --vs-ring: #080B14; }
+  .dark .compare-vs{ --vs-ring: #080B14; }
   @media (min-width: 768px){
     .compare-vs{ display: flex; }
   }
@@ -543,7 +532,7 @@
 <!-- ============================================================
      NAV
      ============================================================ -->
-<header class="fixed top-0 inset-x-0 z-50 bg-[#F2F4FA]/85 dark:bg-[#080B14]/85 backdrop-blur border-b border-line dark:border-[#232B47] transition-colors">
+<header class="dark fixed top-0 inset-x-0 z-50 bg-[#F2F4FA]/85 dark:bg-[#080B14]/85 backdrop-blur border-b border-line dark:border-[#232B47] transition-colors">
   <div id="headerBar" class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
     <a href="index.html" class="font-serif font-semibold text-xl tracking-tight shrink-0">
       <span class="text-ink dark:text-[#EBEFFA]">Kreir</span><span class="text-gradient">AI</span>
@@ -559,12 +548,6 @@
     </nav>
 
     <div class="flex items-center gap-3">
-      <button id="themeToggle" type="button" aria-label="Promijeni izgled stranice"
-        class="theme-toggle btn-glow-sm w-10 h-10 shrink-0 flex items-center justify-center rounded-lg border border-[#12182D] bg-[#12182D] text-[#F5F7FC] dark:bg-transparent dark:border-[#232B47] dark:text-[#EBEFFA] hover:opacity-90 transition">
-        <svg class="icon-sun w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.4M12 19.1v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2 12h2.4M19.6 12H22M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7"/></svg>
-        <svg class="icon-moon w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/></svg>
-      </button>
-
       <a href="kontakt.html" class="btn-glow hidden md:inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
         Zatražite ponudu
       </a>
@@ -616,7 +599,8 @@
 
 <main>
 
-<section id="pocetna" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 grid md:grid-cols-2 gap-14 items-center">
+<section id="pocetna" class="dark scroll-mt-20 relative bg-[#080B14] text-[#EBEFFA]">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 grid md:grid-cols-2 gap-14 items-center">
     <div data-reveal="fade-right">
       <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-cyan dark:text-cyan-bright">— AI Studio</p>
       <h1 class="font-serif font-semibold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mt-4">
@@ -647,6 +631,23 @@
         <p id="heroTaglineOverlay" class="hero-tagline-overlay absolute inset-x-0 bottom-[14%] font-mono font-semibold text-[10px] sm:text-sm tracking-[0.28em] uppercase text-cyan-bright text-center pointer-events-none" aria-hidden="true">Ideja u posao.</p>
       </div>
     </div>
+  </div>
+
+  <!-- Presjek — dijagonalni rez gdje tamna hero pozadina prelazi u
+       svjetlu pozadinu ostatka stranice. Čisto dekorativno; ne dira
+       stvarni sadržaj hero sekcije iznad. -->
+  <div class="hero-cut" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="heroCutGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#2FD8EC"/>
+          <stop offset="100%" stop-color="#9B7BFF"/>
+        </linearGradient>
+      </defs>
+      <path class="hero-cut__fill" d="M0,0 L1440,0 L1440,64 L0,16 Z"></path>
+      <path class="hero-cut__line" d="M0,16 L1440,64"></path>
+    </svg>
+  </div>
   </section>
 
   <!-- ============================================================
@@ -924,8 +925,7 @@
 <script>
   // ============================================================
   // JS — mobile nav toggle + scroll progress bar + scroll-reveal
-  // + light/dark theme toggle (vanilla JS, IntersectionObserver —
-  // no external animation lib)
+  // (vanilla JS, IntersectionObserver — no external animation lib)
   // ============================================================
   (function () {
     // ---- mobile nav ----
@@ -948,18 +948,6 @@
     navToggle.addEventListener('click', toggleMobileNav);
     document.querySelectorAll('.mob-link').forEach(function (link) {
       link.addEventListener('click', closeMobileNav);
-    });
-
-    // ---- light / dark theme toggle ----
-    // <html>'s "dark" class is already set by the tiny boot script at
-    // the top of <head> (before first paint). This just handles the
-    // click + persists the choice; dark is the default/primary theme.
-    var THEME_KEY = 'kreirai-theme';
-    document.querySelectorAll('.theme-toggle').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var isDark = document.documentElement.classList.toggle('dark');
-        try { localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light'); } catch (e) {}
-      });
     });
 
     // ---- pause the always-on glow-ring animations while scrolling ----
@@ -1147,7 +1135,7 @@
 <div id="cookieBanner" hidden role="dialog" aria-live="polite" aria-label="Obavijest o kolačićima" class="fixed inset-x-0 bottom-0 z-50 border-t border-line dark:border-[#232B47] bg-white dark:bg-[#10162A] shadow-soft transition-colors">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex flex-col sm:flex-row items-center gap-4">
     <p class="text-sm text-inksoft dark:text-[#A6AFC9] flex-1">
-      Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje odabira tamne/svijetle teme). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html" class="underline hover:text-cyan dark:hover:text-cyan-bright">Pravilima privatnosti</a>.
+      Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje vašeg pristanka na ovu obavijest). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html" class="underline hover:text-cyan dark:hover:text-cyan-bright">Pravilima privatnosti</a>.
     </p>
     <button id="cookieAccept" type="button" class="btn-glow shrink-0 inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
       Slažem se
