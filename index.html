@@ -254,6 +254,17 @@
   .hero-cut__line{ fill:none; stroke:url(#heroCutGrad); stroke-width:2.5; filter:drop-shadow(0 0 5px rgba(255,148,120,.45)); }
   @media (min-width:640px){ .hero-cut{ height:72px; } }
 
+  /* Isti dijagonalni "rez" tehnika, ponovno iskorištena oko "Razlika"
+     sekcije: gornji rez ulazi suprotnim smjerom (zrcaljeno od heroja),
+     donji rez izlazi istim smjerom kao hero-cut. Oba dijele isti
+     koraljni gradijent (url(#heroCutGrad), definiran jednom gore u
+     heroju — ID je jedinstven u cijelom dokumentu pa ga oba reza
+     mogu ponovno koristiti). Pozadina same "Razlika" sekcije je
+     malo tamnija nijansa svijetle podloge (#E1E5F1 umjesto #F2F4FA)
+     da traka vizualno dođe do izražaja. */
+  #razlika{ background:#E1E5F1; }
+  .cut-fill-band{ fill:#E1E5F1; }
+
   /* ============================================================
      Glow buttons — a soft ambient box-shadow glow on hover/focus.
      (Used to also spin an animated gradient ring; removed for
@@ -967,8 +978,8 @@
           <stop offset="100%" stop-color="#FF9478"/>
         </linearGradient>
       </defs>
-      <path class="hero-cut__fill" d="M0,0 L1440,0 L1440,64 L0,16 Z"></path>
-      <path class="hero-cut__line" d="M0,16 L1440,64"></path>
+      <path class="hero-cut__fill" d="M0,0 L1440,0 L1440,84 L0,6 Z"></path>
+      <path class="hero-cut__line" d="M0,6 L1440,84"></path>
     </svg>
   </div>
 
@@ -1031,8 +1042,21 @@
 
   <!-- ============================================================
        RAZLIKA — usporedba tipične web stranice i KreirAI stranice
+
+       Puna širina s dvije dijagonalne "kosine" (ista tehnika kao
+       hero-cut): gornja ulazi suprotnim smjerom od heroja, donja
+       izlazi istim smjerom kao hero-cut. Pozadina trake je malo
+       tamnija nijansa (#E1E5F1) da se odvoji od ostatka stranice.
        ============================================================ -->
-  <section id="razlika" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
+  <div class="hero-cut" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path class="cut-fill-band" d="M0,90 L1440,90 L1440,6 L0,84 Z"></path>
+      <path class="hero-cut__line" d="M0,84 L1440,6"></path>
+    </svg>
+  </div>
+
+  <section id="razlika" class="scroll-mt-20 relative">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-20 pb-20 sm:pb-28">
     <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
       <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-coral">Razlika</p>
       <h2 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
@@ -1097,7 +1121,15 @@
         </ul>
       </div>
     </div>
+  </div>
   </section>
+
+  <div class="hero-cut" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path class="cut-fill-band" d="M0,0 L1440,0 L1440,84 L0,6 Z"></path>
+      <path class="hero-cut__line" d="M0,6 L1440,84"></path>
+    </svg>
+  </div>
 
   <!-- ============================================================
        CJENIK — paketi za izradu web stranice
