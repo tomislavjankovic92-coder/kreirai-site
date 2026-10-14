@@ -372,8 +372,12 @@
      malo tamnija nijansa svijetle podloge (#E1E5F1 umjesto #F2F4FA)
      da traka vizualno dođe do izražaja. */
   #razlika{ background:#E1E5F1; }
-  #recenzije{ background:#E1E5F1; }
+  #recenzije{ background:#080B14; color:#EBEFFA; }
+  /* Google zvjezdice — arbitrarna Tailwind klasa nije u kompiliranom
+     tailwind.css, pa boju postavljamo ovdje. */
+  .text-\[\#FBBC05\]{ color:#FBBC05; }
   .cut-fill-band{ fill:#E1E5F1; }
+  .cut-fill-band.cut-fill-dark{ fill:#080B14; }
 
   /* ============================================================
      Glow buttons — premium layered shadow (ambient coral glow +
@@ -674,6 +678,9 @@
   /* Eyebrow labels ("Usluge", "Portfolio"...) get a small glowing
      status dot — a quiet HUD/console cue rather than plain text. */
   .eyebrow{ display: inline-flex; align-items: center; gap: .55em; }
+  /* centrirani eyebrow uvijek u svom redu (inače stane u isti red
+     s kratkim inline-block naslovom, npr. "Što kažu klijenti.") */
+  .eyebrow.justify-center{ display: flex; }
   .eyebrow::before{
     content: "";
     width: 6px; height: 6px; border-radius: 50%;
@@ -1152,21 +1159,7 @@
 <section id="pocetna" class="dark scroll-mt-20 relative bg-[#080B14] text-[#EBEFFA]">
   <canvas class="hero-field" aria-hidden="true"></canvas>
   <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 grid md:grid-cols-2 gap-14 items-center">
-    <div data-reveal="fade-right">
-      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-coral">— AI Studio</p>
-      <h1 class="font-serif font-semibold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mt-4">
-        Od ideje do <span class="text-gradient">gotovog proizvoda</span>, uz pomoć umjetne inteligencije.
-      </h1>
-      <p class="mt-5 text-inksoft dark:text-[#A6AFC9] text-lg max-w-[44ch]">
-        KreirAI spaja alate umjetne inteligencije i ljudsku reviziju kako bismo aplikacije, web stranice i oglasne kampanje isporučili brže, ali bez žrtvovanja kvalitete izrade.
-      </p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href="kontakt.html" class="btn-glow btn-premium-glow inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-6 py-3.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">Zatražite ponudu</a>
-        <a href="usluge.html" class="btn-glow btn-premium-glow btn-premium-glow--ghost inline-flex items-center gap-2 border border-[#12182D] bg-[#12182D] text-[#F5F7FC] dark:bg-transparent dark:border-[#232B47] dark:text-[#EBEFFA] font-bold text-sm px-6 py-3.5 rounded-full hover:bg-[#1F2745] dark:hover:bg-[#161D34] transition">Pogledajte usluge</a>
-      </div>
-    </div>
-
-    <div data-reveal="zoom-in" data-reveal-delay="150" class="relative md:self-stretch md:flex md:flex-col">
+    <div data-reveal="zoom-in" class="relative md:self-stretch md:flex md:flex-col">
       <div class="hero-stage relative rounded-3xl overflow-hidden aspect-[2/1] max-w-[420px] sm:max-w-[480px] mx-auto md:max-w-none md:w-full md:aspect-auto md:flex-1 transition-colors">
         <div class="hero-grid absolute inset-0"></div>
         <div class="hero-logo-mask">
@@ -1180,6 +1173,20 @@
           ></video>
         </div>
         <p id="heroTaglineOverlay" class="hero-tagline-overlay absolute inset-x-0 bottom-[14%] font-mono font-semibold text-[10px] sm:text-sm tracking-[0.28em] uppercase text-coral text-center pointer-events-none" aria-hidden="true">Ideja u posao.</p>
+      </div>
+    </div>
+
+    <div data-reveal="fade-left" data-reveal-delay="120">
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-coral">— AI Studio</p>
+      <h1 class="font-serif font-semibold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mt-4">
+        Od ideje do <span class="text-gradient">gotovog proizvoda</span>, uz pomoć umjetne inteligencije.
+      </h1>
+      <p class="mt-5 text-inksoft dark:text-[#A6AFC9] text-lg max-w-[44ch]">
+        KreirAI spaja alate umjetne inteligencije i ljudsku reviziju kako bismo aplikacije, web stranice i oglasne kampanje isporučili brže, ali bez žrtvovanja kvalitete izrade.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="kontakt.html" class="btn-glow btn-premium-glow inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-6 py-3.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">Zatražite ponudu</a>
+        <a href="usluge.html" class="btn-glow btn-premium-glow btn-premium-glow--ghost inline-flex items-center gap-2 border border-[#12182D] bg-[#12182D] text-[#F5F7FC] dark:bg-transparent dark:border-[#232B47] dark:text-[#EBEFFA] font-bold text-sm px-6 py-3.5 rounded-full hover:bg-[#1F2745] dark:hover:bg-[#161D34] transition">Pogledajte usluge</a>
       </div>
     </div>
   </div>
@@ -1475,12 +1482,12 @@
   </section>
 
   <!-- Dekorativna kosina iznad Recenzija — suprotan smjer od heroja
-       (isti "/" nagib kao gornji rez Razlike), ista malo tamnija
-       pozadina (#E1E5F1) koja se bez prekida nastavlja do podnožja;
-       dno sekcije ostaje netaknuto. -->
+       (isti "/" nagib kao gornji rez Razlike), ista tamna pozadina
+       kao hero sekcija (#080B14) koja se bez prekida nastavlja do
+       podnožja; dno sekcije ostaje netaknuto. -->
   <div class="hero-cut" aria-hidden="true">
     <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
-      <path class="cut-fill-band" d="M0,90 L1440,90 L1440,6 L0,84 Z"></path>
+      <path class="cut-fill-band cut-fill-dark" d="M0,90 L1440,90 L1440,6 L0,84 Z"></path>
       <path class="hero-cut__line" d="M0,84 L1440,6"></path>
     </svg>
   </div>
@@ -1488,7 +1495,7 @@
   <!-- ============================================================
        RECENZIJE — Google recenzije klijenata
        ============================================================ -->
-  <section id="recenzije" class="scroll-mt-20 relative">
+  <section id="recenzije" class="dark scroll-mt-20 relative text-[#EBEFFA]">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-20 pb-20 sm:pb-28">
     <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
       <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-coral">Recenzije</p>
