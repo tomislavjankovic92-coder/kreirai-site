@@ -250,78 +250,122 @@
   @media (min-width:640px){ .hero-cut{ height:72px; } }
 
   /* ============================================================
-     Traka usluga koja se vrti u krug, malo odvojena ispod hero
-     kosine — beskonačni "marquee": sadržaj je dupliciran u DOM-u,
-     a CSS animacija pomiče cijelu traku za točno -50% njene
-     ukupne širine, tako da druga (identična) kopija bez prekida
-     nastavi tamo gdje je prva "izašla" — petlja se nikad ne
-     primijeti. Pauzira se na hover/fokus/scroll i poštuje
-     reduced-motion.
+     TRAKA USLUGA — beskonačni "marquee" (sadržaj dupliciran u DOM-u,
+     animacija pomiče traku za točno -50%, pa se petlja ne primijeti).
+     Cijela traka (pozadina + tekst) zarotirana je za isti nagib kao
+     hero kosina i privučena tik uz nju.
 
-     Cijela traka (pozadina, rubovi I tekst zajedno) je zarotirana
-     za isti nagib kao dijagonala hero-cut-a iznad (kazaljka sata,
-     niže lijevo → dublje desno), umjesto starog clip-path
-     paralelograma — tako se i tekst unutra naginje, ne samo rub
-     trake. ".services-ticker-wrap" je omotač s overflow:hidden i
-     tamnom pozadinom koja hvata rotirane rubove trake bez
-     "probijanja" u sekcije iznad/ispod, i drži malu razmaku od
-     hero kosine. ============================================================ */
+     Izgled: koraljno "staklo" — prozirni koraljni gradijent s
+     backdrop-blur, gornji bijeli rub-odsjaj, gornja polovica sa
+     sjajnim "glazurom" (::before), polagani odsjaj svjetla koji
+     povremeno prijeđe trakom (::after) i mekani koraljni sjaj ispod.
+     Tamni tekst (dobar kontrast na koraljnoj) s blagim reljefom,
+     bijele ✦ zvjezdice kao razdjelnici. Traka je šira od ekrana pa
+     njeni krajevi (ni pod nagibom) nikad ne ulaze u kadar.
+     Pauzira se na hover/fokus/scroll, poštuje reduced-motion.
+     ============================================================ */
   .services-ticker-wrap{
+    --tk-pull: -66px;
     position: relative;
+    z-index: 1;
     overflow: hidden;
-    margin-top: 28px;
-    height: 80px;
+    margin-top: var(--tk-pull);
+    margin-bottom: -48px;
+    height: 180px;
     display: flex;
     align-items: center;
+    pointer-events: none;
   }
   @media (min-width:640px){
-    .services-ticker-wrap{ margin-top: 40px; height: 128px; }
+    .services-ticker-wrap{ --tk-pull: -108px; height: 260px; margin-bottom: -65px; }
   }
   .services-ticker{
     position: relative;
-    width: 106%;
-    margin-left: -3%;
+    width: 120%;
+    margin-left: -10%;
+    flex: none;
     overflow: hidden;
-    background: #0A0E1A;
-    border-top: 1px solid rgba(255,148,120,.18);
-    border-bottom: 1px solid rgba(255,148,120,.18);
-    transform: rotate(2.5deg);
+    pointer-events: auto;
+    background:
+      linear-gradient(100deg, rgba(255,150,122,.88) 0%, rgba(255,111,89,.80) 45%, rgba(240,87,63,.86) 100%);
+    -webkit-backdrop-filter: blur(16px) saturate(170%);
+            backdrop-filter: blur(16px) saturate(170%);
+    border-top: 1px solid rgba(255,255,255,.65);
+    border-bottom: 1px solid rgba(150,38,20,.35);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.35),
+      inset 0 -10px 22px -12px rgba(140,30,12,.35),
+      0 18px 32px -16px rgba(255,111,89,.6),
+      0 6px 12px -8px rgba(120,30,15,.32);
+    transform: rotate(var(--tk-angle, 2.5deg));
     transform-origin: center center;
   }
-  .services-ticker::before, .services-ticker::after{
+  /* staklena "glazura" — sjajna gornja polovica */
+  .services-ticker::before{
     content: "";
-    position: absolute; top: 0; bottom: 0; width: 64px; z-index: 2;
+    position: absolute; inset: 0; z-index: 1;
     pointer-events: none;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,.42) 0%,
+      rgba(255,255,255,.14) 38%,
+      rgba(255,255,255,0) 52%,
+      rgba(255,255,255,0) 80%,
+      rgba(255,255,255,.10) 100%);
   }
-  .services-ticker::before{ left: 0; background: linear-gradient(90deg, #0A0E1A, transparent); }
-  .services-ticker::after{ right: 0; background: linear-gradient(270deg, #0A0E1A, transparent); }
+  /* polagani odsjaj svjetla koji prelazi preko trake */
+  .services-ticker::after{
+    content: "";
+    position: absolute; top: -20%; bottom: -20%; left: 0; width: 22%; z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,.0) 20%, rgba(255,255,255,.38) 50%, rgba(255,255,255,0) 80%, transparent 100%);
+    transform: translateX(-120%) skewX(-18deg);
+    animation: services-ticker-shine 7.5s cubic-bezier(.45,.05,.25,1) infinite;
+  }
+  @keyframes services-ticker-shine{
+    0%   { transform: translateX(-120%) skewX(-18deg); }
+    55%  { transform: translateX(560%)  skewX(-18deg); }
+    100% { transform: translateX(560%)  skewX(-18deg); }
+  }
   .services-ticker__track{
+    position: relative; z-index: 2;
     display: flex;
     align-items: center;
-    gap: 1rem;
     white-space: nowrap;
     width: max-content;
-    padding: .9rem 0;
-    animation: services-ticker-scroll 32s linear infinite;
+    padding: 1.35rem 0;
+    animation: services-ticker-scroll 40s linear infinite;
   }
+  @media (min-width:640px){ .services-ticker__track{ padding: 1.75rem 0; } }
   .services-ticker:hover .services-ticker__track,
   .services-ticker:focus-within .services-ticker__track{
     animation-play-state: paused;
   }
-  body.is-scrolling .services-ticker__track{ animation-play-state: paused; }
+  body.is-scrolling .services-ticker__track,
+  body.is-scrolling .services-ticker::after{ animation-play-state: paused; }
   @keyframes services-ticker-scroll{ to{ transform: translateX(-50%); } }
   .services-ticker__item{
-    display: inline-flex; align-items: center; gap: .55em;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .72rem;
-    letter-spacing: .09em;
+    display: inline-flex; align-items: center;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 1.45rem;
+    line-height: 1.1;
+    letter-spacing: .04em;
     text-transform: uppercase;
-    color: #A6AFC9;
+    color: #1A0F14;
+    text-shadow: 0 1px 0 rgba(255,255,255,.28);
   }
-  .services-ticker__item svg{ width: .9em; height: .9em; color: #FF9478; flex: none; }
-  .services-ticker__dot{ color: #FF9478; font-size: .55rem; }
+  @media (min-width:640px){ .services-ticker__item{ font-size: 1.85rem; } }
+  .services-ticker__dot{
+    display: inline-block;
+    padding: 0 .9em;
+    font-size: 1.05rem;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255,255,255,.85), 0 0 22px rgba(255,220,205,.6);
+  }
+  @media (min-width:640px){ .services-ticker__dot{ font-size: 1.3rem; padding: 0 1.1em; } }
   @media (prefers-reduced-motion: reduce){
-    .services-ticker__track{ animation: none; }
+    .services-ticker__track, .services-ticker::after{ animation: none; }
+    .services-ticker::after{ display: none; }
   }
   .sr-only{
     position: absolute; width: 1px; height: 1px;
@@ -1176,32 +1220,28 @@
        ============================================================ -->
   <div class="services-ticker-wrap">
   <div class="services-ticker">
-    <p class="sr-only">Usluge: Web stranice za 10 dana, Web i mobilne aplikacije, Brendiranje uz AI, Hosting i podrška 24/7, SEO optimizacija, Jednokratno ili mjesečno.</p>
+    <p class="sr-only">Usluge: Web stranice za 10 dana, Web i mobilne aplikacije, Hosting i podrška 24/7, SEO optimizacija, Jednokratno ili mjesečno.</p>
     <div class="services-ticker__track" aria-hidden="true">
       <span class="services-ticker__item">Web stranice za 10 dana</span>
-      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">Web i mobilne aplikacije</span>
-      <span class="services-ticker__dot">•</span>
-      <span class="services-ticker__item">Brendiranje uz AI</span>
-      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">Hosting i podrška 24/7</span>
-      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">SEO optimizacija</span>
-      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">Jednokratno ili mjesečno</span>
-      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">Web stranice za 10 dana</span>
-      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">Web i mobilne aplikacije</span>
-      <span class="services-ticker__dot">•</span>
-      <span class="services-ticker__item">Brendiranje uz AI</span>
-      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">Hosting i podrška 24/7</span>
-      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">SEO optimizacija</span>
-      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">Jednokratno ili mjesečno</span>
-      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__dot">✦</span>
     </div>
   </div>
   </div>
@@ -1747,6 +1787,24 @@
       try { localStorage.setItem(KEY, '1'); } catch (e) {}
       banner.hidden = true;
     });
+  })();
+</script>
+<script>
+  /* Kut trake usluga = stvarni kut hero kosine. SVG kosine je rastegnut
+     (preserveAspectRatio="none"), pa joj se nagib mijenja sa širinom
+     ekrana — ovdje ga izračunamo i predamo traci kao --tk-angle. */
+  (function () {
+    var cut = document.querySelector('#pocetna ~ .hero-cut');
+    var wrap = document.querySelector('.services-ticker-wrap');
+    if (!cut || !wrap) return;
+    function setAngle() {
+      var r = cut.getBoundingClientRect();
+      if (!r.width) return;
+      var deg = Math.atan((78 / 90 * r.height) / r.width) * 180 / Math.PI;
+      wrap.style.setProperty('--tk-angle', deg.toFixed(3) + 'deg');
+    }
+    setAngle();
+    window.addEventListener('resize', setAngle);
   })();
 </script>
 <script>
