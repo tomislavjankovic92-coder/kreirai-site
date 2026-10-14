@@ -3,12 +3,12 @@
   <tvrtka>KreirAI</tvrtka>
   <web>kreirai.hr</web>
   <valuta>EUR</valuta>
-  <azurirano>2026-10-03</azurirano>
+  <azurirano>2026-10-14</azurirano>
 
   <paket id="jednokratno">
     <naziv>Jednokratno</naziv>
     <tipNaplate>jednokratno</tipNaplate>
-    <cijena>1500</cijena>
+    <cijena>1000</cijena>
     <cijenaOpis>Jednokratno plaćanje</cijenaOpis>
     <istaknuto>false</istaknuto>
     <znacajke>
@@ -22,7 +22,7 @@
   <paket id="standardna">
     <naziv>Standardna</naziv>
     <tipNaplate>mjesecno</tipNaplate>
-    <cijena>120</cijena>
+    <cijena>90</cijena>
     <cijenaOpis>Mjesečno</cijenaOpis>
     <istaknuto>true</istaknuto>
     <oznaka>Popularno</oznaka>
