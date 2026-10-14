@@ -155,6 +155,19 @@
   .nav-link.is-active{ background:#fff; color:#0E1526; box-shadow:0 1px 2px rgba(14,21,38,.08); }
   .dark .nav-link.is-active{ background:#10162A; color:#EBEFFA; box-shadow:0 1px 2px rgba(0,0,0,.35); }
 
+  /* Header and hero (#pocetna) are meant to stay permanently in the
+     "dark" look and both carry class="dark" so every descendant's
+     existing dark: utility picks it up correctly — but Tailwind's
+     dark: selector is ":is(.dark *)", a DESCENDANT selector, so it
+     never matches the element that itself carries class="dark" (an
+     element is not its own descendant). That left header's own
+     background/border and #pocetna's own background still on their
+     light values. Forced directly here instead (header.dark to
+     out-specificity its own bg-[#F2F4FA]/85 utility class; #pocetna
+     is an ID selector so it already wins outright). */
+  header.dark{ background: rgba(8,11,20,.85); border-bottom-color: #232B47; }
+  #pocetna{ background: #080B14; color: #EBEFFA; }
+
   /* Diagonal "cut" seam where the permanently-dark hero bleeds into
      the light sections below — purely decorative, sits right after
      the hero section, never clips real content. */
