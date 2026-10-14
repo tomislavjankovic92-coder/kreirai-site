@@ -120,7 +120,7 @@
     var jitter = el('div', 'ki-intro__jitter', stage);
     var win = el('div', 'ki-intro__win', jitter);
     win.innerHTML =
-      '<div class="ki-intro__bar"><span class="ki-intro__dot"></span><span class="ki-intro__dot"></span><span class="ki-intro__dot"></span>' +
+      '<div class="ki-intro__bar">' +
       '<span class="ki-intro__title">kreirai — studio</span></div>' +
       '<div class="ki-intro__body">' +
         '<div class="ki-intro__prompt"><span class="ki-intro__user">studio@kreirai</span><span class="ki-intro__path">~</span><span>$</span>' +

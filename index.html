@@ -946,31 +946,47 @@
     100%{ opacity:0; transform:scale(1.04); }
   }
 
+  /* Pozadina intra = pozadina hero sekcije: ista tamna podloga
+     (#080B14), ista fina mreža piksel-točaka kao "data field" u
+     heroju, s istom mekanom vinjetom prema rubovima, i isti
+     dijagonalni svijetli val koji polako klizi preko mreže. Tako
+     prijelaz intro → stranica izgleda kao da se samo prozor
+     terminala makne, a pozadina ostane ista. */
   .ki-intro__glow{
     position:absolute; inset:0;
-    background:
-      radial-gradient(circle at 50% 42%, rgba(255,148,120,.22), transparent 45%),
-      radial-gradient(circle at 70% 70%, rgba(255,148,120,.16), transparent 55%);
+    background: radial-gradient(ellipse 60% 50% at 50% 45%, rgba(120,150,210,.07), transparent 70%);
+    pointer-events:none;
+  }
+  .ki-intro__grid,
+  .ki-intro__scan{
+    position:absolute; inset:0;
+    background-image: radial-gradient(circle, rgba(168,192,232,1) 0.9px, transparent 1.3px);
+    background-size: 30px 30px;
+    background-position: 15px 15px;
     pointer-events:none;
   }
   .ki-intro__grid{
-    position:absolute; inset:0;
-    background-image:
-      linear-gradient(rgba(235,239,250,.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(235,239,250,.05) 1px, transparent 1px);
-    background-size: 28px 28px;
-    -webkit-mask-image: radial-gradient(circle at 50% 42%, black 0%, transparent 70%);
-    mask-image: radial-gradient(circle at 50% 42%, black 0%, transparent 70%);
-    pointer-events:none;
+    opacity:.12;
+    -webkit-mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%);
+            mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%);
   }
+  /* svjetliji sloj istih točaka, vidljiv samo u uskoj dijagonalnoj
+     traci koja putuje preko ekrana (kao val u heroju) */
   .ki-intro__scan{
-    position:absolute; left:0; right:0; height:2px;
-    background: linear-gradient(90deg, transparent, rgba(255,148,120,.5), transparent);
-    animation: ki-scan 2.6s linear infinite;
-    opacity:.6;
-    pointer-events:none;
+    opacity:.42;
+    -webkit-mask-image: linear-gradient(115deg, transparent 42%, #000 50%, transparent 58%);
+            mask-image: linear-gradient(115deg, transparent 42%, #000 50%, transparent 58%);
+    -webkit-mask-size: 300% 300%;
+            mask-size: 300% 300%;
+    animation: ki-wave 3.4s linear infinite;
   }
-  @keyframes ki-scan{ 0%{ top:-2px; } 100%{ top:100%; } }
+  @keyframes ki-wave{
+    0%  { -webkit-mask-position: 100% 100%; mask-position: 100% 100%; }
+    100%{ -webkit-mask-position: 0% 0%;     mask-position: 0% 0%; }
+  }
+  @media (max-width:640px){
+    .ki-intro__grid, .ki-intro__scan{ background-size:24px 24px; background-position:12px 12px; }
+  }
 
   .ki-intro__stage{
     position:relative; width:100%; height:100%;
@@ -1013,14 +1029,10 @@
     background: rgba(255,255,255,.03);
     border-bottom:1px solid rgba(255,255,255,.06);
   }
-  .ki-intro__dot{ width:.6rem; height:.6rem; border-radius:50%; background:#4B5574; flex:none; }
-  .ki-intro__dot:nth-child(1){ background:#FF5F57; }
-  .ki-intro__dot:nth-child(2){ background:#FEBC2E; }
-  .ki-intro__dot:nth-child(3){ background:#28C840; }
   .ki-intro__title{
     flex:1; text-align:center;
     font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.08em;
-    color:#A6AFC9; margin-right:1.6rem;
+    color:#A6AFC9;
   }
   .ki-intro__body{
     padding: 1.1rem 1.2rem 1.3rem;
