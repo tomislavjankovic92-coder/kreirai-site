@@ -143,50 +143,51 @@
       linear-gradient(90deg, rgba(235,239,250,.05) 1px, transparent 1px);
   }
 
-  /* Suptilna pozadinska animacija u heroju vezana uz kodiranje —
-     nekoliko redova lažnog koda koji se tiho "otipka" (clip-path
-     otkrivanje slijeva na desno), zadrži trenutak, pa iščezne i
-     krene ispočetka, svaki red svojim ritmom. Čisto dekorativno,
-     iza sadržaja (content wrapper ima relative z-10 i uvijek je
-     iznad), preko cijele hero sekcije — i iza teksta i iza videa. */
-  .hero-code-bg{
+  /* Circuit-trace pozadinska animacija u heroju — čišća, namjerna
+     kompozicija (glavna "kičma" + dvije simetrične sabirnice + po
+     jedan jasan klaster grana lijevo/desno + dva centralna spojnika),
+     bez gustog "comb" teksturalnog ispunjenja koje je prije djelovalo
+     zbrda-zdola. Plavo/cyan ton (ne koraljan) da se ne stapa sa
+     koraljnim slovima/tekstom u prednjem planu. Preko cijele hero
+     sekcije — iza teksta I iza videa (content wrapper ima relative
+     z-10 i uvijek je iznad). */
+  .hero-circuit{
     position:absolute; inset:0; z-index:0; pointer-events:none;
-    overflow:hidden;
-    opacity:.8;
+    opacity:.6;
   }
-  .hero-code-line{
-    position:absolute;
-    font-family:'JetBrains Mono', monospace;
-    font-size:.78rem;
-    white-space:pre;
-    color:rgba(166,175,201,.5);
-    clip-path:inset(0 100% 0 0);
-    animation:hero-code-type 11s ease-in-out infinite;
+  .hero-circuit svg{ display:block; width:100%; height:100%; }
+  .hero-circuit .trace-line{
+    fill:none; stroke:rgba(148,178,214,.36); stroke-width:1.5;
+    stroke-linecap:round; stroke-linejoin:round;
   }
-  .hero-code-line .kw{ color:rgba(255,148,120,.85); }
-  .hero-code-line::after{
-    content:"|";
-    margin-left:.15em;
-    color:rgba(255,148,120,.8);
-    animation:hero-code-cursor 1s steps(2) infinite;
+  .hero-circuit .trace-line.fine{ stroke-opacity:.6; stroke-width:1.1; }
+  .hero-circuit .trace-pulse{
+    fill:none; stroke:#7DD3FC; stroke-width:2;
+    stroke-linecap:round; stroke-linejoin:round;
+    stroke-dasharray:6 220;
+    filter:drop-shadow(0 0 4px rgba(125,211,252,.75));
+    animation:hero-circuit-flow 5s linear infinite;
   }
-  @keyframes hero-code-type{
-    0%{ clip-path:inset(0 100% 0 0); opacity:0; }
-    6%{ opacity:1; }
-    38%{ clip-path:inset(0 0% 0 0); }
-    74%{ clip-path:inset(0 0% 0 0); opacity:1; }
-    88%{ opacity:0; clip-path:inset(0 0% 0 0); }
-    100%{ clip-path:inset(0 100% 0 0); opacity:0; }
+  .hero-circuit .trace-pulse.d2{ animation-delay:-1.6s; }
+  .hero-circuit .trace-pulse.d3{ animation-delay:-3.2s; }
+  .hero-circuit .trace-pulse.d4{ animation-delay:-0.8s; }
+  /* Duža iskra koja putuje cijelom vodoravnom "kičmom" preko čitave
+     hero sekcije — iza teksta I iza videa, ne samo u jednom klasteru. */
+  .hero-circuit .trace-pulse-long{
+    fill:none; stroke:#7DD3FC; stroke-width:2;
+    stroke-linecap:round; stroke-linejoin:round;
+    stroke-dasharray:60 2200;
+    filter:drop-shadow(0 0 4px rgba(125,211,252,.75));
+    animation:hero-circuit-flow-long 7s linear infinite;
   }
-  @keyframes hero-code-cursor{ 50%{ opacity:0; } }
+  .hero-circuit .node{ fill:#7DD3FC; filter:drop-shadow(0 0 4px rgba(125,211,252,.7)); }
+  .hero-circuit .node.fine{ r:2.4; opacity:.75; }
+  @keyframes hero-circuit-flow{ to{ stroke-dashoffset:-520; } }
+  @keyframes hero-circuit-flow-long{ to{ stroke-dashoffset:-2260; } }
   @media (prefers-reduced-motion: reduce){
-    .hero-code-line{ animation:none; clip-path:inset(0 0% 0 0); opacity:.4; }
-    .hero-code-line::after{ animation:none; }
+    .hero-circuit .trace-pulse, .hero-circuit .trace-pulse-long{ animation:none; stroke-dasharray:none; opacity:.35; }
   }
-  @media (max-width:640px){
-    .hero-code-bg{ opacity:.55; }
-    .hero-code-line.hide-mobile{ display:none; }
-  }
+  @media (max-width:640px){ .hero-circuit{ opacity:.42; } }
 
   .pf-card-2{ background:linear-gradient(135deg, rgba(255,111,89,.16), #fff); }
   .dark .pf-card-2{ background:linear-gradient(135deg, rgba(255,148,120,.22), #10162A); }
@@ -248,8 +249,8 @@
   .mobile-nav{ max-height:0; overflow:hidden; transition: max-height .3s ease; }
   .mobile-nav.open{ max-height:460px; }
 
-  .nav-link.is-active{ background:#fff; color:#0E1526; box-shadow:0 1px 2px rgba(14,21,38,.08); }
-  .dark .nav-link.is-active{ background:#10162A; color:#EBEFFA; box-shadow:0 1px 2px rgba(0,0,0,.35); }
+  .nav-link.is-active{ background:#fff; color:#FF6F59; box-shadow:0 1px 2px rgba(14,21,38,.08); }
+  .dark .nav-link.is-active{ background:#10162A; color:#FF9478; box-shadow:0 1px 2px rgba(0,0,0,.35); }
 
   /* Header and hero (#pocetna) are meant to stay permanently in the
      "dark" look and both carry class="dark" so every descendant's
@@ -274,24 +275,43 @@
   @media (min-width:640px){ .hero-cut{ height:72px; } }
 
   /* ============================================================
-     Traka usluga koja se vrti u krug, odmah ispod hero kosine —
-     beskonačni "marquee": sadržaj je dupliciran u DOM-u, a CSS
-     animacija pomiče cijelu traku za točno -50% njene ukupne
-     širine, tako da druga (identična) kopija bez prekida nastavi
-     tamo gdje je prva "izašla" — petlja se nikad ne primijeti.
-     Pauzira se na hover/fokus/scroll i poštuje reduced-motion.
-     ============================================================ */
+     Traka usluga koja se vrti u krug, malo odvojena ispod hero
+     kosine — beskonačni "marquee": sadržaj je dupliciran u DOM-u,
+     a CSS animacija pomiče cijelu traku za točno -50% njene
+     ukupne širine, tako da druga (identična) kopija bez prekida
+     nastavi tamo gdje je prva "izašla" — petlja se nikad ne
+     primijeti. Pauzira se na hover/fokus/scroll i poštuje
+     reduced-motion.
+
+     Cijela traka (pozadina, rubovi I tekst zajedno) je zarotirana
+     za isti nagib kao dijagonala hero-cut-a iznad (kazaljka sata,
+     niže lijevo → dublje desno), umjesto starog clip-path
+     paralelograma — tako se i tekst unutra naginje, ne samo rub
+     trake. ".services-ticker-wrap" je omotač s overflow:hidden i
+     tamnom pozadinom koja hvata rotirane rubove trake bez
+     "probijanja" u sekcije iznad/ispod, i drži malu razmaku od
+     hero kosine. ============================================================ */
+  .services-ticker-wrap{
+    position: relative;
+    overflow: hidden;
+    margin-top: 28px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+  }
+  @media (min-width:640px){
+    .services-ticker-wrap{ margin-top: 40px; height: 128px; }
+  }
   .services-ticker{
     position: relative;
+    width: 106%;
+    margin-left: -3%;
     overflow: hidden;
     background: #0A0E1A;
     border-top: 1px solid rgba(255,148,120,.18);
     border-bottom: 1px solid rgba(255,148,120,.18);
-    /* Blagi paralelogram — gornji i donji rub trake idu u istom
-       smjeru/nagibu kao dijagonala hero-cut-a iznad (nižе lijevo,
-       dublje desno), tako da traka vizualno nastavlja istu kosinu
-       umjesto da je ravna vodoravna traka. */
-    clip-path: polygon(0 0, 100% 10px, 100% 100%, 0 calc(100% - 10px));
+    transform: rotate(2.5deg);
+    transform-origin: center center;
   }
   .services-ticker::before, .services-ticker::after{
     content: "";
@@ -1121,15 +1141,42 @@
 <main>
 
 <section id="pocetna" class="dark scroll-mt-20 relative bg-[#080B14] text-[#EBEFFA]">
-  <div class="hero-code-bg" aria-hidden="true">
-    <div class="hero-code-line" style="top:9%; left:4%; animation-delay:0s;"><span class="kw">const</span> ideja = <span class="kw">new</span> Ideja();</div>
-    <div class="hero-code-line" style="top:22%; left:7%; animation-delay:1.8s;"><span class="kw">function</span> izradi(stranica) {</div>
-    <div class="hero-code-line hide-mobile" style="top:35%; left:10%; animation-delay:3.6s;">  <span class="kw">return</span> ai.ubrzaj(stranica);</div>
-    <div class="hero-code-line" style="top:48%; left:5%; animation-delay:5.4s;">}</div>
-    <div class="hero-code-line hide-mobile" style="top:16%; left:58%; animation-delay:0.9s;">app.<span class="kw">use</span>(ljudskaRevizija);</div>
-    <div class="hero-code-line" style="top:30%; left:62%; animation-delay:2.7s;">deploy(projekt, { brzo: <span class="kw">true</span> });</div>
-    <div class="hero-code-line hide-mobile" style="top:63%; left:57%; animation-delay:4.5s;"><span class="kw">export default</span> KreirAI;</div>
-    <div class="hero-code-line" style="top:76%; left:61%; animation-delay:6.3s;">// isporuka za 10 dana</div>
+  <div class="hero-circuit" aria-hidden="true">
+    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+      <g>
+        <!-- glavna kičma -->
+        <path class="trace-line" d="M20 350 L1180 350"/>
+        <path class="trace-pulse-long" d="M20 350 L1180 350"/>
+        <!-- dvije simetrične sabirnice -->
+        <path class="trace-line" d="M100 180 L1100 180"/>
+        <path class="trace-pulse" d="M100 180 L1100 180"/>
+        <path class="trace-line" d="M100 520 L1100 520"/>
+        <path class="trace-pulse d2" d="M100 520 L1100 520"/>
+        <!-- lijevi klaster grana -->
+        <path class="trace-line" d="M180 350 L180 180 L320 180"/>
+        <path class="trace-pulse d3" d="M180 350 L180 180 L320 180"/>
+        <path class="trace-line" d="M280 350 L280 520 L420 520"/>
+        <path class="trace-line fine" d="M100 180 L100 520"/>
+        <rect class="trace-line" x="300" y="160" width="26" height="26" rx="4" fill="none"/>
+        <!-- desni klaster grana (zrcalno) -->
+        <path class="trace-line" d="M1020 350 L1020 180 L880 180"/>
+        <path class="trace-pulse d4" d="M1020 350 L1020 180 L880 180"/>
+        <path class="trace-line" d="M920 350 L920 520 L780 520"/>
+        <path class="trace-line fine" d="M1100 180 L1100 520"/>
+        <rect class="trace-line" x="874" y="160" width="26" height="26" rx="4" fill="none"/>
+        <!-- središnji spojnici -->
+        <path class="trace-line fine" d="M550 180 L550 350"/>
+        <path class="trace-line fine" d="M650 350 L650 520"/>
+        <rect class="trace-line" x="580" y="330" width="40" height="40" rx="8" fill="none"/>
+        <!-- čvorovi -->
+        <circle class="node" cx="320" cy="180" r="4"/>
+        <circle class="node" cx="420" cy="520" r="4"/>
+        <circle class="node" cx="880" cy="180" r="4"/>
+        <circle class="node" cx="780" cy="520" r="4"/>
+        <circle class="node fine" cx="180" cy="350" r="2.4"/>
+        <circle class="node fine" cx="1020" cy="350" r="2.4"/>
+      </g>
+    </svg>
   </div>
   <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 grid md:grid-cols-2 gap-14 items-center">
     <div data-reveal="fade-right">
@@ -1188,6 +1235,7 @@
        loop se vrti u krug (sadržaj dupliciran 2x za besprijekornu
        petlju preko transform: translateX(-50%)).
        ============================================================ -->
+  <div class="services-ticker-wrap">
   <div class="services-ticker">
     <p class="sr-only">Usluge: Web stranice za 10 dana, Web i mobilne aplikacije, Brendiranje uz AI, Hosting i podrška 24/7, SEO optimizacija, Jednokratno ili mjesečno.</p>
     <div class="services-ticker__track" aria-hidden="true">
@@ -1216,6 +1264,7 @@
       <span class="services-ticker__item">Jednokratno ili mjesečno</span>
       <span class="services-ticker__dot">•</span>
     </div>
+  </div>
   </div>
 
   <!-- ============================================================
