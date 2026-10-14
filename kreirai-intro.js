@@ -118,7 +118,11 @@
 
     var stage = el('div', 'ki-intro__stage', root);
     var jitter = el('div', 'ki-intro__jitter', stage);
-    var win = el('div', 'ki-intro__win', jitter);
+    // okvir s koraljnim obrubom i animiranom "kometom" (CSS u index.html)
+    var frame = el('div', 'ki-intro__frame', jitter);
+    el('span', 'ki-intro__frameglow', frame);
+    var win = el('div', 'ki-intro__win', frame);
+    el('span', 'ki-intro__ring', frame);
     win.innerHTML =
       '<div class="ki-intro__bar">' +
       '<span class="ki-intro__title">kreirai — studio</span></div>' +

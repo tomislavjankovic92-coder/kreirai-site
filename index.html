@@ -1014,29 +1014,76 @@
     75%{ transform:translate(.3px,.3px); }
   }
 
+  /* Okvir prozora — isti koraljni obrub s kometom kao oko hero
+     videa (koristi isti @property --hs-angle i keyframes
+     hero-frame-spin), samo malo brži jer intro kratko traje. */
+  .ki-intro__frame{
+    position:relative;
+    border-radius:18px;
+    isolation:isolate;
+    animation: hero-frame-spin 4.5s linear infinite;
+  }
+  .ki-intro__ring,
+  .ki-intro__frameglow::before{
+    content:"";
+    position:absolute;
+    border-radius:inherit;
+    pointer-events:none;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  .ki-intro__ring{
+    inset:0; z-index:3;
+    padding:1.5px;
+    background: conic-gradient(from var(--hs-angle),
+      rgba(255,111,89,.36) 0deg,
+      rgba(255,111,89,.36) 230deg,
+      rgba(255,148,120,.72) 300deg,
+      #FFE6DD 350deg,
+      rgba(255,111,89,.36) 358deg);
+  }
+  .ki-intro__frameglow{
+    position:absolute; inset:-3px; z-index:0;
+    border-radius:21px;
+    pointer-events:none;
+    filter:blur(10px);
+    opacity:.9;
+  }
+  .ki-intro__frameglow::before{
+    inset:0;
+    padding:5px;
+    background: conic-gradient(from var(--hs-angle),
+      transparent 0deg,
+      transparent 250deg,
+      rgba(255,111,89,.55) 310deg,
+      rgba(255,180,160,.95) 350deg,
+      transparent 358deg);
+  }
   .ki-intro__win{
-    width:min(560px,92vw);
-    background: rgba(13,18,36,.88);
-    border:1px solid rgba(255,148,120,.22);
-    border-radius:14px;
+    position:relative; z-index:1;
+    width:min(700px,92vw);
+    background: rgba(13,18,36,.9);
+    border:0;
+    border-radius:18px;
     box-shadow: 0 30px 80px -24px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.03) inset;
     overflow:hidden;
     backdrop-filter: blur(6px);
   }
   .ki-intro__bar{
     display:flex; align-items:center; gap:.5rem;
-    padding:.65rem .9rem;
+    padding:.85rem 1.1rem;
     background: rgba(255,255,255,.03);
     border-bottom:1px solid rgba(255,255,255,.06);
   }
   .ki-intro__title{
     flex:1; text-align:center;
-    font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.08em;
+    font-family:'JetBrains Mono',monospace; font-size:.78rem; letter-spacing:.08em;
     color:#A6AFC9;
   }
   .ki-intro__body{
-    padding: 1.1rem 1.2rem 1.3rem;
-    font-family:'JetBrains Mono',monospace; font-size:.82rem; line-height:1.6;
+    padding: 1.5rem 1.7rem 1.75rem;
+    font-family:'JetBrains Mono',monospace; font-size:.98rem; line-height:1.6;
     color:#EBEFFA;
   }
   .ki-intro__prompt{ display:flex; align-items:center; gap:.4em; flex-wrap:wrap; }
@@ -1069,8 +1116,8 @@
   .ki-intro__row b.is-human{ color:#FF9478; }
 
   .ki-intro__progress{ display:flex; align-items:center; gap:.6em; margin-top:1rem; }
-  .ki-intro__progress > span:first-child{ color:#8893AD; font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; }
-  .ki-intro__track{ flex:1; height:5px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
+  .ki-intro__progress > span:first-child{ color:#8893AD; font-size:.82rem; text-transform:uppercase; letter-spacing:.08em; }
+  .ki-intro__track{ flex:1; height:6px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
   .ki-intro__fill{
     display:block; height:100%; width:0; border-radius:inherit;
     background: #FF9478; /* bio cyan→violet gradient, sad jednobojni koralj */
@@ -1078,16 +1125,16 @@
     animation-delay: var(--ki-bar);
   }
   @keyframes ki-fill{ from{width:0} to{width:100%} }
-  .ki-intro__pct{ color:#8893AD; font-size:.72rem; font-variant-numeric:tabular-nums; }
+  .ki-intro__pct{ color:#8893AD; font-size:.82rem; font-variant-numeric:tabular-nums; }
 
   .ki-intro__done{
     opacity:0; display:flex; align-items:baseline; gap:.6em; margin-top:1.3rem;
     animation: ki-fade-in .5s ease-out forwards; animation-delay: var(--ki-done);
   }
-  .ki-intro__mark{ font-family:'Inter Tight','Inter',system-ui,sans-serif; letter-spacing:-.02em; font-weight:700; font-size:1.5rem; }
+  .ki-intro__mark{ font-family:'Inter Tight','Inter',system-ui,sans-serif; letter-spacing:-.02em; font-weight:700; font-size:1.9rem; }
   .ki-k{ color:#EBEFFA; }
   .ki-ai{ color:#FF9478; } /* isti koralj kao .dark .text-gradient — intro je uvijek na tamnoj podlozi */
-  .ki-intro__sub{ color:#8893AD; font-size:.74rem; }
+  .ki-intro__sub{ color:#8893AD; font-size:.86rem; }
 
   .ki-intro__strip{
     position:absolute; left:0; right:0;
@@ -1125,8 +1172,9 @@
 
   @media (max-width:640px){
     .ki-intro__win{ width:94vw; }
-    .ki-intro__body{ font-size:.74rem; padding:.9rem 1rem 1.1rem; }
-    .ki-intro__mark{ font-size:1.25rem; }
+    .ki-intro__body{ font-size:.8rem; padding:1.1rem 1.1rem 1.3rem; }
+    .ki-intro__mark{ font-size:1.45rem; }
+    .ki-intro__sub{ font-size:.74rem; }
   }
 
 </style>
