@@ -143,51 +143,26 @@
       linear-gradient(90deg, rgba(235,239,250,.05) 1px, transparent 1px);
   }
 
-  /* Circuit-trace pozadinska animacija u heroju — čišća, namjerna
-     kompozicija (glavna "kičma" + dvije simetrične sabirnice + po
-     jedan jasan klaster grana lijevo/desno + dva centralna spojnika),
-     bez gustog "comb" teksturalnog ispunjenja koje je prije djelovalo
-     zbrda-zdola. Plavo/cyan ton (ne koraljan) da se ne stapa sa
-     koraljnim slovima/tekstom u prednjem planu. Preko cijele hero
-     sekcije — iza teksta I iza videa (content wrapper ima relative
-     z-10 i uvijek je iznad). */
-  .hero-circuit{
+  /* ============================================================
+     HERO "DATA FIELD" — pozadinska canvas animacija u programerskom
+     štihu: fina mreža piksel-točaka (kao IDE / terminal raster) preko
+     koje polako klizi dijagonalni "scan" val. Na grebenu vala
+     povremeno se "dekodiraju" pojedinačni znakovi ({ } < / > 0 1 …)
+     — kratko trepere nasumičnim znakovima pa se smire i nestanu.
+     Pod kursorom se mreža blago osvijetli (spotlight).
+     Hladni plavo-bijeli ton (ne koraljni) da se ne stapa s naslovom;
+     maska blijedi rubove i dno prema kosini. Pauzira se kad hero
+     nije vidljiv, kad je tab u pozadini i tijekom scrolla;
+     reduced-motion dobije jedan statični kadar.
+     ============================================================ */
+  .hero-field{
     position:absolute; inset:0; z-index:0; pointer-events:none;
-    opacity:.6;
+    display:block; width:100%; height:100%;
+    opacity:0; transition:opacity 1.2s ease;
+    -webkit-mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%);
+            mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%);
   }
-  .hero-circuit svg{ display:block; width:100%; height:100%; }
-  .hero-circuit .trace-line{
-    fill:none; stroke:rgba(148,178,214,.36); stroke-width:1.5;
-    stroke-linecap:round; stroke-linejoin:round;
-  }
-  .hero-circuit .trace-line.fine{ stroke-opacity:.6; stroke-width:1.1; }
-  .hero-circuit .trace-pulse{
-    fill:none; stroke:#7DD3FC; stroke-width:2;
-    stroke-linecap:round; stroke-linejoin:round;
-    stroke-dasharray:6 220;
-    filter:drop-shadow(0 0 4px rgba(125,211,252,.75));
-    animation:hero-circuit-flow 5s linear infinite;
-  }
-  .hero-circuit .trace-pulse.d2{ animation-delay:-1.6s; }
-  .hero-circuit .trace-pulse.d3{ animation-delay:-3.2s; }
-  .hero-circuit .trace-pulse.d4{ animation-delay:-0.8s; }
-  /* Duža iskra koja putuje cijelom vodoravnom "kičmom" preko čitave
-     hero sekcije — iza teksta I iza videa, ne samo u jednom klasteru. */
-  .hero-circuit .trace-pulse-long{
-    fill:none; stroke:#7DD3FC; stroke-width:2;
-    stroke-linecap:round; stroke-linejoin:round;
-    stroke-dasharray:60 2200;
-    filter:drop-shadow(0 0 4px rgba(125,211,252,.75));
-    animation:hero-circuit-flow-long 7s linear infinite;
-  }
-  .hero-circuit .node{ fill:#7DD3FC; filter:drop-shadow(0 0 4px rgba(125,211,252,.7)); }
-  .hero-circuit .node.fine{ r:2.4; opacity:.75; }
-  @keyframes hero-circuit-flow{ to{ stroke-dashoffset:-520; } }
-  @keyframes hero-circuit-flow-long{ to{ stroke-dashoffset:-2260; } }
-  @media (prefers-reduced-motion: reduce){
-    .hero-circuit .trace-pulse, .hero-circuit .trace-pulse-long{ animation:none; stroke-dasharray:none; opacity:.35; }
-  }
-  @media (max-width:640px){ .hero-circuit{ opacity:.42; } }
+  .hero-field.is-ready{ opacity:1; }
 
   .pf-card-2{ background:linear-gradient(135deg, rgba(255,111,89,.16), #fff); }
   .dark .pf-card-2{ background:linear-gradient(135deg, rgba(255,148,120,.22), #10162A); }
@@ -1141,43 +1116,7 @@
 <main>
 
 <section id="pocetna" class="dark scroll-mt-20 relative bg-[#080B14] text-[#EBEFFA]">
-  <div class="hero-circuit" aria-hidden="true">
-    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
-      <g>
-        <!-- glavna kičma -->
-        <path class="trace-line" d="M20 350 L1180 350"/>
-        <path class="trace-pulse-long" d="M20 350 L1180 350"/>
-        <!-- dvije simetrične sabirnice -->
-        <path class="trace-line" d="M100 180 L1100 180"/>
-        <path class="trace-pulse" d="M100 180 L1100 180"/>
-        <path class="trace-line" d="M100 520 L1100 520"/>
-        <path class="trace-pulse d2" d="M100 520 L1100 520"/>
-        <!-- lijevi klaster grana -->
-        <path class="trace-line" d="M180 350 L180 180 L320 180"/>
-        <path class="trace-pulse d3" d="M180 350 L180 180 L320 180"/>
-        <path class="trace-line" d="M280 350 L280 520 L420 520"/>
-        <path class="trace-line fine" d="M100 180 L100 520"/>
-        <rect class="trace-line" x="300" y="160" width="26" height="26" rx="4" fill="none"/>
-        <!-- desni klaster grana (zrcalno) -->
-        <path class="trace-line" d="M1020 350 L1020 180 L880 180"/>
-        <path class="trace-pulse d4" d="M1020 350 L1020 180 L880 180"/>
-        <path class="trace-line" d="M920 350 L920 520 L780 520"/>
-        <path class="trace-line fine" d="M1100 180 L1100 520"/>
-        <rect class="trace-line" x="874" y="160" width="26" height="26" rx="4" fill="none"/>
-        <!-- središnji spojnici -->
-        <path class="trace-line fine" d="M550 180 L550 350"/>
-        <path class="trace-line fine" d="M650 350 L650 520"/>
-        <rect class="trace-line" x="580" y="330" width="40" height="40" rx="8" fill="none"/>
-        <!-- čvorovi -->
-        <circle class="node" cx="320" cy="180" r="4"/>
-        <circle class="node" cx="420" cy="520" r="4"/>
-        <circle class="node" cx="880" cy="180" r="4"/>
-        <circle class="node" cx="780" cy="520" r="4"/>
-        <circle class="node fine" cx="180" cy="350" r="2.4"/>
-        <circle class="node fine" cx="1020" cy="350" r="2.4"/>
-      </g>
-    </svg>
-  </div>
+  <canvas class="hero-field" aria-hidden="true"></canvas>
   <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 grid md:grid-cols-2 gap-14 items-center">
     <div data-reveal="fade-right">
       <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-coral">— AI Studio</p>
@@ -1808,6 +1747,137 @@
       try { localStorage.setItem(KEY, '1'); } catch (e) {}
       banner.hidden = true;
     });
+  })();
+</script>
+<script>
+  /* Hero "data field" — vidi komentar uz .hero-field u CSS-u. */
+  (function () {
+    var canvas = document.querySelector('.hero-field');
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var section = canvas.parentElement;
+    var body = document.body;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var GLYPHS = '01{}<>/;=()[]*+#$&_'.split('');
+    var W = 0, H = 0, gap = 30, cols = 0, rows = 0, mobile = false;
+    var glyphs = [], occupied = {};
+    var mouse = { x: -9999, y: -9999, tx: -9999, ty: -9999, a: 0, ta: 0 };
+    var t0 = performance.now(), raf = 0, inView = true, lastFrame = 0;
+
+    function resize() {
+      var r = section.getBoundingClientRect();
+      W = Math.max(1, r.width); H = Math.max(1, r.height);
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      mobile = W < 640;
+      gap = mobile ? 24 : 30;
+      cols = Math.ceil(W / gap); rows = Math.ceil(H / gap);
+      glyphs = []; occupied = {};
+      if (reduce) draw(t0 + 4000);
+    }
+
+    // Dijagonalni val: uzak, mekan greben koji polako putuje
+    // s gornjeg-lijevog prema donjem-desnom kutu.
+    function wave(x, y, t) {
+      var v = Math.sin((x * 0.55 + y) * 0.0105 - t * 0.75);
+      v = v > 0 ? v : 0;
+      return v * v * v * v; // ^4 → mekan, uzak svijetli greben
+    }
+
+    function spawn(now, t) {
+      var max = mobile ? 8 : 20, tries = 0;
+      while (glyphs.length < max && tries++ < 12) {
+        var i = (Math.random() * cols) | 0, j = (Math.random() * rows) | 0, key = i + ',' + j;
+        if (occupied[key]) continue;
+        var w = wave(i * gap + gap / 2, j * gap + gap / 2, t);
+        if (w < 0.35 && Math.random() > 0.04) continue; // većinom na grebenu vala
+        var g = { i: i, j: j, key: key, ch: GLYPHS[(Math.random() * GLYPHS.length) | 0],
+                  born: now, life: 2400 + Math.random() * 2600, accent: Math.random() < 0.22 };
+        glyphs.push(g); occupied[key] = g;
+        break;
+      }
+    }
+
+    function draw(now) {
+      var t = (now - t0) / 1000;
+      ctx.clearRect(0, 0, W, H);
+
+      // glatko praćenje kursora
+      mouse.x += (mouse.tx - mouse.x) * 0.12;
+      mouse.y += (mouse.ty - mouse.y) * 0.12;
+      mouse.a += (mouse.ta - mouse.a) * 0.06;
+      var R = 190, R2 = R * R;
+
+      // 1) piksel-mreža
+      ctx.fillStyle = 'rgb(168,192,232)';
+      for (var j = 0; j < rows; j++) {
+        var y = j * gap + gap / 2;
+        for (var i = 0; i < cols; i++) {
+          if (occupied[i + ',' + j]) continue;
+          var x = i * gap + gap / 2;
+          var w = wave(x, y, t);
+          var a = 0.085 + w * 0.42;
+          if (mouse.a > 0.01) {
+            var dx = x - mouse.x, dy = y - mouse.y, d2 = dx * dx + dy * dy;
+            if (d2 < R2) { var f = 1 - Math.sqrt(d2) / R; a += f * f * 0.5 * mouse.a; }
+          }
+          var sz = 1.3 + w * 1.1;
+          ctx.globalAlpha = a > 0.65 ? 0.65 : a;
+          ctx.fillRect(x - sz / 2, y - sz / 2, sz, sz);
+        }
+      }
+
+      // 2) znakovi koji se "dekodiraju" na grebenu vala
+      ctx.font = '500 ' + (mobile ? 11 : 12.5) + 'px "JetBrains Mono", ui-monospace, monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      for (var k = glyphs.length - 1; k >= 0; k--) {
+        var g = glyphs[k], age = now - g.born;
+        if (age > g.life) { delete occupied[g.key]; glyphs.splice(k, 1); continue; }
+        var p = age / g.life;
+        var env = p < 0.18 ? p / 0.18 : (p > 0.7 ? (1 - p) / 0.3 : 1); // fade in → drži → fade out
+        var ch = age < 420 ? GLYPHS[(Math.random() * GLYPHS.length) | 0] : g.ch; // decode treperenje
+        var gx = g.i * gap + gap / 2, gy = g.j * gap + gap / 2;
+        ctx.globalAlpha = env * (g.accent ? 0.78 : 0.42);
+        ctx.fillStyle = g.accent ? '#8FDBFF' : '#C9D6F2';
+        if (g.accent) { ctx.shadowColor = 'rgba(125,211,252,.65)'; ctx.shadowBlur = 8; }
+        ctx.fillText(ch, gx, gy + 0.5);
+        ctx.shadowBlur = 0;
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function loop(now) {
+      raf = requestAnimationFrame(loop);
+      if (!inView || document.hidden || body.classList.contains('is-scrolling')) return;
+      if (mobile && now - lastFrame < 32) return; // ~30fps na mobitelu
+      lastFrame = now;
+      if (Math.random() < (mobile ? 0.07 : 0.12)) spawn(now, (now - t0) / 1000);
+      draw(now);
+    }
+
+    resize();
+    canvas.classList.add('is-ready');
+    if (reduce) { draw(t0 + 4000); return; }
+
+    if ('ResizeObserver' in window) { new ResizeObserver(resize).observe(section); }
+    else { window.addEventListener('resize', resize); }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { inView = en[0].isIntersecting; }, { threshold: 0 }).observe(section);
+    }
+
+    if (window.matchMedia && window.matchMedia('(hover: hover)').matches) {
+      section.addEventListener('pointermove', function (e) {
+        var r = section.getBoundingClientRect();
+        mouse.tx = e.clientX - r.left; mouse.ty = e.clientY - r.top;
+        if (mouse.a < 0.01) { mouse.x = mouse.tx; mouse.y = mouse.ty; }
+        mouse.ta = 1;
+      });
+      section.addEventListener('pointerleave', function () { mouse.ta = 0; });
+    }
+
+    raf = requestAnimationFrame(loop);
   })();
 </script>
 <script src="kreirai-intro.js"></script>
