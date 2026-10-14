@@ -150,11 +150,11 @@
      relative z-10 da uvijek ostane iznad). */
   .hero-circuit{
     position:absolute; inset:0; z-index:0; pointer-events:none;
-    opacity:.5;
+    opacity:.68;
   }
   .hero-circuit svg{ display:block; width:100%; height:100%; }
   .hero-circuit .trace-line{
-    fill:none; stroke:rgba(255,148,120,.22); stroke-width:1.5;
+    fill:none; stroke:rgba(255,148,120,.34); stroke-width:1.5;
     stroke-linecap:round; stroke-linejoin:round;
   }
   .hero-circuit .trace-pulse{
@@ -169,6 +169,12 @@
   .hero-circuit .trace-pulse.d4{ animation-delay:-3.6s; }
   .hero-circuit .trace-pulse.d5{ animation-delay:-1.6s; }
   .hero-circuit .trace-pulse.d6{ animation-delay:-4.4s; }
+  .hero-circuit .trace-pulse.d7{ animation-delay:-0.4s; }
+  .hero-circuit .trace-pulse.d8{ animation-delay:-2.9s; }
+  .hero-circuit .trace-pulse.d9{ animation-delay:-1.1s; }
+  .hero-circuit .trace-pulse.d10{ animation-delay:-3.3s; }
+  .hero-circuit .trace-pulse.d11{ animation-delay:-4.8s; }
+  .hero-circuit .trace-pulse.d12{ animation-delay:-2.0s; }
   /* Duža iskra koja putuje cijelom vodoravnom "kičmom" preko čitave
      hero sekcije — iza teksta I iza videa, ne samo u jednom klasteru. */
   .hero-circuit .trace-pulse-long{
@@ -181,14 +187,14 @@
   .hero-circuit .node{ fill:#FF9478; filter:drop-shadow(0 0 4px rgba(255,148,120,.7)); }
   /* Finije/tiše pozadinske spojnice — gušća mreža (dojam čipa) koja
      ostaje suptilnija od glavnih klastera i kičme. */
-  .hero-circuit .trace-line.fine{ stroke-opacity:.55; stroke-width:1.1; }
-  .hero-circuit .node.fine{ r:2.4; opacity:.7; }
+  .hero-circuit .trace-line.fine{ stroke-opacity:.75; stroke-width:1.1; }
+  .hero-circuit .node.fine{ r:2.4; opacity:.85; }
   @keyframes hero-circuit-flow{ to{ stroke-dashoffset:-520; } }
   @keyframes hero-circuit-flow-long{ to{ stroke-dashoffset:-2260; } }
   @media (prefers-reduced-motion: reduce){
     .hero-circuit .trace-pulse, .hero-circuit .trace-pulse-long{ animation:none; stroke-dasharray:none; opacity:.35; }
   }
-  @media (max-width:640px){ .hero-circuit{ opacity:.32; } }
+  @media (max-width:640px){ .hero-circuit{ opacity:.5; } }
 
   .pf-card-2{ background:linear-gradient(135deg, rgba(255,111,89,.16), #fff); }
   .dark .pf-card-2{ background:linear-gradient(135deg, rgba(255,148,120,.22), #10162A); }
@@ -274,6 +280,62 @@
   .hero-cut__fill{ fill:#080B14; }
   .hero-cut__line{ fill:none; stroke:url(#heroCutGrad); stroke-width:2.5; filter:drop-shadow(0 0 5px rgba(255,148,120,.45)); }
   @media (min-width:640px){ .hero-cut{ height:72px; } }
+
+  /* ============================================================
+     Traka usluga koja se vrti u krug, odmah ispod hero kosine —
+     beskonačni "marquee": sadržaj je dupliciran u DOM-u, a CSS
+     animacija pomiče cijelu traku za točno -50% njene ukupne
+     širine, tako da druga (identična) kopija bez prekida nastavi
+     tamo gdje je prva "izašla" — petlja se nikad ne primijeti.
+     Pauzira se na hover/fokus/scroll i poštuje reduced-motion.
+     ============================================================ */
+  .services-ticker{
+    position: relative;
+    overflow: hidden;
+    background: #0A0E1A;
+    border-top: 1px solid rgba(255,148,120,.18);
+    border-bottom: 1px solid rgba(255,148,120,.18);
+  }
+  .services-ticker::before, .services-ticker::after{
+    content: "";
+    position: absolute; top: 0; bottom: 0; width: 64px; z-index: 2;
+    pointer-events: none;
+  }
+  .services-ticker::before{ left: 0; background: linear-gradient(90deg, #0A0E1A, transparent); }
+  .services-ticker::after{ right: 0; background: linear-gradient(270deg, #0A0E1A, transparent); }
+  .services-ticker__track{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    white-space: nowrap;
+    width: max-content;
+    padding: .9rem 0;
+    animation: services-ticker-scroll 32s linear infinite;
+  }
+  .services-ticker:hover .services-ticker__track,
+  .services-ticker:focus-within .services-ticker__track{
+    animation-play-state: paused;
+  }
+  body.is-scrolling .services-ticker__track{ animation-play-state: paused; }
+  @keyframes services-ticker-scroll{ to{ transform: translateX(-50%); } }
+  .services-ticker__item{
+    display: inline-flex; align-items: center; gap: .55em;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: #A6AFC9;
+  }
+  .services-ticker__item svg{ width: .9em; height: .9em; color: #FF9478; flex: none; }
+  .services-ticker__dot{ color: #FF9478; font-size: .55rem; }
+  @media (prefers-reduced-motion: reduce){
+    .services-ticker__track{ animation: none; }
+  }
+  .sr-only{
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
 
   /* Isti dijagonalni "rez" tehnika, ponovno iskorištena oko "Razlika"
      sekcije: gornji rez ulazi suprotnim smjerom (zrcaljeno od heroja),
@@ -376,6 +438,66 @@
   @media (prefers-reduced-motion: reduce){
     .btn-glow, .btn-glow-sm{ transition:none; }
     .btn-glow::before, .btn-glow-sm::before{ transition:none; }
+  }
+
+  /* ============================================================
+     Extra "flagship" treatment for the hero section's two CTAs and
+     the nav-bar CTA — the first buttons a visitor sees. A slow
+     ambient glow breathes continuously (not just on hover), on top
+     of the sitewide .btn-glow premium treatment above. Paused while
+     actively scrolling (same mechanism used elsewhere on this page)
+     and under reduced-motion, so it never costs more than it's worth.
+     ============================================================ */
+  .btn-premium-glow{
+    animation: btn-premium-breathe 3.4s ease-in-out infinite;
+  }
+  .dark .btn-premium-glow{
+    animation-name: btn-premium-breathe-dark;
+  }
+  @keyframes btn-premium-breathe{
+    0%, 100%{
+      box-shadow:
+        0 1px 2px 0 rgba(14,21,38,.16),
+        0 0 10px 1px rgba(255,111,89,.32);
+    }
+    50%{
+      box-shadow:
+        0 4px 14px -4px rgba(14,21,38,.22),
+        0 0 22px 4px rgba(255,111,89,.52);
+    }
+  }
+  @keyframes btn-premium-breathe-dark{
+    0%, 100%{
+      box-shadow:
+        0 1px 2px 0 rgba(0,0,0,.35),
+        0 0 12px 1px rgba(255,148,120,.36);
+    }
+    50%{
+      box-shadow:
+        0 4px 16px -4px rgba(0,0,0,.4),
+        0 0 26px 5px rgba(255,148,120,.58);
+    }
+  }
+  /* Ghost/secondary variant (dark fill, no coral background) gets a
+     quieter breathing ring instead of the coral ambient glow above,
+     so it doesn't read as a second primary CTA. */
+  .btn-premium-glow--ghost{
+    animation-name: btn-premium-breathe-ghost;
+  }
+  .dark .btn-premium-glow--ghost{
+    animation-name: btn-premium-breathe-ghost-dark;
+  }
+  @keyframes btn-premium-breathe-ghost{
+    0%, 100%{ box-shadow: 0 0 0 1px rgba(255,111,89,.22), 0 1px 2px 0 rgba(14,21,38,.16); }
+    50%{ box-shadow: 0 0 0 1px rgba(255,111,89,.45), 0 4px 14px -4px rgba(14,21,38,.22); }
+  }
+  @keyframes btn-premium-breathe-ghost-dark{
+    0%, 100%{ box-shadow: 0 0 0 1px rgba(255,148,120,.26), 0 1px 2px 0 rgba(0,0,0,.35); }
+    50%{ box-shadow: 0 0 0 1px rgba(255,148,120,.5), 0 4px 16px -4px rgba(0,0,0,.4); }
+  }
+  body.is-scrolling .btn-premium-glow{ animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce){
+    .btn-premium-glow{ animation: none; }
   }
 
   /* ============================================================
@@ -948,7 +1070,7 @@
     </nav>
 
     <div class="flex items-center gap-3">
-      <a href="kontakt.html" class="btn-glow inline-flex items-center gap-1.5 sm:gap-2 bg-coral text-[#0A0E1A] font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+      <a href="kontakt.html" class="btn-glow btn-premium-glow inline-flex items-center gap-1.5 sm:gap-2 bg-coral text-[#0A0E1A] font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
         <span class="sm:hidden">Ponuda</span>
         <span class="hidden sm:inline">Zatražite ponudu</span>
       </a>
@@ -1005,67 +1127,163 @@
   <div class="hero-circuit" aria-hidden="true">
     <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
       <g>
-        <!-- Tri vodoravne "sabirnice" preko cijele sekcije, rub do ruba —
-             iskre putuju njima iza teksta I iza videa, svaka svojim tempom. -->
-        <path class="trace-line fine" d="M60 150 L1140 150" />
-        <path class="trace-pulse d3" d="M60 150 L1140 150" />
-
+        <!-- Sedam vodoravnih "sabirnica" preko cijele sekcije, rub do ruba — iskre putuju njima iza teksta I iza videa, svaka svojim tempom. -->
+        <path class="trace-line fine" d="M60 90 L1140 90" />
+        <path class="trace-pulse d1" d="M60 90 L1140 90" />
+        <path class="trace-line" d="M20 150 L1180 150" />
+        <path class="trace-pulse d2" d="M20 150 L1180 150" />
+        <path class="trace-line fine" d="M80 230 L1120 230" />
+        <path class="trace-pulse d3" d="M80 230 L1120 230" />
         <path class="trace-line" d="M20 350 L1180 350" />
         <path class="trace-pulse-long" d="M20 350 L1180 350" />
-
-        <path class="trace-line fine" d="M60 560 L1140 560" />
-        <path class="trace-pulse d4" d="M60 560 L1140 560" />
-
-        <!-- Lijevi klaster (iza teksta) -->
+        <path class="trace-line fine" d="M80 470 L1120 470" />
+        <path class="trace-pulse d4" d="M80 470 L1120 470" />
+        <path class="trace-line" d="M20 550 L1180 550" />
+        <path class="trace-pulse d5" d="M20 550 L1180 550" />
+        <path class="trace-line fine" d="M60 610 L1140 610" />
+        <path class="trace-pulse d6" d="M60 610 L1140 610" />
+        <!-- Glavne grane — lijevi klaster iza teksta, desni iza videa, centralni stupci kao "data bus". -->
         <path class="trace-line" d="M180 350 L180 190 L340 190" />
+        <path class="trace-pulse d7" d="M180 350 L180 190 L340 190" />
+        <circle class="node" cx="340" cy="190" r="3.2"/>
         <path class="trace-line" d="M260 350 L260 540 L420 540" />
-        <path class="trace-line" d="M360 350 L360 240" />
-        <path class="trace-line fine" d="M120 150 L120 350" />
-        <path class="trace-line fine" d="M220 560 L220 480 L380 480" />
-        <path class="trace-line fine" d="M300 150 L300 100" />
-        <path class="trace-pulse" d="M180 350 L180 190 L340 190" />
-        <path class="trace-pulse d5" d="M220 560 L220 480 L380 480" />
-        <circle class="node" cx="340" cy="190" r="3.5"/>
-        <circle class="node" cx="420" cy="540" r="3.5"/>
-        <circle class="node" cx="360" cy="240" r="3.5"/>
-        <circle class="node fine" cx="380" cy="480" r="3"/>
-        <circle class="node fine" cx="120" cy="150" r="3"/>
-        <circle class="node fine" cx="300" cy="100" r="3"/>
-
-        <!-- Desni klaster (iza videa) -->
-        <path class="trace-line" d="M860 350 L860 190 L1020 190" />
+        <circle class="node" cx="420" cy="540" r="3.2"/>
+        <path class="trace-line" d="M360 350 L360 240 L360 240" />
+        <circle class="node" cx="360" cy="240" r="3.2"/>
+        <path class="trace-line fine" d="M120 150 L120 350 L120 350" />
+        <circle class="node fine" cx="120" cy="350" r="2.6"/>
+        <path class="trace-line fine" d="M220 550 L220 480 L380 480" />
+        <path class="trace-pulse d8" d="M220 550 L220 480 L380 480" />
+        <circle class="node fine" cx="380" cy="480" r="2.6"/>
+        <path class="trace-line fine" d="M300 150 L300 100 L300 100" />
+        <circle class="node fine" cx="300" cy="100" r="2.6"/>
+        <path class="trace-line fine" d="M90 230 L90 150 L90 150" />
+        <circle class="node fine" cx="90" cy="150" r="2.6"/>
+        <path class="trace-line fine" d="M340 470 L340 550 L340 550" />
+        <circle class="node fine" cx="340" cy="550" r="2.6"/>
+        <path class="trace-line fine" d="M400 90 L400 150 L400 150" />
+        <circle class="node fine" cx="400" cy="150" r="2.6"/>
+        <path class="trace-line fine" d="M160 610 L160 550 L160 550" />
+        <circle class="node fine" cx="160" cy="550" r="2.6"/>
+        <path class="trace-line" d="M1020 350 L1020 190 L1020 190" />
+        <circle class="node" cx="1020" cy="190" r="3.2"/>
         <path class="trace-line" d="M940 350 L940 540 L1080 540" />
-        <path class="trace-line" d="M1040 350 L1040 240" />
-        <path class="trace-line fine" d="M1080 150 L1080 350" />
-        <path class="trace-line fine" d="M980 560 L980 480 L820 480" />
-        <path class="trace-line fine" d="M900 150 L900 100" />
-        <path class="trace-pulse d2" d="M940 350 L940 540 L1080 540" />
-        <path class="trace-pulse d6" d="M980 560 L980 480 L820 480" />
-        <circle class="node" cx="1020" cy="190" r="3.5"/>
-        <circle class="node" cx="1080" cy="540" r="3.5"/>
-        <circle class="node" cx="1040" cy="240" r="3.5"/>
-        <circle class="node fine" cx="820" cy="480" r="3"/>
-        <circle class="node fine" cx="1080" cy="150" r="3"/>
-        <circle class="node fine" cx="900" cy="100" r="3"/>
-
-        <!-- Sitnije spojnice preko sredine — gušći dojam mreže/čipa, ali
-             tiše (fine) od glavnih klastera, da ukupni dojam ostane suptilan. -->
-        <path class="trace-line fine" d="M500 150 L500 250" />
-        <path class="trace-line fine" d="M700 150 L700 250" />
-        <path class="trace-line fine" d="M500 560 L500 460" />
-        <path class="trace-line fine" d="M700 560 L700 460" />
-        <circle class="node fine" cx="500" cy="250" r="2.6"/>
-        <circle class="node fine" cx="700" cy="250" r="2.6"/>
-        <circle class="node fine" cx="500" cy="460" r="2.6"/>
-        <circle class="node fine" cx="700" cy="460" r="2.6"/>
-
-        <!-- Središnji "čip" na sredini kičme + manji čipovi na ostalim
-             presjecištima mreže. -->
-        <rect x="580" y="330" width="40" height="40" rx="8" fill="none" stroke="rgba(255,148,120,.3)" stroke-width="1.4"/>
-        <rect x="100" y="130" width="24" height="24" rx="6" fill="none" stroke="rgba(255,148,120,.2)" stroke-width="1.1"/>
-        <rect x="1076" y="130" width="24" height="24" rx="6" fill="none" stroke="rgba(255,148,120,.2)" stroke-width="1.1"/>
-        <rect x="480" y="440" width="24" height="24" rx="6" fill="none" stroke="rgba(255,148,120,.2)" stroke-width="1.1"/>
-        <rect x="696" y="440" width="24" height="24" rx="6" fill="none" stroke="rgba(255,148,120,.2)" stroke-width="1.1"/>
+        <path class="trace-pulse d9" d="M940 350 L940 540 L1080 540" />
+        <circle class="node" cx="1080" cy="540" r="3.2"/>
+        <path class="trace-line" d="M1040 350 L1040 240 L1040 240" />
+        <circle class="node" cx="1040" cy="240" r="3.2"/>
+        <path class="trace-line fine" d="M1080 150 L1080 350 L1080 350" />
+        <circle class="node fine" cx="1080" cy="350" r="2.6"/>
+        <path class="trace-line fine" d="M980 550 L980 480 L820 480" />
+        <path class="trace-pulse d10" d="M980 550 L980 480 L820 480" />
+        <circle class="node fine" cx="820" cy="480" r="2.6"/>
+        <path class="trace-line fine" d="M900 150 L900 100 L900 100" />
+        <circle class="node fine" cx="900" cy="100" r="2.6"/>
+        <path class="trace-line fine" d="M1110 230 L1110 150 L1110 150" />
+        <circle class="node fine" cx="1110" cy="150" r="2.6"/>
+        <path class="trace-line fine" d="M860 470 L860 550 L860 550" />
+        <circle class="node fine" cx="860" cy="550" r="2.6"/>
+        <path class="trace-line fine" d="M800 90 L800 150 L800 150" />
+        <circle class="node fine" cx="800" cy="150" r="2.6"/>
+        <path class="trace-line fine" d="M1040 610 L1040 550 L1040 550" />
+        <circle class="node fine" cx="1040" cy="550" r="2.6"/>
+        <path class="trace-line fine" d="M460 150 L460 250 L460 250" />
+        <circle class="node fine" cx="460" cy="250" r="2.6"/>
+        <path class="trace-line fine" d="M520 150 L520 250 L520 250" />
+        <circle class="node fine" cx="520" cy="250" r="2.6"/>
+        <path class="trace-line fine" d="M580 150 L580 250 L580 250" />
+        <circle class="node fine" cx="580" cy="250" r="2.6"/>
+        <path class="trace-line fine" d="M660 150 L660 250 L660 250" />
+        <circle class="node fine" cx="660" cy="250" r="2.6"/>
+        <path class="trace-line fine" d="M720 150 L720 250 L720 250" />
+        <circle class="node fine" cx="720" cy="250" r="2.6"/>
+        <path class="trace-line fine" d="M460 550 L460 450 L460 450" />
+        <circle class="node fine" cx="460" cy="450" r="2.6"/>
+        <path class="trace-line fine" d="M520 550 L520 450 L520 450" />
+        <circle class="node fine" cx="520" cy="450" r="2.6"/>
+        <path class="trace-line fine" d="M580 550 L580 450 L580 450" />
+        <circle class="node fine" cx="580" cy="450" r="2.6"/>
+        <path class="trace-line fine" d="M660 550 L660 450 L660 450" />
+        <circle class="node fine" cx="660" cy="450" r="2.6"/>
+        <path class="trace-line fine" d="M720 550 L720 450 L720 450" />
+        <circle class="node fine" cx="720" cy="450" r="2.6"/>
+        <path class="trace-line fine" d="M500 90 L500 150 L560 150" />
+        <path class="trace-pulse d11" d="M500 90 L500 150 L560 150" />
+        <circle class="node fine" cx="560" cy="150" r="2.6"/>
+        <path class="trace-line fine" d="M700 610 L700 550 L640 550" />
+        <path class="trace-pulse d12" d="M700 610 L700 550 L640 550" />
+        <circle class="node fine" cx="640" cy="550" r="2.6"/>
+        <!-- Gust "comb" uzorak kratkih poprecnih crtica na rubnim sabirnicama — cisto teksturalno, cini mrezu nedvojbeno gustom. -->
+        <path class="trace-line fine" d="M70 90 L70 68" />
+        <path class="trace-line fine" d="M140 90 L140 68" />
+        <path class="trace-line fine" d="M210 90 L210 68" />
+        <path class="trace-line fine" d="M280 90 L280 68" />
+        <path class="trace-line fine" d="M350 90 L350 68" />
+        <path class="trace-line fine" d="M420 90 L420 68" />
+        <path class="trace-line fine" d="M490 90 L490 68" />
+        <path class="trace-line fine" d="M560 90 L560 68" />
+        <path class="trace-line fine" d="M630 90 L630 68" />
+        <path class="trace-line fine" d="M700 90 L700 68" />
+        <path class="trace-line fine" d="M770 90 L770 68" />
+        <path class="trace-line fine" d="M840 90 L840 68" />
+        <path class="trace-line fine" d="M910 90 L910 68" />
+        <path class="trace-line fine" d="M980 90 L980 68" />
+        <path class="trace-line fine" d="M1050 90 L1050 68" />
+        <path class="trace-line fine" d="M1120 90 L1120 68" />
+        <path class="trace-line fine" d="M70 230 L70 248" />
+        <path class="trace-line fine" d="M140 230 L140 248" />
+        <path class="trace-line fine" d="M210 230 L210 248" />
+        <path class="trace-line fine" d="M280 230 L280 248" />
+        <path class="trace-line fine" d="M350 230 L350 248" />
+        <path class="trace-line fine" d="M420 230 L420 248" />
+        <path class="trace-line fine" d="M490 230 L490 248" />
+        <path class="trace-line fine" d="M560 230 L560 248" />
+        <path class="trace-line fine" d="M630 230 L630 248" />
+        <path class="trace-line fine" d="M700 230 L700 248" />
+        <path class="trace-line fine" d="M770 230 L770 248" />
+        <path class="trace-line fine" d="M840 230 L840 248" />
+        <path class="trace-line fine" d="M910 230 L910 248" />
+        <path class="trace-line fine" d="M980 230 L980 248" />
+        <path class="trace-line fine" d="M1050 230 L1050 248" />
+        <path class="trace-line fine" d="M1120 230 L1120 248" />
+        <path class="trace-line fine" d="M70 470 L70 452" />
+        <path class="trace-line fine" d="M140 470 L140 452" />
+        <path class="trace-line fine" d="M210 470 L210 452" />
+        <path class="trace-line fine" d="M280 470 L280 452" />
+        <path class="trace-line fine" d="M350 470 L350 452" />
+        <path class="trace-line fine" d="M420 470 L420 452" />
+        <path class="trace-line fine" d="M490 470 L490 452" />
+        <path class="trace-line fine" d="M560 470 L560 452" />
+        <path class="trace-line fine" d="M630 470 L630 452" />
+        <path class="trace-line fine" d="M700 470 L700 452" />
+        <path class="trace-line fine" d="M770 470 L770 452" />
+        <path class="trace-line fine" d="M840 470 L840 452" />
+        <path class="trace-line fine" d="M910 470 L910 452" />
+        <path class="trace-line fine" d="M980 470 L980 452" />
+        <path class="trace-line fine" d="M1050 470 L1050 452" />
+        <path class="trace-line fine" d="M1120 470 L1120 452" />
+        <path class="trace-line fine" d="M70 610 L70 632" />
+        <path class="trace-line fine" d="M140 610 L140 632" />
+        <path class="trace-line fine" d="M210 610 L210 632" />
+        <path class="trace-line fine" d="M280 610 L280 632" />
+        <path class="trace-line fine" d="M350 610 L350 632" />
+        <path class="trace-line fine" d="M420 610 L420 632" />
+        <path class="trace-line fine" d="M490 610 L490 632" />
+        <path class="trace-line fine" d="M560 610 L560 632" />
+        <path class="trace-line fine" d="M630 610 L630 632" />
+        <path class="trace-line fine" d="M700 610 L700 632" />
+        <path class="trace-line fine" d="M770 610 L770 632" />
+        <path class="trace-line fine" d="M840 610 L840 632" />
+        <path class="trace-line fine" d="M910 610 L910 632" />
+        <path class="trace-line fine" d="M980 610 L980 632" />
+        <path class="trace-line fine" d="M1050 610 L1050 632" />
+        <path class="trace-line fine" d="M1120 610 L1120 632" />
+        <!-- "Čip" obrisi na sredini i presjecištima mreže. -->
+        <rect x="580" y="330" width="40" height="40" rx="8" fill="none" stroke="rgba(255,148,120,.32)" stroke-width="1.4"/>
+        <rect x="100" y="130" width="24" height="24" rx="6" fill="none" stroke="rgba(255,148,120,.22)" stroke-width="1.1"/>
+        <rect x="1076" y="130" width="24" height="24" rx="6" fill="none" stroke="rgba(255,148,120,.22)" stroke-width="1.1"/>
+        <rect x="480" y="440" width="24" height="24" rx="6" fill="none" stroke="rgba(255,148,120,.22)" stroke-width="1.1"/>
+        <rect x="696" y="440" width="24" height="24" rx="6" fill="none" stroke="rgba(255,148,120,.22)" stroke-width="1.1"/>
       </g>
     </svg>
   </div>
@@ -1079,8 +1297,8 @@
         KreirAI spaja alate umjetne inteligencije i ljudsku reviziju kako bismo aplikacije, web stranice i oglasne kampanje isporučili brže, ali bez žrtvovanja kvalitete izrade.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href="kontakt.html" class="btn-glow inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-6 py-3.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">Zatražite ponudu</a>
-        <a href="usluge.html" class="btn-glow inline-flex items-center gap-2 border border-[#12182D] bg-[#12182D] text-[#F5F7FC] dark:bg-transparent dark:border-[#232B47] dark:text-[#EBEFFA] font-bold text-sm px-6 py-3.5 rounded-full hover:bg-[#1F2745] dark:hover:bg-[#161D34] transition">Pogledajte usluge</a>
+        <a href="kontakt.html" class="btn-glow btn-premium-glow inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-6 py-3.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">Zatražite ponudu</a>
+        <a href="usluge.html" class="btn-glow btn-premium-glow btn-premium-glow--ghost inline-flex items-center gap-2 border border-[#12182D] bg-[#12182D] text-[#F5F7FC] dark:bg-transparent dark:border-[#232B47] dark:text-[#EBEFFA] font-bold text-sm px-6 py-3.5 rounded-full hover:bg-[#1F2745] dark:hover:bg-[#161D34] transition">Pogledajte usluge</a>
       </div>
     </div>
 
@@ -1119,6 +1337,41 @@
       <path class="hero-cut__fill" d="M0,0 L1440,0 L1440,84 L0,6 Z"></path>
       <path class="hero-cut__line" d="M0,6 L1440,84"></path>
     </svg>
+  </div>
+
+  <!-- ============================================================
+       TRAKA USLUGA — beskonačni "marquee" odmah ispod hero kosine,
+       loop se vrti u krug (sadržaj dupliciran 2x za besprijekornu
+       petlju preko transform: translateX(-50%)).
+       ============================================================ -->
+  <div class="services-ticker">
+    <p class="sr-only">Usluge: Web stranice za 10 dana, Web i mobilne aplikacije, Brendiranje uz AI, Hosting i podrška 24/7, SEO optimizacija, Jednokratno ili mjesečno.</p>
+    <div class="services-ticker__track" aria-hidden="true">
+      <span class="services-ticker__item">Web stranice za 10 dana</span>
+      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__item">Web i mobilne aplikacije</span>
+      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__item">Brendiranje uz AI</span>
+      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__item">Hosting i podrška 24/7</span>
+      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__item">SEO optimizacija</span>
+      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__item">Jednokratno ili mjesečno</span>
+      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__item">Web stranice za 10 dana</span>
+      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__item">Web i mobilne aplikacije</span>
+      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__item">Brendiranje uz AI</span>
+      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__item">Hosting i podrška 24/7</span>
+      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__item">SEO optimizacija</span>
+      <span class="services-ticker__dot">•</span>
+      <span class="services-ticker__item">Jednokratno ili mjesečno</span>
+      <span class="services-ticker__dot">•</span>
+    </div>
   </div>
 
   <!-- ============================================================
