@@ -645,10 +645,13 @@
       </div>
     </div>
   </div>
+  </section>
 
   <!-- Presjek — dijagonalni rez gdje tamna hero pozadina prelazi u
-       svjetlu pozadinu ostatka stranice. Čisto dekorativno; ne dira
-       stvarni sadržaj hero sekcije iznad. -->
+       svjetlu pozadinu ostatka stranice. Namjerno IZVAN #pocetna (kao
+       sestrinski element, ne dijete) — da "prazan" dio SVG-a stvarno
+       otkriva svjetlu pozadinu stranice iza sebe, a ne tamnu pozadinu
+       hero sekcije koja bi inače bila iza njega. Čisto dekorativno. -->
   <div class="hero-cut" aria-hidden="true">
     <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
       <defs>
@@ -661,7 +664,6 @@
       <path class="hero-cut__line" d="M0,16 L1440,64"></path>
     </svg>
   </div>
-  </section>
 
   <!-- ============================================================
        ZAŠTO KREIRAI — kratka izjava povjerenja ispod hero-a
