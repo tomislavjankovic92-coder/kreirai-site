@@ -82,13 +82,18 @@
   }
   .dark body{ background:#080B14; color:#EBEFFA; }
 
-  .text-gradient{
-    background-image: linear-gradient(100deg, #1FB9CC 0%, #FF6F59 85%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .dark .text-gradient{
-    background-image: linear-gradient(100deg, #3EE8F5 0%, #FF9478 85%);
-  }
+  /* Bio gradient (cyan→coral); sad jednobojni koralj na zahtjev —
+     light/dark varijanta i dalje postoje jer je tamna pozadina
+     (header/#pocetna) uvijek "dark", a #FF9478 je svjetliji koralj
+     s dovoljno kontrasta na tamnoj podlozi. */
+  .text-gradient{ color: #FF6F59; }
+  .dark .text-gradient{ color: #FF9478; }
+
+  /* Jednobojna koraljna podloga za CTA gumbe i "Popularno" značku —
+     zamjena za bivši cyan→violet gradient (klase from-cyan/to-violet
+     se više ne koriste, ali ostaju definirane u tailwind.css). */
+  .bg-coral{ background-image: none; background-color: #FF6F59; }
+  .dark .bg-coral{ background-color: #FF9478; }
 
   /* Hero stage always keeps its own dark "stage" tone (independent of
      site light/dark mode) so the 3D logo video's dark background has
@@ -694,8 +699,7 @@
   }
   .ki-intro__mark{ font-family:Georgia,serif; font-weight:700; font-size:1.5rem; }
   .ki-k{ color:#EBEFFA; }
-  .ki-ai{ background-image:linear-gradient(100deg,#2FD8EC 0%,#9B7BFF 100%);
-    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .ki-ai{ color:#FF9478; } /* isti koralj kao .dark .text-gradient — intro je uvijek na tamnoj podlozi */
   .ki-intro__sub{ color:#8893AD; font-size:.74rem; }
 
   .ki-intro__strip{
@@ -782,7 +786,7 @@
     </nav>
 
     <div class="flex items-center gap-3">
-      <a href="kontakt.html" class="btn-glow hidden md:inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+      <a href="kontakt.html" class="btn-glow hidden md:inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
         Zatražite ponudu
       </a>
 
@@ -844,7 +848,7 @@
         KreirAI spaja alate umjetne inteligencije i ljudsku reviziju kako bismo aplikacije, web stranice i oglasne kampanje isporučili brže, ali bez žrtvovanja kvalitete izrade.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href="kontakt.html" class="btn-glow inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-6 py-3.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">Zatražite ponudu</a>
+        <a href="kontakt.html" class="btn-glow inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-6 py-3.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">Zatražite ponudu</a>
         <a href="usluge.html" class="btn-glow inline-flex items-center gap-2 border border-[#12182D] bg-[#12182D] text-[#F5F7FC] dark:bg-transparent dark:border-[#232B47] dark:text-[#EBEFFA] font-bold text-sm px-6 py-3.5 rounded-full hover:bg-[#1F2745] dark:hover:bg-[#161D34] transition">Pogledajte usluge</a>
       </div>
     </div>
@@ -936,7 +940,7 @@
         </span>
         <h3 class="font-semibold text-lg">Ne gubimo vrijeme</h3>
         <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Vaša stranica uz nas ide online unutar 10 dana. Ne nekoliko mjeseci, već baš dana. Kada je nešto potrebno ažurirati, tu smo za vas već isti dan. Vrijeme je dragocjeno i mi to razumijemo!</p>
-        <a href="kontakt.html" class="btn-glow mt-5 inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-xs px-4 py-2 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+        <a href="kontakt.html" class="btn-glow mt-5 inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-xs px-4 py-2 rounded-full shadow-soft hover:-translate-y-0.5 transition">
           Kontaktirajte nas
         </a>
       </article>
@@ -1046,7 +1050,7 @@
         <div class="price-cta-wrap">
           <p class="font-serif font-bold text-4xl mt-5">1.500 €</p>
           <p class="text-inksoft dark:text-[#A6AFC9] text-xs mt-1">Jednokratno plaćanje</p>
-          <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+          <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
             Započnimo
           </a>
         </div>
@@ -1054,7 +1058,7 @@
 
       <!-- STANDARDNA — istaknuta kao popularna -->
       <div class="compare-win glass-panel relative rounded-2xl p-6 sm:p-8 flex flex-col" data-reveal="fade-up" data-reveal-delay="80">
-        <span class="price-badge-pos inline-flex items-center gap-1 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-mono font-bold text-[10px] tracking-[0.14em] uppercase px-3 py-1 rounded-full shadow-soft">Popularno</span>
+        <span class="price-badge-pos inline-flex items-center gap-1 bg-coral text-[#0A0E1A] font-mono font-bold text-[10px] tracking-[0.14em] uppercase px-3 py-1 rounded-full shadow-soft">Popularno</span>
         <p class="font-mono text-xs tracking-[0.14em] uppercase text-cyan dark:text-cyan-bright font-semibold">Standardna</p>
         <ul class="mt-5 flex flex-col gap-3">
           <li class="flex items-start gap-3">
@@ -1082,7 +1086,7 @@
         <div class="price-cta-wrap">
           <p class="font-serif font-bold text-4xl mt-5">120 €</p>
           <p class="text-inksoft dark:text-[#A6AFC9] text-xs mt-1">Mjesečno</p>
-          <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+          <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
             Zakažite konzultacije
           </a>
         </div>
@@ -1095,7 +1099,7 @@
         <div class="price-cta-wrap">
           <p class="font-serif font-bold text-4xl mt-5">Individualno</p>
           <p class="text-inksoft dark:text-[#A6AFC9] text-xs mt-1">Ponuda skrojena za vas</p>
-          <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+          <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
             Kontaktirajte nas
           </a>
         </div>
@@ -1139,7 +1143,7 @@
 
     <div class="mt-8 text-center" data-reveal="fade-up" data-reveal-delay="80">
       <a href="https://www.google.com/maps?cid=9429391216034258674" target="_blank" rel="noopener"
-        class="btn-glow inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+        class="btn-glow inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
         Pogledajte sve recenzije na Googleu
       </a>
     </div>
@@ -1373,7 +1377,7 @@
     <p class="text-sm text-inksoft dark:text-[#A6AFC9] flex-1">
       Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje vašeg pristanka na ovu obavijest). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html" class="underline hover:text-cyan dark:hover:text-cyan-bright">Pravilima privatnosti</a>.
     </p>
-    <button id="cookieAccept" type="button" class="btn-glow shrink-0 inline-flex items-center gap-2 bg-gradient-to-r from-cyan to-violet dark:from-cyan-bright dark:to-violet-bright text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+    <button id="cookieAccept" type="button" class="btn-glow shrink-0 inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
       Slažem se
     </button>
   </div>
