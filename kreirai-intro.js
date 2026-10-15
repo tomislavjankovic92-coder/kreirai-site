@@ -114,15 +114,17 @@
     }
     el('div', 'ki-intro__glow', root);
     el('div', 'ki-intro__grid', root);
-    el('div', 'ki-intro__scan', root);
+    var band = el('div', 'ki-intro__band', root);
+    el('div', 'ki-intro__bandDots', band);
 
     var stage = el('div', 'ki-intro__stage', root);
     var jitter = el('div', 'ki-intro__jitter', stage);
     // okvir s koraljnim obrubom i animiranom "kometom" (CSS u index.html)
     var frame = el('div', 'ki-intro__frame', jitter);
-    el('span', 'ki-intro__frameglow', frame);
+    var fglow = el('span', 'ki-intro__frameglow', frame);
+    el('span', 'fx-ring fx-ring--soft', fglow);
     var win = el('div', 'ki-intro__win', frame);
-    el('span', 'ki-intro__ring', frame);
+    el('span', 'ki-intro__ring fx-ring fx-ring--sharp', frame);
     win.innerHTML =
       '<div class="ki-intro__bar">' +
       '<span class="ki-intro__title">kreirai — studio</span></div>' +
@@ -149,6 +151,13 @@
     skipBtn.textContent = 'Preskoči intro';
 
     doc.body.appendChild(root);
+    // dimenzije za GPU traku vala (vidi .ki-intro__band u index.html)
+    try {
+      var kw = root.clientWidth || window.innerWidth, kh = root.clientHeight || window.innerHeight;
+      root.style.setProperty('--ki-w', kw + 'px');
+      root.style.setProperty('--ki-h', kh + 'px');
+      root.style.setProperty('--ki-m', Math.max(kw, kh) + 'px');
+    } catch (e) {}
     doc.body.appendChild(skipBtn);
 
     // logo "Kreir" + "AI" se dekodira iz znakova

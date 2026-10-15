@@ -36,7 +36,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Inter+Tight:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="tailwind.css">
 
@@ -506,12 +506,17 @@
   }
   .dark .glass-aura span:nth-child(1){ opacity: .8; }
   .dark .glass-aura span:nth-child(2){ opacity: .7; }
-  body.is-scrolling .glass-aura span{ animation-play-state: paused; }
+  body.is-scrolling .glass-aura span,
+  .glass-stage.is-offscreen .glass-aura span{ animation-play-state: paused; }
 
   :is(.service-card, .glass-premium).glass-panel{
     background: linear-gradient(150deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.40) 100%);
-    -webkit-backdrop-filter: blur(20px) saturate(170%);
-            backdrop-filter: blur(20px) saturate(170%);
+    /* PERFORMANSE: bez backdrop-filtera — iza kartica su samo mekane,
+       već zamućene mrlje (.glass-aura), pa blur ne mijenja ništa
+       vidljivo (izmjereno: razlika najviše 4/255 po pikselu), a
+       računao bi se iznova u svakom frameu dok mrlje lebde. */
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
     border: 1px solid rgba(255,255,255,.7);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,.95),
@@ -1248,6 +1253,15 @@
   })();
 </script>
 <script>
+  /* Lebdeće mrlje iza staklenih kartica animiraju se samo dok je
+     sekcija na ekranu (štedi CPU/GPU i bateriju). */
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { e.target.classList.toggle('is-offscreen', !e.isIntersecting); });
+    }, { rootMargin: '120px 0px' });
+    document.querySelectorAll('.glass-stage').forEach(function (el) { el.classList.add('is-offscreen'); io.observe(el); });
+  })();
   /* Staklene kartice — mekana "svjetiljka" prati kursor (samo uređaji s mišem). */
   (function () {
     if (!window.matchMedia || !window.matchMedia('(hover: hover)').matches) return;

@@ -55,7 +55,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzBBMEUxQSIvPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9IiNGRjk0NzgiIGZpbGwtb3BhY2l0eT0iMC4xNCIvPgogIDx0ZXh0IHg9IjE2IiB5PSIyMyIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsICdUaW1lcyBOZXcgUm9tYW4nLCBzZXJpZiIgZm9udC1zaXplPSIxOSIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI0ZGOTQ3OCI+SzwvdGV4dD4KPC9zdmc+Cg==">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Inter+Tight:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="tailwind.css">
 
@@ -129,43 +129,56 @@
       radial-gradient(circle at 75% 80%, rgba(255,148,120,.14), transparent 55%),
       #0A0E1A;
   }
-  /* Koraljni obrub oko hero videa s animacijom: tanki, lagani
-     koraljni rub (stalno vidljiv) + svjetleća "kometa" koja polako
-     kruži obrubom. Kometa je conic-gradient čiji se početni kut
-     (--hs-angle, registriran preko @property da se može animirati)
-     okreće u krug; maska (content-box XOR) ostavlja vidljiv samo
-     rub debljine 1.5px. Ispod oštrog ruba je zamućena kopija komete
-     (.hero-frame__glow) koja daje mekani sjaj izvan okvira.
-     Bez podrške za @property (stariji preglednici) ostaje statičan
-     koraljni rub; reduced-motion također dobiva statičan rub. */
-  @property --hs-angle{ syntax:'<angle>'; inherits:true; initial-value:0deg; }
+  /* Koraljni obrub oko hero videa s animacijom: tanki koraljni rub
+     + svjetleća "kometa" koja kruži obrubom, i ispod nje zamućena
+     kopija koja daje mekani sjaj izvan okvira.
+     PERFORMANSE: kometa je conic-gradient na velikom kvadratu
+     (::before) koji se samo ROTIRA transformom — to radi GPU
+     (compositor) bez ikakvog ponovnog crtanja ili preračunavanja
+     stilova po frameu. Maska (content-box XOR) na roditelju ostavlja
+     vidljiv samo rub. Isti mehanizam koristi i intro (.ki-intro__*).
+     Vizualno identično prijašnjoj @property varijanti. */
   .hero-frame{
-    --hs-angle: 0deg;
     isolation: isolate;
     box-shadow: 0 30px 80px -40px rgba(255,111,89,.45);
-    animation: hero-frame-spin 7s linear infinite;
   }
-  @keyframes hero-frame-spin{ to{ --hs-angle: 360deg; } }
-  .hero-frame__ring,
-  .hero-frame__glow::before{
-    content: "";
+  .fx-ring{
     position: absolute;
     border-radius: inherit;
+    overflow: hidden;
     pointer-events: none;
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
             mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
   }
-  .hero-frame__ring{
-    inset: 0; z-index: 3;
-    padding: 1.5px;
-    background: conic-gradient(from var(--hs-angle),
+  .fx-ring::before{
+    content: "";
+    position: absolute; left: 50%; top: 50%;
+    width: 170%; aspect-ratio: 1;
+    transform: translate(-50%,-50%) rotate(0deg);
+    animation: fx-ring-spin var(--fx-dur, 7s) linear infinite;
+    will-change: transform;
+  }
+  @keyframes fx-ring-spin{
+    to{ transform: translate(-50%,-50%) rotate(360deg); }
+  }
+  .fx-ring--sharp::before{
+    background: conic-gradient(from 0deg,
       rgba(255,111,89,.34) 0deg,
       rgba(255,111,89,.34) 230deg,
       rgba(255,148,120,.70) 300deg,
       #FFE6DD 350deg,
       rgba(255,111,89,.34) 358deg);
   }
+  .fx-ring--soft::before{
+    background: conic-gradient(from 0deg,
+      transparent 0deg,
+      transparent 250deg,
+      rgba(255,111,89,.55) 310deg,
+      rgba(255,180,160,.95) 350deg,
+      transparent 358deg);
+  }
+  .hero-frame__ring{ inset: 0; z-index: 3; padding: 1.5px; }
   .hero-frame__glow{
     position: absolute; inset: -3px; z-index: 0;
     border-radius: calc(1.5rem + 3px);
@@ -173,19 +186,10 @@
     filter: blur(9px);
     opacity: .9;
   }
-  .hero-frame__glow::before{
-    inset: 0;
-    padding: 5px;
-    background: conic-gradient(from var(--hs-angle),
-      transparent 0deg,
-      transparent 250deg,
-      rgba(255,111,89,.55) 310deg,
-      rgba(255,180,160,.95) 350deg,
-      transparent 358deg);
-  }
+  .hero-frame__glow > .fx-ring{ inset: 0; padding: 5px; }
   .hero-frame .hero-stage{ z-index: 1; }
   @media (prefers-reduced-motion: reduce){
-    .hero-frame{ animation: none; }
+    .fx-ring::before{ animation: none; }
     .hero-frame__glow{ display: none; }
   }
   .hero-grid{
@@ -218,9 +222,12 @@
     position:absolute; inset:0; z-index:0; pointer-events:none;
     display:block; width:100%; height:100%;
     opacity:0; transition:opacity 1.2s ease;
-    -webkit-mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%);
-            mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%);
   }
+  /* PERFORMANSE: vinjeta (prije CSS mask) je sada ugrađena izravno u
+     prozirnost svake točke, a mirna mreža točaka crta se SAMO JEDNOM
+     na zaseban canvas (.hero-field--base). Animirani canvas po frameu
+     crta samo točke koje val/kursor trenutno osvjetljavaju i znakove
+     (iz unaprijed pripremljenih sličica, bez skupog shadowBlur). */
   .hero-field.is-ready{ opacity:1; }
 
   .pf-card-2{ background:linear-gradient(135deg, rgba(255,111,89,.16), #fff); }
@@ -537,56 +544,58 @@
      actively scrolling (same mechanism used elsewhere on this page)
      and under reduced-motion, so it never costs more than it's worth.
      ============================================================ */
-  .btn-premium-glow{
-    animation: btn-premium-breathe 3.4s ease-in-out infinite;
+  /* PERFORMANSE: umjesto animiranja box-shadowa (ponovno crtanje u
+     svakom frameu) gumb drži mirnu "osnovnu" sjenu, a "udah" sjaja je
+     zaseban sloj (.btn-breathe::before) kojemu se animira samo
+     prozirnost — to GPU radi bez ponovnog crtanja. Izgled isti. */
+  .btn-breathe{
+    position: relative;
+    display: inline-flex;
+    border-radius: 9999px;
   }
-  .dark .btn-premium-glow{
-    animation-name: btn-premium-breathe-dark;
+  .btn-breathe::before{
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: 0 4px 14px -4px rgba(14,21,38,.14), 0 0 22px 4px rgba(255,111,89,.36);
+    opacity: 0;
+    animation: btn-breathe 3.4s ease-in-out infinite;
+    will-change: opacity;
   }
-  @keyframes btn-premium-breathe{
-    0%, 100%{
-      box-shadow:
-        0 1px 2px 0 rgba(14,21,38,.16),
-        0 0 10px 1px rgba(255,111,89,.32);
-    }
-    50%{
-      box-shadow:
-        0 4px 14px -4px rgba(14,21,38,.22),
-        0 0 22px 4px rgba(255,111,89,.52);
-    }
+  .dark .btn-breathe::before{
+    box-shadow: 0 4px 16px -4px rgba(0,0,0,.3), 0 0 26px 5px rgba(255,148,120,.4);
   }
-  @keyframes btn-premium-breathe-dark{
-    0%, 100%{
-      box-shadow:
-        0 1px 2px 0 rgba(0,0,0,.35),
-        0 0 12px 1px rgba(255,148,120,.36);
-    }
-    50%{
-      box-shadow:
-        0 4px 16px -4px rgba(0,0,0,.4),
-        0 0 26px 5px rgba(255,148,120,.58);
-    }
+  .btn-breathe--ghost::before{
+    box-shadow: 0 0 0 1px rgba(255,111,89,.3), 0 4px 14px -4px rgba(14,21,38,.16);
   }
-  /* Ghost/secondary variant (dark fill, no coral background) gets a
-     quieter breathing ring instead of the coral ambient glow above,
-     so it doesn't read as a second primary CTA. */
-  .btn-premium-glow--ghost{
-    animation-name: btn-premium-breathe-ghost;
+  .dark .btn-breathe--ghost::before{
+    box-shadow: 0 0 0 1px rgba(255,148,120,.32), 0 4px 16px -4px rgba(0,0,0,.3);
   }
-  .dark .btn-premium-glow--ghost{
-    animation-name: btn-premium-breathe-ghost-dark;
+  @keyframes btn-breathe{ 0%,100%{ opacity: 0; } 50%{ opacity: 1; } }
+  .btn-breathe > .btn-premium-glow,
+  .btn-breathe > .btn-premium-glow:hover,
+  .btn-breathe > .btn-premium-glow:focus-visible{
+    box-shadow: 0 1px 2px 0 rgba(14,21,38,.16), 0 0 10px 1px rgba(255,111,89,.32);
   }
-  @keyframes btn-premium-breathe-ghost{
-    0%, 100%{ box-shadow: 0 0 0 1px rgba(255,111,89,.22), 0 1px 2px 0 rgba(14,21,38,.16); }
-    50%{ box-shadow: 0 0 0 1px rgba(255,111,89,.45), 0 4px 14px -4px rgba(14,21,38,.22); }
+  .dark .btn-breathe > .btn-premium-glow,
+  .dark .btn-breathe > .btn-premium-glow:hover,
+  .dark .btn-breathe > .btn-premium-glow:focus-visible{
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.35), 0 0 12px 1px rgba(255,148,120,.36);
   }
-  @keyframes btn-premium-breathe-ghost-dark{
-    0%, 100%{ box-shadow: 0 0 0 1px rgba(255,148,120,.26), 0 1px 2px 0 rgba(0,0,0,.35); }
-    50%{ box-shadow: 0 0 0 1px rgba(255,148,120,.5), 0 4px 16px -4px rgba(0,0,0,.4); }
+  .btn-breathe > .btn-premium-glow--ghost,
+  .btn-breathe > .btn-premium-glow--ghost:hover,
+  .btn-breathe > .btn-premium-glow--ghost:focus-visible{
+    box-shadow: 0 0 0 1px rgba(255,111,89,.22), 0 1px 2px 0 rgba(14,21,38,.16);
   }
-  body.is-scrolling .btn-premium-glow{ animation-play-state: paused; }
+  .dark .btn-breathe > .btn-premium-glow--ghost,
+  .dark .btn-breathe > .btn-premium-glow--ghost:hover,
+  .dark .btn-breathe > .btn-premium-glow--ghost:focus-visible{
+    box-shadow: 0 0 0 1px rgba(255,148,120,.26), 0 1px 2px 0 rgba(0,0,0,.35);
+  }
+  body.is-scrolling .btn-breathe::before{ animation-play-state: paused; }
   @media (prefers-reduced-motion: reduce){
-    .btn-premium-glow{ animation: none; }
+    .btn-breathe::before{ animation: none; }
   }
 
   /* ============================================================
@@ -841,12 +850,17 @@
   }
   .dark .glass-aura span:nth-child(1){ opacity: .8; }
   .dark .glass-aura span:nth-child(2){ opacity: .7; }
-  body.is-scrolling .glass-aura span{ animation-play-state: paused; }
+  body.is-scrolling .glass-aura span,
+  .glass-stage.is-offscreen .glass-aura span{ animation-play-state: paused; }
 
   :is(.service-card, .glass-premium).glass-panel{
     background: linear-gradient(150deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.40) 100%);
-    -webkit-backdrop-filter: blur(20px) saturate(170%);
-            backdrop-filter: blur(20px) saturate(170%);
+    /* PERFORMANSE: bez backdrop-filtera — iza kartica su samo mekane,
+       već zamućene mrlje (.glass-aura), pa blur ne mijenja ništa
+       vidljivo (izmjereno: razlika najviše 4/255 po pikselu), a
+       računao bi se iznova u svakom frameu dok mrlje lebde. */
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
     border: 1px solid rgba(255,255,255,.7);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,.95),
@@ -1104,34 +1118,60 @@
     pointer-events:none;
   }
   .ki-intro__grid,
-  .ki-intro__scan{
-    position:absolute; inset:0;
+  .ki-intro__bandDots{
     background-image: radial-gradient(circle, rgba(168,192,232,1) 0.9px, transparent 1.3px);
     background-size: 30px 30px;
     background-position: 15px 15px;
     pointer-events:none;
   }
   .ki-intro__grid{
+    position:absolute; inset:0;
     opacity:.12;
     -webkit-mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%);
             mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%);
   }
-  /* svjetliji sloj istih točaka, vidljiv samo u uskoj dijagonalnoj
-     traci koja putuje preko ekrana (kao val u heroju) */
-  .ki-intro__scan{
-    opacity:.42;
-    -webkit-mask-image: linear-gradient(115deg, transparent 42%, #000 50%, transparent 58%);
-            mask-image: linear-gradient(115deg, transparent 42%, #000 50%, transparent 58%);
-    -webkit-mask-size: 300% 300%;
-            mask-size: 300% 300%;
-    animation: ki-wave 3.4s linear infinite;
+  /* Svjetliji sloj istih točaka, vidljiv samo u uskoj dijagonalnoj
+     traci koja putuje preko ekrana (kao val u heroju).
+     PERFORMANSE: umjesto animiranja mask-positiona preko cijelog
+     ekrana (ponovno crtanje u svakom frameu), traka (.ki-intro__band)
+     je uski rotirani "prozor" s mekim rubovima koji putuje samo
+     transformom, a točke unutra (.ki-intro__bandDots) idu točno
+     suprotnom transformom pa ostaju poravnate s mrežom ispod.
+     Sve radi GPU. --ki-w/--ki-h/--ki-m postavlja kreirai-intro.js. */
+  .ki-intro__band{
+    --kw: var(--ki-w, 100vw); --kh: var(--ki-h, 100vh); --km: var(--ki-m, 100vmax);
+    position:absolute; left:50%; top:50%;
+    width: calc(var(--km) * .56); height: calc(var(--km) * 1.9);
+    margin-left: calc(var(--km) * -.28); margin-top: calc(var(--km) * -.95);
+    overflow:hidden;
+    pointer-events:none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 50%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, #000 50%, transparent 100%);
+    transform: rotate(25deg) translateX(calc(var(--km) * -1));
+    animation: ki-band 3.4s linear infinite;
+    will-change: transform;
   }
-  @keyframes ki-wave{
-    0%  { -webkit-mask-position: 100% 100%; mask-position: 100% 100%; }
-    100%{ -webkit-mask-position: 0% 0%;     mask-position: 0% 0%; }
+  .ki-intro__bandDots{
+    position:absolute;
+    left: calc(var(--km) * .28 - var(--kw) / 2);
+    top: calc(var(--km) * .95 - var(--kh) / 2);
+    width: var(--kw); height: var(--kh);
+    transform-origin: calc(var(--kw) / 2) calc(var(--kh) / 2);
+    opacity:.42;
+    transform: translateX(var(--km)) rotate(-25deg);
+    animation: ki-band-inv 3.4s linear infinite;
+    will-change: transform;
+  }
+  @keyframes ki-band{
+    from{ transform: rotate(25deg) translateX(calc(var(--km) * -1)); }
+    to  { transform: rotate(25deg) translateX(var(--km)); }
+  }
+  @keyframes ki-band-inv{
+    from{ transform: translateX(var(--km)) rotate(-25deg); }
+    to  { transform: translateX(calc(var(--km) * -1)) rotate(-25deg); }
   }
   @media (max-width:640px){
-    .ki-intro__grid, .ki-intro__scan{ background-size:24px 24px; background-position:12px 12px; }
+    .ki-intro__grid, .ki-intro__bandDots{ background-size:24px 24px; background-position:12px 12px; }
   }
 
   .ki-intro__stage{
@@ -1161,28 +1201,17 @@
   }
 
   /* Okvir prozora — isti koraljni obrub s kometom kao oko hero
-     videa (koristi isti @property --hs-angle i keyframes
-     hero-frame-spin), samo malo brži jer intro kratko traje. */
+     videa (isti .fx-ring mehanizam: rotacija transformom na GPU-u),
+     samo malo brži jer intro kratko traje. */
   .ki-intro__frame{
     position:relative;
     border-radius:18px;
     isolation:isolate;
-    animation: hero-frame-spin 4.5s linear infinite;
+    --fx-dur: 4.5s;
   }
-  .ki-intro__ring,
-  .ki-intro__frameglow::before{
-    content:"";
-    position:absolute;
-    border-radius:inherit;
-    pointer-events:none;
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-  }
-  .ki-intro__ring{
-    inset:0; z-index:3;
-    padding:1.5px;
-    background: conic-gradient(from var(--hs-angle),
+  .ki-intro__ring{ inset:0; z-index:3; padding:1.5px; }
+  .ki-intro__ring.fx-ring--sharp::before{
+    background: conic-gradient(from 0deg,
       rgba(255,111,89,.36) 0deg,
       rgba(255,111,89,.36) 230deg,
       rgba(255,148,120,.72) 300deg,
@@ -1196,16 +1225,7 @@
     filter:blur(10px);
     opacity:.9;
   }
-  .ki-intro__frameglow::before{
-    inset:0;
-    padding:5px;
-    background: conic-gradient(from var(--hs-angle),
-      transparent 0deg,
-      transparent 250deg,
-      rgba(255,111,89,.55) 310deg,
-      rgba(255,180,160,.95) 350deg,
-      transparent 358deg);
-  }
+  .ki-intro__frameglow > .fx-ring{ inset:0; padding:5px; }
   .ki-intro__win{
     position:relative; z-index:1;
     width:min(700px,92vw);
@@ -1368,10 +1388,10 @@
     </nav>
 
     <div class="flex items-center gap-3">
-      <a href="kontakt.html" class="btn-glow btn-premium-glow inline-flex items-center gap-1.5 sm:gap-2 bg-coral text-[#0A0E1A] font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+      <span class="btn-breathe"><a href="kontakt.html" class="btn-glow btn-premium-glow inline-flex items-center gap-1.5 sm:gap-2 bg-coral text-[#0A0E1A] font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
         <span class="sm:hidden">Ponuda</span>
         <span class="hidden sm:inline">Zatražite ponudu</span>
-      </a>
+      </a></span>
 
       <button id="navToggle" type="button" aria-label="Otvori izbornik" aria-expanded="false"
         class="btn-glow-sm md:hidden w-10 h-10 shrink-0 flex items-center justify-center rounded-lg border border-line dark:border-[#232B47] bg-white dark:bg-[#10162A] text-ink dark:text-[#EBEFFA] transition-colors">
@@ -1422,11 +1442,12 @@
 <main>
 
 <section id="pocetna" class="dark scroll-mt-20 relative bg-[#080B14] text-[#EBEFFA]">
-  <canvas class="hero-field" aria-hidden="true"></canvas>
+  <canvas class="hero-field hero-field--base" aria-hidden="true"></canvas>
+  <canvas class="hero-field hero-field--live" aria-hidden="true"></canvas>
   <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 grid md:grid-cols-2 gap-14 items-center">
     <div data-reveal="zoom-in" class="relative md:self-stretch md:flex md:flex-col">
       <div class="hero-frame relative rounded-3xl aspect-[2/1] max-w-[420px] sm:max-w-[480px] mx-auto md:max-w-none md:w-full md:aspect-auto md:flex-1">
-      <span class="hero-frame__glow" aria-hidden="true"></span>
+      <span class="hero-frame__glow" aria-hidden="true"><span class="fx-ring fx-ring--soft"></span></span>
       <div class="hero-stage absolute inset-0 rounded-3xl overflow-hidden transition-colors">
         <div class="hero-grid absolute inset-0"></div>
         <div class="hero-logo-mask">
@@ -1441,7 +1462,7 @@
         </div>
         <p id="heroTaglineOverlay" class="hero-tagline-overlay absolute inset-x-0 bottom-[14%] font-mono font-semibold text-[10px] sm:text-sm tracking-[0.28em] uppercase text-coral text-center pointer-events-none" aria-hidden="true">Ideja u posao.</p>
       </div>
-      <span class="hero-frame__ring" aria-hidden="true"></span>
+      <span class="hero-frame__ring fx-ring fx-ring--sharp" aria-hidden="true"></span>
       </div>
     </div>
 
@@ -1454,8 +1475,8 @@
         KreirAI spaja alate umjetne inteligencije i ljudsku reviziju kako bismo aplikacije, web stranice i oglasne kampanje isporučili brže, ali bez žrtvovanja kvalitete izrade.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href="kontakt.html" class="btn-glow btn-premium-glow inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-6 py-3.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">Zatražite ponudu</a>
-        <a href="usluge.html" class="btn-glow btn-premium-glow btn-premium-glow--ghost inline-flex items-center gap-2 border border-[#12182D] bg-[#12182D] text-[#F5F7FC] dark:bg-transparent dark:border-[#232B47] dark:text-[#EBEFFA] font-bold text-sm px-6 py-3.5 rounded-full hover:bg-[#1F2745] dark:hover:bg-[#161D34] transition">Pogledajte usluge</a>
+        <span class="btn-breathe"><a href="kontakt.html" class="btn-glow btn-premium-glow inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-6 py-3.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">Zatražite ponudu</a></span>
+        <span class="btn-breathe btn-breathe--ghost"><a href="usluge.html" class="btn-glow btn-premium-glow btn-premium-glow--ghost inline-flex items-center gap-2 border border-[#12182D] bg-[#12182D] text-[#F5F7FC] dark:bg-transparent dark:border-[#232B47] dark:text-[#EBEFFA] font-bold text-sm px-6 py-3.5 rounded-full hover:bg-[#1F2745] dark:hover:bg-[#161D34] transition">Pogledajte usluge</a></span>
       </div>
     </div>
   </div>
@@ -2079,28 +2100,82 @@
 <script>
   /* Hero "data field" — vidi komentar uz .hero-field u CSS-u. */
   (function () {
-    var canvas = document.querySelector('.hero-field');
-    if (!canvas || !canvas.getContext) return;
+    var base = document.querySelector('.hero-field--base');
+    var canvas = document.querySelector('.hero-field--live');
+    if (!base || !canvas || !canvas.getContext) return;
+    var bctx = base.getContext('2d');
     var ctx = canvas.getContext('2d');
     var section = canvas.parentElement;
+    var root = document.documentElement;
     var body = document.body;
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var GLYPHS = '01{}<>/;=()[]*+#$&_'.split('');
-    var W = 0, H = 0, gap = 30, cols = 0, rows = 0, mobile = false;
+    var DOT = 'rgb(168,192,232)';
+    var BASE_A = 0.085;
+    var W = 0, H = 0, dpr = 1, gap = 30, cols = 0, rows = 0, mobile = false;
+    var px, py, vig, n = 0;            // pozicije točaka + vinjeta (izračunato jednom po resizeu)
     var glyphs = [], occupied = {};
+    var sprites = null, spriteSize = 0;
     var mouse = { x: -9999, y: -9999, tx: -9999, ty: -9999, a: 0, ta: 0 };
-    var t0 = performance.now(), raf = 0, inView = true, lastFrame = 0;
+    var t0 = performance.now(), inView = true, lastFrame = 0;
+
+    // ista funkcija kao prijašnja CSS maska:
+    // radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%)
+    function vignette(x, y) {
+      var dx = (x - W * 0.5) / (W * 0.95), dy = (y - H * 0.42) / (H * 0.85);
+      var d = Math.sqrt(dx * dx + dy * dy);
+      if (d <= 0.45) return 1;
+      if (d <= 0.75) return 1 - (d - 0.45) / 0.30 * 0.65;
+      if (d <= 1) return 0.35 * (1 - (d - 0.75) / 0.25);
+      return 0;
+    }
+
+    function buildSprites() {
+      var fs = mobile ? 11 : 12.5;
+      spriteSize = Math.ceil(fs * 2.6);
+      sprites = { n: {}, a: {} };
+      var font = '500 ' + fs + 'px "JetBrains Mono", ui-monospace, monospace';
+      GLYPHS.forEach(function (ch) {
+        ['n', 'a'].forEach(function (kind) {
+          var c = document.createElement('canvas');
+          c.width = c.height = Math.ceil(spriteSize * dpr);
+          var g = c.getContext('2d');
+          g.scale(dpr, dpr);
+          g.font = font; g.textAlign = 'center'; g.textBaseline = 'middle';
+          if (kind === 'a') { g.fillStyle = '#8FDBFF'; g.shadowColor = 'rgba(125,211,252,.65)'; g.shadowBlur = 8; }
+          else { g.fillStyle = '#C9D6F2'; }
+          g.fillText(ch, spriteSize / 2, spriteSize / 2 + 0.5);
+          sprites[kind][ch] = c;
+        });
+      });
+    }
 
     function resize() {
       var r = section.getBoundingClientRect();
       W = Math.max(1, r.width); H = Math.max(1, r.height);
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      [base, canvas].forEach(function (c) { c.width = Math.round(W * dpr); c.height = Math.round(H * dpr); });
+      bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       mobile = W < 640;
       gap = mobile ? 24 : 30;
       cols = Math.ceil(W / gap); rows = Math.ceil(H / gap);
+      n = cols * rows;
+      px = new Float32Array(n); py = new Float32Array(n); vig = new Float32Array(n);
+      bctx.clearRect(0, 0, W, H);
+      bctx.fillStyle = DOT;
+      for (var j = 0, k = 0; j < rows; j++) {
+        for (var i = 0; i < cols; i++, k++) {
+          var x = i * gap + gap / 2, y = j * gap + gap / 2;
+          px[k] = x; py[k] = y; vig[k] = vignette(x, y);
+          if (vig[k] <= 0) continue;
+          bctx.globalAlpha = BASE_A * vig[k];
+          bctx.fillRect(x - 0.65, y - 0.65, 1.3, 1.3);
+        }
+      }
+      bctx.globalAlpha = 1;
       glyphs = []; occupied = {};
+      buildSprites();
       if (reduce) draw(t0 + 4000);
     }
 
@@ -2108,20 +2183,21 @@
     // s gornjeg-lijevog prema donjem-desnom kutu.
     function wave(x, y, t) {
       var v = Math.sin((x * 0.55 + y) * 0.0105 - t * 0.75);
-      v = v > 0 ? v : 0;
-      return v * v * v * v; // ^4 → mekan, uzak svijetli greben
+      if (v <= 0) return 0;
+      v = v * v;
+      return v * v; // ^4 → mekan, uzak svijetli greben
     }
 
     function spawn(now, t) {
       var max = mobile ? 8 : 20, tries = 0;
       while (glyphs.length < max && tries++ < 12) {
-        var i = (Math.random() * cols) | 0, j = (Math.random() * rows) | 0, key = i + ',' + j;
-        if (occupied[key]) continue;
-        var w = wave(i * gap + gap / 2, j * gap + gap / 2, t);
+        var i = (Math.random() * cols) | 0, j = (Math.random() * rows) | 0, k = j * cols + i;
+        if (occupied[k] || vig[k] <= 0) continue;
+        var w = wave(px[k], py[k], t);
         if (w < 0.35 && Math.random() > 0.04) continue; // većinom na grebenu vala
-        var g = { i: i, j: j, key: key, ch: GLYPHS[(Math.random() * GLYPHS.length) | 0],
+        var g = { k: k, ch: GLYPHS[(Math.random() * GLYPHS.length) | 0],
                   born: now, life: 2400 + Math.random() * 2600, accent: Math.random() < 0.22 };
-        glyphs.push(g); occupied[key] = g;
+        glyphs.push(g); occupied[k] = g;
         break;
       }
     }
@@ -2130,61 +2206,62 @@
       var t = (now - t0) / 1000;
       ctx.clearRect(0, 0, W, H);
 
-      // glatko praćenje kursora
       mouse.x += (mouse.tx - mouse.x) * 0.12;
       mouse.y += (mouse.ty - mouse.y) * 0.12;
       mouse.a += (mouse.ta - mouse.a) * 0.06;
-      var R = 190, R2 = R * R;
+      var R = 190, R2 = R * R, ma = mouse.a > 0.01 ? mouse.a : 0;
 
-      // 1) piksel-mreža
-      ctx.fillStyle = 'rgb(168,192,232)';
-      for (var j = 0; j < rows; j++) {
-        var y = j * gap + gap / 2;
-        for (var i = 0; i < cols; i++) {
-          if (occupied[i + ',' + j]) continue;
-          var x = i * gap + gap / 2;
-          var w = wave(x, y, t);
-          var a = 0.085 + w * 0.42;
-          if (mouse.a > 0.01) {
-            var dx = x - mouse.x, dy = y - mouse.y, d2 = dx * dx + dy * dy;
-            if (d2 < R2) { var f = 1 - Math.sqrt(d2) / R; a += f * f * 0.5 * mouse.a; }
-          }
-          var sz = 1.3 + w * 1.1;
-          ctx.globalAlpha = a > 0.65 ? 0.65 : a;
-          ctx.fillRect(x - sz / 2, y - sz / 2, sz, sz);
+      // 1) samo točke koje su trenutno svjetlije od mirne mreže
+      ctx.fillStyle = DOT;
+      for (var k = 0; k < n; k++) {
+        var v = vig[k];
+        if (v <= 0 || occupied[k]) continue;
+        var x = px[k], y = py[k];
+        var w = wave(x, y, t), m = 0;
+        if (ma) {
+          var dx = x - mouse.x, dy = y - mouse.y, d2 = dx * dx + dy * dy;
+          if (d2 < R2) { var f = 1 - Math.sqrt(d2) / R; m = f * f * 0.5 * ma; }
         }
+        if (w < 0.004 && m < 0.004) continue;
+        var a = BASE_A + w * 0.42 + m;
+        if (a > 0.65) a = 0.65;
+        var extra = (a * v - BASE_A * v) / (1 - BASE_A * v);
+        if (extra < 0.003) continue;
+        var sz = 1.3 + w * 1.1;
+        ctx.globalAlpha = extra;
+        ctx.fillRect(x - sz / 2, y - sz / 2, sz, sz);
       }
 
       // 2) znakovi koji se "dekodiraju" na grebenu vala
-      ctx.font = '500 ' + (mobile ? 11 : 12.5) + 'px "JetBrains Mono", ui-monospace, monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      for (var k = glyphs.length - 1; k >= 0; k--) {
-        var g = glyphs[k], age = now - g.born;
-        if (age > g.life) { delete occupied[g.key]; glyphs.splice(k, 1); continue; }
-        var p = age / g.life;
-        var env = p < 0.18 ? p / 0.18 : (p > 0.7 ? (1 - p) / 0.3 : 1); // fade in → drži → fade out
-        var ch = age < 420 ? GLYPHS[(Math.random() * GLYPHS.length) | 0] : g.ch; // decode treperenje
-        var gx = g.i * gap + gap / 2, gy = g.j * gap + gap / 2;
-        ctx.globalAlpha = env * (g.accent ? 0.78 : 0.42);
-        ctx.fillStyle = g.accent ? '#8FDBFF' : '#C9D6F2';
-        if (g.accent) { ctx.shadowColor = 'rgba(125,211,252,.65)'; ctx.shadowBlur = 8; }
-        ctx.fillText(ch, gx, gy + 0.5);
-        ctx.shadowBlur = 0;
+      if (sprites) {
+        var half = spriteSize / 2;
+        for (var q = glyphs.length - 1; q >= 0; q--) {
+          var g = glyphs[q], age = now - g.born;
+          if (age > g.life) { delete occupied[g.k]; glyphs.splice(q, 1); continue; }
+          var p = age / g.life;
+          var env = p < 0.18 ? p / 0.18 : (p > 0.7 ? (1 - p) / 0.3 : 1);
+          var ch = age < 420 ? GLYPHS[(Math.random() * GLYPHS.length) | 0] : g.ch;
+          ctx.globalAlpha = env * (g.accent ? 0.78 : 0.42) * vig[g.k];
+          ctx.drawImage(sprites[g.accent ? 'a' : 'n'][ch], px[g.k] - half, py[g.k] - half, spriteSize, spriteSize);
+        }
       }
       ctx.globalAlpha = 1;
     }
 
     function loop(now) {
-      raf = requestAnimationFrame(loop);
-      if (!inView || document.hidden || body.classList.contains('is-scrolling')) return;
-      if (mobile && now - lastFrame < 32) return; // ~30fps na mobitelu
+      requestAnimationFrame(loop);
+      if (!inView || document.hidden || body.classList.contains('is-scrolling') || root.classList.contains('ki-intro-on')) return;
+      // max ~60 fps (i na 120/144 Hz ekranima), ~30 fps na mobitelu
+      if (now - lastFrame < (mobile ? 32 : 15)) return;
       lastFrame = now;
       if (Math.random() < (mobile ? 0.07 : 0.12)) spawn(now, (now - t0) / 1000);
       draw(now);
     }
 
     resize();
+    base.classList.add('is-ready');
     canvas.classList.add('is-ready');
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildSprites);
     if (reduce) { draw(t0 + 4000); return; }
 
     if ('ResizeObserver' in window) { new ResizeObserver(resize).observe(section); }
@@ -2200,15 +2277,24 @@
         mouse.tx = e.clientX - r.left; mouse.ty = e.clientY - r.top;
         if (mouse.a < 0.01) { mouse.x = mouse.tx; mouse.y = mouse.ty; }
         mouse.ta = 1;
-      });
+      }, { passive: true });
       section.addEventListener('pointerleave', function () { mouse.ta = 0; });
     }
 
-    raf = requestAnimationFrame(loop);
+    requestAnimationFrame(loop);
   })();
 </script>
 <script src="kreirai-intro.js"></script>
 <script>
+  /* Lebdeće mrlje iza staklenih kartica animiraju se samo dok je
+     sekcija na ekranu (štedi CPU/GPU i bateriju). */
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { e.target.classList.toggle('is-offscreen', !e.isIntersecting); });
+    }, { rootMargin: '120px 0px' });
+    document.querySelectorAll('.glass-stage').forEach(function (el) { el.classList.add('is-offscreen'); io.observe(el); });
+  })();
   /* Staklene kartice — mekana "svjetiljka" prati kursor (samo uređaji s mišem). */
   (function () {
     if (!window.matchMedia || !window.matchMedia('(hover: hover)').matches) return;
