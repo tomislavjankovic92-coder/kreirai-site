@@ -52,20 +52,24 @@
 <title>KreirAI — web stranice, aplikacije i oglasne kampanje uz AI</title>
 <meta name="description" content="Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, aplikacije i oglasne kampanje — brzo i bez agencijske birokracije.">
 <link rel="canonical" href="https://kreirai.hr/">
+<link rel="preload" as="image" href="assets/hero-poster.jpg?v=3" fetchpriority="high">
 
 <!-- Social share preview (link thumbnail) -->
 <meta property="og:type" content="website">
+<meta property="og:locale" content="hr_HR">
 <meta property="og:url" content="https://kreirai.hr/">
 <meta property="og:site_name" content="KreirAI">
 <meta property="og:title" content="KreirAI — web stranice, aplikacije i oglasne kampanje uz AI">
 <meta property="og:description" content="Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, aplikacije i oglasne kampanje — brzo i bez agencijske birokracije.">
-<meta property="og:image" content="https://kreirai.hr/og-image.png">
-<meta property="og:image:width" content="512">
-<meta property="og:image:height" content="512">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://kreirai.hr/og-cover.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KreirAI — od ideje do gotovog proizvoda, uz pomoć umjetne inteligencije">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="KreirAI — web stranice, aplikacije i oglasne kampanje uz AI">
 <meta name="twitter:description" content="Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, aplikacije i oglasne kampanje — brzo i bez agencijske birokracije.">
-<meta name="twitter:image" content="https://kreirai.hr/og-image.png">
+<meta name="twitter:image" content="https://kreirai.hr/og-cover.jpg">
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzBBMEUxQSIvPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9IiNGRjk0NzgiIGZpbGwtb3BhY2l0eT0iMC4xNCIvPgogIDx0ZXh0IHg9IjE2IiB5PSIyMyIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsICdUaW1lcyBOZXcgUm9tYW4nLCBzZXJpZiIgZm9udC1zaXplPSIxOSIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI0ZGOTQ3OCI+SzwvdGV4dD4KPC9zdmc+Cg==">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1364,13 +1368,96 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "KreirAI",
-  "url": "https://kreirai.hr/",
-  "logo": "https://kreirai.hr/og-image.png",
-  "description": "Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, aplikacije i oglasne kampanje — brzo i bez agencijske birokracije.",
-  "email": "info@kreirai.hr",
-  "areaServed": "HR"
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://kreirai.hr/#organization",
+      "name": "KreirAI",
+      "legalName": "KreirAI, obrt za računalno stvaralaštvo",
+      "url": "https://kreirai.hr/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://kreirai.hr/logo-512.png",
+        "width": 512,
+        "height": 512
+      },
+      "image": "https://kreirai.hr/og-cover.jpg",
+      "description": "Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, webshopovi, web i mobilne aplikacije te održavanje i podrška — brzo i bez agencijske birokracije.",
+      "email": "info@kreirai.hr",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "HR"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Hrvatska"
+      },
+      "priceRange": "€€",
+      "knowsLanguage": [
+        "hr",
+        "en"
+      ],
+      "sameAs": [
+        "https://www.google.com/maps?cid=9429391216034258674",
+        "https://www.instagram.com/kreirai.hr/"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://kreirai.hr/#website",
+      "url": "https://kreirai.hr/",
+      "name": "KreirAI",
+      "inLanguage": "hr",
+      "publisher": {
+        "@id": "https://kreirai.hr/#organization"
+      }
+    },
+    {
+      "@type": "OfferCatalog",
+      "@id": "https://kreirai.hr/#cjenik",
+      "name": "Cjenik KreirAI",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "name": "Jednokratno",
+          "description": "Dizajn i uređivanje, vlasništvo nad kodom, SEO optimizacija.",
+          "price": "1000",
+          "priceCurrency": "EUR",
+          "url": "https://kreirai.hr/usluge.html#cjenik",
+          "seller": {
+            "@id": "https://kreirai.hr/#organization"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Standardna",
+          "description": "Dizajn i uređivanje, hosting, neograničeno ažuriranje, SEO optimizacija, 24/7 podrška.",
+          "price": "90",
+          "priceCurrency": "EUR",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "90",
+            "priceCurrency": "EUR",
+            "unitCode": "MON",
+            "unitText": "mjesečno"
+          },
+          "url": "https://kreirai.hr/usluge.html#cjenik",
+          "seller": {
+            "@id": "https://kreirai.hr/#organization"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "Prilagođeno",
+          "description": "Webshop i online trgovina, funkcionalnosti po mjeri vašeg posla — po personaliziranoj ponudi.",
+          "url": "https://kreirai.hr/kontakt.html",
+          "seller": {
+            "@id": "https://kreirai.hr/#organization"
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 
@@ -1471,7 +1558,7 @@
             class="hero-logo-video border-0 outline-none"
             src="assets/hero-video.mp4?v=3"
             poster="assets/hero-poster.jpg?v=3"
-            autoplay muted loop playsinline webkit-playsinline preload="metadata"
+            muted loop playsinline webkit-playsinline preload="none"
             aria-label="Promotivni video KreirAI — od koda do gotovog proizvoda"
           ></video>
         </div>
@@ -2033,12 +2120,19 @@
           heroTagline.classList.toggle('is-visible', showTagline);
         });
       }
-      if (heroVideo.readyState >= 3) {
-        tryPlayHeroVideo();
-      } else {
-        heroVideo.addEventListener('canplaythrough', tryPlayHeroVideo, { once: true });
-        heroVideo.addEventListener('loadeddata', tryPlayHeroVideo, { once: true });
-      }
+      // PERFORMANSE (LCP): video se više ne učitava odmah s HTML-om
+      // (preload="none", bez autoplay atributa) — prvo se prikaže poster
+      // slika, a video krene tek kad je ostatak stranice učitan i
+      // preglednik "slobodan". Uz uključenu uštedu podataka (Save-Data)
+      // video ne kreće sam, nego tek na prvi dodir/klik.
+      var saveData = !!(navigator.connection && navigator.connection.saveData);
+      var startHeroVideo = function () {
+        if (saveData) return;
+        if ('requestIdleCallback' in window) requestIdleCallback(tryPlayHeroVideo, { timeout: 1500 });
+        else setTimeout(tryPlayHeroVideo, 300);
+      };
+      if (document.readyState === 'complete') startHeroVideo();
+      else window.addEventListener('load', startHeroVideo, { once: true });
       ['touchstart', 'click'].forEach(function (evt) {
         document.addEventListener(evt, function () {
           if (heroVideo.paused) tryPlayHeroVideo();
