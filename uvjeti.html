@@ -3,6 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <script>
+  // SEO: jedna adresa po stranici. GitHub Pages ne zna raditi 301
+  // preusmjeravanja, pa svaku "drugu" adresu iste stranice odmah
+  // prebacujemo na službenu (ista kao <link rel="canonical">):
+  // www.kreirai.hr → kreirai.hr, /index.html → /, /portfolio → /portfolio.html
+  (function () {
+    var h = location.hostname;
+    if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
+    var p = location.pathname, n = p;
+    if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti)\/?$/);
+    if (m) n = '/' + m[1] + '.html';
+    if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
+  })();
+</script>
+<script>
   // Spriječi preglednik da pri osvježavanju (refresh) stranice vrati
   // korisnika na mjesto gdje je zadnje skrolao — stranica uvijek kreće
   // od vrha. Mora se postaviti što prije, prije nego preglednik stigne
@@ -186,12 +201,12 @@
      ============================================================ -->
 <header class="dark sticky top-0 z-50 bg-[#F2F4FA]/85 dark:bg-[#080B14]/85 backdrop-blur border-b border-line dark:border-[#232B47] transition-colors">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
-    <a href="index.html" class="font-serif font-semibold text-xl tracking-tight shrink-0">
+    <a href="/" class="font-serif font-semibold text-xl tracking-tight shrink-0">
       <span class="text-ink dark:text-[#EBEFFA]">Kreir</span><span class="text-gradient">AI</span>
     </a>
 
     <div class="flex items-center gap-3">
-      <a href="index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">
+      <a href="/" class="inline-flex items-center gap-2 text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">
         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         Natrag na početnu
       </a>

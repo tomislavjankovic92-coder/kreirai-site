@@ -3,6 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <script>
+  // SEO: jedna adresa po stranici. GitHub Pages ne zna raditi 301
+  // preusmjeravanja, pa svaku "drugu" adresu iste stranice odmah
+  // prebacujemo na službenu (ista kao <link rel="canonical">):
+  // www.kreirai.hr → kreirai.hr, /index.html → /, /portfolio → /portfolio.html
+  (function () {
+    var h = location.hostname;
+    if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
+    var p = location.pathname, n = p;
+    if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti)\/?$/);
+    if (m) n = '/' + m[1] + '.html';
+    if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
+  })();
+</script>
+<script>
   // Spriječi preglednik da pri osvježavanju (refresh) stranice vrati
   // korisnika na mjesto gdje je zadnje skrolao — stranica uvijek kreće
   // od vrha. Mora se postaviti što prije, prije nego preglednik stigne
@@ -518,12 +533,12 @@
      ============================================================ -->
 <header class="dark fixed top-0 inset-x-0 z-50 bg-[#F2F4FA]/85 dark:bg-[#080B14]/85 backdrop-blur border-b border-line dark:border-[#232B47] transition-colors">
   <div id="headerBar" class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
-    <a href="index.html" class="font-serif font-semibold text-xl tracking-tight shrink-0">
+    <a href="/" class="font-serif font-semibold text-xl tracking-tight shrink-0">
       <span class="text-ink dark:text-[#EBEFFA]">Kreir</span><span class="text-gradient">AI</span>
     </a>
 
     <nav class="hidden md:flex items-center gap-1 bg-surface2 dark:bg-[#161D34] border border-line dark:border-[#232B47] rounded-full p-1 transition-colors">
-      <a href="index.html" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">Početna</a>
+      <a href="/" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">Početna</a>
       <a href="usluge.html" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">Usluge</a>
       <a href="portfolio.html" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">Portfolio</a>
       <a href="blog.html" class="nav-link is-active px-4 py-2 rounded-full text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">Blog</a>
@@ -549,7 +564,7 @@
 
   <nav id="mobileNav" class="mobile-nav md:hidden border-t border-line dark:border-[#232B47] bg-white dark:bg-[#10162A] transition-colors">
     <div class="px-5 py-3 flex flex-col">
-      <a href="index.html" class="mob-link py-3 text-sm font-semibold text-ink dark:text-[#EBEFFA] border-b border-line dark:border-[#232B47]">Početna</a>
+      <a href="/" class="mob-link py-3 text-sm font-semibold text-ink dark:text-[#EBEFFA] border-b border-line dark:border-[#232B47]">Početna</a>
       <a href="usluge.html" class="mob-link py-3 text-sm font-semibold text-ink dark:text-[#EBEFFA] border-b border-line dark:border-[#232B47]">Usluge</a>
       <a href="portfolio.html" class="mob-link py-3 text-sm font-semibold text-ink dark:text-[#EBEFFA] border-b border-line dark:border-[#232B47]">Portfolio</a>
       <a href="blog.html" class="mob-link py-3 text-sm font-semibold text-ink dark:text-[#EBEFFA] border-b border-line dark:border-[#232B47]">Blog</a>
