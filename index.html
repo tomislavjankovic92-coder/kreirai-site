@@ -745,7 +745,7 @@
 
   /* Eyebrow labels ("Usluge", "Portfolio"...) get a small glowing
      status dot — a quiet HUD/console cue rather than plain text. */
-  .eyebrow{ display: inline-flex; align-items: center; gap: .55em; }
+  .eyebrow{ display: flex; align-items: center; gap: .55em; } /* uvijek u svom redu iznad naslova */
   /* centrirani eyebrow uvijek u svom redu (inače stane u isti red
      s kratkim inline-block naslovom, npr. "Što kažu klijenti.") */
   .eyebrow.justify-center{ display: flex; }
