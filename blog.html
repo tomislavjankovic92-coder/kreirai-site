@@ -471,12 +471,20 @@
   }
   .icon-badge svg{ width: 1.4rem; height: 1.4rem; }
   /* Popis članaka na blogu */
-  .blog-list{ max-width: 48rem; }
-  .blog-list.glass-stage{ display:grid; gap:1.25rem; }
-  .blog-card{ padding: 1.6rem 1.5rem 1.5rem; }
-  @media (min-width:640px){ .blog-card{ padding: 2.1rem 2.25rem 2rem; } }
-  .blog-card h2{ font-size: 1.45rem; line-height: 1.25; letter-spacing: -.02em; }
-  @media (min-width:640px){ .blog-card h2{ font-size: 1.7rem; } }
+  .blog-list.glass-stage{ display:grid; grid-template-columns:1fr; gap:1.5rem; }
+  @media (min-width:768px){ .blog-list.glass-stage{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.75rem; } }
+  .blog-card{ display:flex !important; flex-direction:column; padding:0; overflow:hidden; }
+  .blog-thumb{ aspect-ratio:16/9; overflow:hidden; border-bottom:1px solid rgba(15,23,42,.08); background:#0B0F1C; }
+  .dark .blog-thumb{ border-bottom-color:rgba(35,43,71,.9); }
+  .blog-thumb img{ display:block; width:100%; height:100%; object-fit:cover; transform:scale(1.001); transition:transform .7s cubic-bezier(.2,.7,.2,1); }
+  .blog-card:hover .blog-thumb img, .blog-card:focus-visible .blog-thumb img{ transform:scale(1.045); }
+  .blog-card-body{ display:flex; flex-direction:column; flex:1; padding:1.4rem 1.4rem 1.5rem; }
+  @media (min-width:640px){ .blog-card-body{ padding:1.75rem 1.9rem 1.85rem; } }
+  .blog-card-body .blog-more{ margin-top:auto; padding-top:1.25rem; }
+  .blog-card h2{ font-size:1.3rem; line-height:1.28; letter-spacing:-.02em; }
+  @media (min-width:640px){ .blog-card h2{ font-size:1.45rem; } }
+  .blog-note{ max-width:48rem; }
+  @media (prefers-reduced-motion: reduce){ .blog-thumb img{ transition:none; } }
 
   /* ============================================================
      PREMIUM STAKLENE KARTICE (:is(.service-card, .glass-premium).glass-panel)
@@ -764,14 +772,16 @@
           "@id": "https://kreirai.hr/koliko-kosta-web-stranica-za-obrt.html#article",
           "headline": "Koliko košta web stranica za obrt u 2026. i na što paziti?",
           "url": "https://kreirai.hr/koliko-kosta-web-stranica-za-obrt.html",
-          "datePublished": "2026-10-15"
+          "datePublished": "2026-10-15",
+          "image": "https://kreirai.hr/blog-koliko-kosta-thumb.jpg"
         },
         {
           "@type": "BlogPosting",
           "@id": "https://kreirai.hr/web-stranica-ili-facebook-stranica.html#article",
           "headline": "Web stranica ili samo Facebook stranica: što je bolje za mali posao?",
           "url": "https://kreirai.hr/web-stranica-ili-facebook-stranica.html",
-          "datePublished": "2026-10-15"
+          "datePublished": "2026-10-15",
+          "image": "https://kreirai.hr/blog-web-ili-facebook-thumb.jpg"
         }
       ]
     }
@@ -869,27 +879,33 @@
 
     <div class="glass-stage blog-list mt-10">
       <a href="koliko-kosta-web-stranica-za-obrt.html" class="blog-card pf-card glass-premium group glass-panel relative block rounded-2xl border border-line dark:border-[#232B47] hover:-translate-y-1" data-reveal="fade-up" data-reveal-delay="0">
-        <div class="flex items-center gap-3 flex-wrap">
-          <span class="step-badge font-mono text-xs uppercase tracking-wide">Vodič</span>
-          <time datetime="2026-10-15" class="font-mono text-xs text-inksoft dark:text-[#A6AFC9]">15. listopada 2026. · 6 min čitanja</time>
+        <div class="pf-media blog-thumb"><img src="blog-koliko-kosta-thumb.jpg" alt="Cjenik izrade web stranica za obrt 2026. s istaknutom prezentacijskom stranicom od 900 do 2.500 €" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async"></div>
+        <div class="blog-card-body">
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="step-badge font-mono text-xs uppercase tracking-wide">Vodič</span>
+            <time datetime="2026-10-15" class="font-mono text-xs text-inksoft dark:text-[#A6AFC9]">15. listopada 2026. · 6 min čitanja</time>
+          </div>
+          <h2 class="font-serif font-semibold text-2xl mt-4 group-hover-coral transition">Koliko košta web stranica za obrt u 2026. i na što paziti?</h2>
+          <p class="mt-3 text-inksoft dark:text-[#A6AFC9] text-sm sm:text-base leading-relaxed">Realne cijene na hrvatskom tržištu — od predloška do webshopa, što ulazi u cijenu, koji se troškovi plaćaju svake godine i 7 stvari koje treba provjeriti prije potpisivanja ponude.</p>
+          <span class="blog-more inline-flex items-center gap-1.5 text-sm font-semibold text-coral">Pročitajte članak <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </div>
-        <h2 class="font-serif font-semibold text-2xl mt-4 group-hover-coral transition">Koliko košta web stranica za obrt u 2026. i na što paziti?</h2>
-        <p class="mt-3 text-inksoft dark:text-[#A6AFC9] text-sm sm:text-base leading-relaxed">Realne cijene na hrvatskom tržištu — od predloška do webshopa, što ulazi u cijenu, koji se troškovi plaćaju svake godine i 7 stvari koje treba provjeriti prije potpisivanja ponude.</p>
-        <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-coral mt-5">Pročitajte članak <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
       <a href="web-stranica-ili-facebook-stranica.html" class="blog-card pf-card glass-premium group glass-panel relative block rounded-2xl border border-line dark:border-[#232B47] hover:-translate-y-1" data-reveal="fade-up" data-reveal-delay="80">
-        <div class="flex items-center gap-3 flex-wrap">
-          <span class="step-badge font-mono text-xs uppercase tracking-wide">Usporedba</span>
-          <time datetime="2026-10-15" class="font-mono text-xs text-inksoft dark:text-[#A6AFC9]">15. listopada 2026. · 5 min čitanja</time>
+        <div class="pf-media blog-thumb"><img src="blog-web-ili-facebook-thumb.jpg" alt="Usporedba objave na društvenoj mreži i vlastite web stranice koja je prva na Googleu" width="1200" height="675" loading="lazy" decoding="async"></div>
+        <div class="blog-card-body">
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="step-badge font-mono text-xs uppercase tracking-wide">Usporedba</span>
+            <time datetime="2026-10-15" class="font-mono text-xs text-inksoft dark:text-[#A6AFC9]">15. listopada 2026. · 5 min čitanja</time>
+          </div>
+          <h2 class="font-serif font-semibold text-2xl mt-4 group-hover-coral transition">Web stranica ili samo Facebook stranica: što je bolje za mali posao?</h2>
+          <p class="mt-3 text-inksoft dark:text-[#A6AFC9] text-sm sm:text-base leading-relaxed">Je li Facebook stranica dovoljna ili vam treba vlastita web stranica? Usporedba vidljivosti na Googleu, vlasništva, dosega i troškova — i kako ih povezati da donose upite.</p>
+          <span class="blog-more inline-flex items-center gap-1.5 text-sm font-semibold text-coral">Pročitajte članak <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </div>
-        <h2 class="font-serif font-semibold text-2xl mt-4 group-hover-coral transition">Web stranica ili samo Facebook stranica: što je bolje za mali posao?</h2>
-        <p class="mt-3 text-inksoft dark:text-[#A6AFC9] text-sm sm:text-base leading-relaxed">Je li Facebook stranica dovoljna ili vam treba vlastita web stranica? Usporedba vidljivosti na Googleu, vlasništva, dosega i troškova — i kako ih povezati da donose upite.</p>
-        <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-coral mt-5">Pročitajte članak <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
       <div class="glass-aura" aria-hidden="true"><span></span><span></span><span></span></div>
     </div>
 
-    <p class="blog-list mt-8 text-sm text-inksoft dark:text-[#A6AFC9]">Postoji tema o kojoj biste željeli pročitati? <a href="kontakt.html" class="hover-coral font-semibold text-coral">Predložite je</a>.</p>
+    <p class="blog-note mt-8 text-sm text-inksoft dark:text-[#A6AFC9]">Postoji tema o kojoj biste željeli pročitati? <a href="kontakt.html" class="hover-coral font-semibold text-coral">Predložite je</a>.</p>
   </section>
 
 </main>
