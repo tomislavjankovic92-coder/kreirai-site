@@ -418,6 +418,27 @@
   /* "Korak 01–04" process labels as small bordered chips. */
   /* Koraci rada — malo tamnija traka preko cijele širine ekrana
      (ista nijansa kao "Razlika" na početnoj), da se proces istakne. */
+  /* Cjenik — ista tamnija traka preko cijele širine kao koraci rada. */
+  .band-dark{
+    position: relative;
+    isolation: isolate;
+    padding-top: 4.5rem;
+  }
+  @media (min-width:640px){ .band-dark{ padding-top: 6rem; } }
+  .band-dark::before{
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    left: calc(50% - 50vw); right: calc(50% - 50vw);
+    z-index: -1;
+    background: #E1E5F1;
+    border-top: 1px solid rgba(14,21,38,.05);
+    pointer-events: none;
+  }
+  .dark .band-dark::before{
+    background: #0D1222;
+    border-color: rgba(255,255,255,.05);
+  }
   .steps-band{
     position: relative;
     isolation: isolate;
@@ -986,7 +1007,7 @@
   </section>
 
 
-  <section id="cjenik" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
+  <section id="cjenik" class="band-dark scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
     <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
       <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-coral">Cjenik</p>
       <h2 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
