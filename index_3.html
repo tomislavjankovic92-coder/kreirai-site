@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<script>
+  // Spriječi preglednik da pri osvježavanju (refresh) stranice vrati
+  // korisnika na mjesto gdje je zadnje skrolao — stranica uvijek kreće
+  // od vrha. Mora se postaviti što prije, prije nego preglednik stigne
+  // primijeniti svoje zadano ponašanje vraćanja scroll pozicije.
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+</script>
+<script>
+  // Intro "build u terminalu" (kreirai-intro.js) — ovo mora ići što prije
+  // u <head>, PRIJE prvog crtanja stranice, jer samo tako CSS ispod
+  // (html.ki-intro-on body{visibility:hidden}) stigne sakriti stranicu
+  // prije nego je korisnik stigne vidjeti (sprječava "flash" sadržaja).
+  // Intro se prikazuje jednom po tabu/sesiji (sessionStorage) i poštuje
+  // "prefers-reduced-motion". Prisilno pokretanje za testiranje: ?intro=1
+  (function () {
+    try {
+      var q = location.search;
+      var forced = /[?&]intro=1\b/.test(q);
+      if (!forced) {
+        if (sessionStorage.getItem('kreiraiIntroSeen')) return;
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      }
+      document.documentElement.classList.add('ki-intro-on');
+      if (/[?&]lite=1\b/.test(q) || matchMedia('(max-width: 640px)').matches) {
+        document.documentElement.classList.add('ki-intro-lite');
+      }
+    } catch (e) {}
+  })();
+</script>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KreirAI — web stranice, aplikacije i oglasne kampanje uz AI</title>
+<meta name="description" content="Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, aplikacije i oglasne kampanje — brzo i bez agencijske birokracije.">
+<link rel="canonical" href="https://kreirai.hr/">
+
+<!-- Social share preview (link thumbnail) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kreirai.hr/">
+<meta property="og:site_name" content="KreirAI">
+<meta property="og:title" content="KreirAI — web stranice, aplikacije i oglasne kampanje uz AI">
+<meta property="og:description" content="Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, aplikacije i oglasne kampanje — brzo i bez agencijske birokracije.">
+<meta property="og:image" content="https://kreirai.hr/og-image.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="KreirAI — web stranice, aplikacije i oglasne kampanje uz AI">
+<meta name="twitter:description" content="Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, aplikacije i oglasne kampanje — brzo i bez agencijske birokracije.">
+<meta name="twitter:image" content="https://kreirai.hr/og-image.png">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzBBMEUxQSIvPgogIDxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9IiNGRjk0NzgiIGZpbGwtb3BhY2l0eT0iMC4xNCIvPgogIDx0ZXh0IHg9IjE2IiB5PSIyMyIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsICdUaW1lcyBOZXcgUm9tYW4nLCBzZXJpZiIgZm9udC1zaXplPSIxOSIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI0ZGOTQ3OCI+SzwvdGV4dD4KPC9zdmc+Cg==">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="tailwind.css">
+
+<style>
+  /* ============================================================
+     CSS — theme tokens (light default / dark primary), scroll-reveal
+     engine, and a few base tweaks Tailwind utilities alone don't
+     cover (smooth scroll, gradient text, progress bar).
+     ============================================================ */
+  html { scroll-behavior: smooth; overscroll-behavior-y: contain; overflow-x: hidden; max-width: 100%; }
+
+  /* Header is now fixed (not sticky — Safari/iOS drops position:sticky
+     when any ancestor sets overflow-x:hidden, which html/body do here),
+     so it no longer reserves its own space in normal flow. --header-h
+     is measured from the real header bar (JS, right after <header> in
+     the markup) and used to push <main> down by exactly that amount,
+     with a sane fallback for the instant before that script runs. */
+  main{ padding-top: var(--header-h, 76px); }
+
+  /* Promotes the fixed, blurred header to its own GPU compositor layer
+     so scrolling doesn't force the browser to repaint the backdrop-blur
+     against the rest of the page on every frame — helps smooth out
+     scroll jank, no visual change. */
+  header{ transform: translateZ(0); }
+
+  body{
+    background:#F2F4FA; color:#0E1526;
+    transition: background .3s ease, color .3s ease;
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+  .dark body{ background:#080B14; color:#EBEFFA; }
+
+  /* Bio gradient (cyan→coral); sad jednobojni koralj na zahtjev —
+     light/dark varijanta i dalje postoje jer je tamna pozadina
+     (header/#pocetna) uvijek "dark", a #FF9478 je svjetliji koralj
+     s dovoljno kontrasta na tamnoj podlozi. */
+  .text-gradient{ color: #FF6F59; }
+  .dark .text-gradient{ color: #FF9478; }
+
+  /* Jednobojna koraljna podloga za CTA gumbe i "Popularno" značku —
+     zamjena za bivši cyan→violet gradient (klase from-cyan/to-violet
+     se više ne koriste, ali ostaju definirane u tailwind.css). */
+  .bg-coral{
+    background-image: linear-gradient(135deg, #FF8469, #FF6F59 55%, #F0573F);
+    background-color: #FF6F59;
+  }
+  .dark .bg-coral{
+    background-image: linear-gradient(135deg, #FFAB92, #FF9478 55%, #FF7D5E);
+    background-color: #FF9478;
+  }
+
+  /* Koraljna varijanta bivših text-cyan/dark:text-cyan-bright oznaka
+     (eyebrow labele, hero tagline overlay) — zamjena za drugu, cyan
+     "tech" boju brenda; sad je koralj jedina isticajna boja na cijeloj
+     stranici. */
+  .text-coral{ color: #FF6F59; }
+  .dark .text-coral{ color: #FF9478; }
+
+  /* Koraljni hover (bivši hover-coral). */
+  .hover-coral:hover{ color: #FF6F59; }
+  .dark .hover-coral:hover{ color: #FF9478; }
+
+  /* Hero stage always keeps its own dark "stage" tone (independent of
+     site light/dark mode) so the 3D logo video's dark background has
+     nothing to visibly seam against — it just dissolves into it. */
+  .hero-stage{
+    background:
+      radial-gradient(circle at 50% 46%, rgba(255,148,120,.20), transparent 42%),
+      radial-gradient(circle at 30% 20%, rgba(255,148,120,.16), transparent 60%),
+      radial-gradient(circle at 75% 80%, rgba(255,148,120,.14), transparent 55%),
+      #0A0E1A;
+  }
+  /* Koraljni obrub oko hero videa s animacijom: tanki, lagani
+     koraljni rub (stalno vidljiv) + svjetleća "kometa" koja polako
+     kruži obrubom. Kometa je conic-gradient čiji se početni kut
+     (--hs-angle, registriran preko @property da se može animirati)
+     okreće u krug; maska (content-box XOR) ostavlja vidljiv samo
+     rub debljine 1.5px. Ispod oštrog ruba je zamućena kopija komete
+     (.hero-frame__glow) koja daje mekani sjaj izvan okvira.
+     Bez podrške za @property (stariji preglednici) ostaje statičan
+     koraljni rub; reduced-motion također dobiva statičan rub. */
+  @property --hs-angle{ syntax:'<angle>'; inherits:true; initial-value:0deg; }
+  .hero-frame{
+    --hs-angle: 0deg;
+    isolation: isolate;
+    box-shadow: 0 30px 80px -40px rgba(255,111,89,.45);
+    animation: hero-frame-spin 7s linear infinite;
+  }
+  @keyframes hero-frame-spin{ to{ --hs-angle: 360deg; } }
+  .hero-frame__ring,
+  .hero-frame__glow::before{
+    content: "";
+    position: absolute;
+    border-radius: inherit;
+    pointer-events: none;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  .hero-frame__ring{
+    inset: 0; z-index: 3;
+    padding: 1.5px;
+    background: conic-gradient(from var(--hs-angle),
+      rgba(255,111,89,.34) 0deg,
+      rgba(255,111,89,.34) 230deg,
+      rgba(255,148,120,.70) 300deg,
+      #FFE6DD 350deg,
+      rgba(255,111,89,.34) 358deg);
+  }
+  .hero-frame__glow{
+    position: absolute; inset: -3px; z-index: 0;
+    border-radius: calc(1.5rem + 3px);
+    pointer-events: none;
+    filter: blur(9px);
+    opacity: .9;
+  }
+  .hero-frame__glow::before{
+    inset: 0;
+    padding: 5px;
+    background: conic-gradient(from var(--hs-angle),
+      transparent 0deg,
+      transparent 250deg,
+      rgba(255,111,89,.55) 310deg,
+      rgba(255,180,160,.95) 350deg,
+      transparent 358deg);
+  }
+  .hero-frame .hero-stage{ z-index: 1; }
+  @media (prefers-reduced-motion: reduce){
+    .hero-frame{ animation: none; }
+    .hero-frame__glow{ display: none; }
+  }
+  .hero-grid{
+    background-image:
+      linear-gradient(rgba(235,239,250,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(235,239,250,.05) 1px, transparent 1px);
+    background-size:26px 26px;
+    -webkit-mask-image:radial-gradient(circle at 50% 45%, black 0%, transparent 72%);
+    mask-image:radial-gradient(circle at 50% 45%, black 0%, transparent 72%);
+  }
+  .dark .hero-grid{
+    background-image:
+      linear-gradient(rgba(235,239,250,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(235,239,250,.05) 1px, transparent 1px);
+  }
+
+  /* ============================================================
+     HERO "DATA FIELD" — pozadinska canvas animacija u programerskom
+     štihu: fina mreža piksel-točaka (kao IDE / terminal raster) preko
+     koje polako klizi dijagonalni "scan" val. Na grebenu vala
+     povremeno se "dekodiraju" pojedinačni znakovi ({ } < / > 0 1 …)
+     — kratko trepere nasumičnim znakovima pa se smire i nestanu.
+     Pod kursorom se mreža blago osvijetli (spotlight).
+     Hladni plavo-bijeli ton (ne koraljni) da se ne stapa s naslovom;
+     maska blijedi rubove i dno prema kosini. Pauzira se kad hero
+     nije vidljiv, kad je tab u pozadini i tijekom scrolla;
+     reduced-motion dobije jedan statični kadar.
+     ============================================================ */
+  .hero-field{
+    position:absolute; inset:0; z-index:0; pointer-events:none;
+    display:block; width:100%; height:100%;
+    opacity:0; transition:opacity 1.2s ease;
+    -webkit-mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%);
+            mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%);
+  }
+  .hero-field.is-ready{ opacity:1; }
+
+  .pf-card-2{ background:linear-gradient(135deg, rgba(255,111,89,.16), #fff); }
+  .dark .pf-card-2{ background:linear-gradient(135deg, rgba(255,148,120,.22), #10162A); }
+  .pf-card-3{ background:linear-gradient(135deg, rgba(255,111,89,.14), rgba(255,111,89,.12)); }
+  .dark .pf-card-3{ background:linear-gradient(135deg, rgba(255,148,120,.18), rgba(255,148,120,.16)); }
+
+  /* --- Scroll-triggered reveal system ---
+     Add data-reveal="fade-up | fade-down | fade-left | fade-right | zoom-in"
+     to any element, optionally data-reveal-delay="150" (ms).
+     JS toggles .is-visible via IntersectionObserver. will-change is set
+     by JS only for the brief moment each element is actually animating
+     in, then cleared — dozens of data-reveal elements left permanently
+     promoted to their own GPU layer (the old always-on will-change
+     here) is a classic, real cause of scroll jank on a page this size. */
+  [data-reveal]{
+    opacity: 0;
+    transition: opacity .8s cubic-bezier(.16,.8,.24,1), transform .8s cubic-bezier(.16,.8,.24,1);
+  }
+  [data-reveal="fade-up"]{ transform: translateY(40px); }
+  [data-reveal="fade-down"]{ transform: translateY(-32px); }
+  [data-reveal="fade-left"]{ transform: translateX(48px); }
+  [data-reveal="fade-right"]{ transform: translateX(-48px); }
+  [data-reveal="zoom-in"]{ transform: scale(.92); }
+  [data-reveal].is-visible{ opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    [data-reveal]{ transition:none !important; transform:none !important; opacity:1 !important; }
+  }
+
+  /* Cursor-following ambient glow — a soft light that trails the mouse
+     pointer across the page. Fixed + pointer-events:none so it never
+     blocks clicks, blended into the page (not painted flat on top) so
+     it stays subtle instead of washing over text/cards, and skipped
+     entirely on touch devices / reduced-motion. */
+  #cursorGlow{
+    position: fixed;
+    top: 0; left: 0;
+    width: 200px; height: 200px;
+    margin-left: -100px; margin-top: -100px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 45;
+    opacity: 0;
+    transition: opacity .5s ease;
+    background: radial-gradient(circle, rgba(255,148,120,.055) 0%, rgba(255,148,120,.03) 35%, transparent 70%);
+    mix-blend-mode: screen;
+    will-change: transform, opacity;
+  }
+  html:not(.dark) #cursorGlow{
+    background: radial-gradient(circle, rgba(255,111,89,.03) 0%, rgba(255,111,89,.02) 40%, transparent 70%);
+    mix-blend-mode: normal;
+  }
+  #cursorGlow.is-active{ opacity: 1; }
+  @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce){
+    #cursorGlow{ display: none; }
+  }
+
+  .mobile-nav{ max-height:0; overflow:hidden; transition: max-height .3s ease; }
+  .mobile-nav.open{ max-height:460px; }
+
+  .nav-link.is-active{ background:#fff; color:#FF6F59; box-shadow:0 1px 2px rgba(14,21,38,.08); }
+  .dark .nav-link.is-active{ background:#10162A; color:#FF9478; box-shadow:0 1px 2px rgba(0,0,0,.35); }
+
+  /* Header and hero (#pocetna) are meant to stay permanently in the
+     "dark" look and both carry class="dark" so every descendant's
+     existing dark: utility picks it up correctly — but Tailwind's
+     dark: selector is ":is(.dark *)", a DESCENDANT selector, so it
+     never matches the element that itself carries class="dark" (an
+     element is not its own descendant). That left header's own
+     background/border and #pocetna's own background still on their
+     light values. Forced directly here instead (header.dark to
+     out-specificity its own bg-[#F2F4FA]/85 utility class; #pocetna
+     is an ID selector so it already wins outright). */
+  header.dark{ background: rgba(8,11,20,.85); border-bottom-color: #232B47; }
+  #pocetna{ background: #080B14; color: #EBEFFA; }
+
+  /* Diagonal "cut" seam where the permanently-dark hero bleeds into
+     the light sections below — purely decorative, sits right after
+     the hero section, never clips real content. */
+  .hero-cut{ position:relative; width:100%; height:44px; margin-top:-1px; pointer-events:none; }
+  .hero-cut svg{ display:block; width:100%; height:100%; }
+  .hero-cut__fill{ fill:#080B14; }
+  .hero-cut__line{ fill:none; stroke:url(#heroCutGrad); stroke-width:2.5; filter:drop-shadow(0 0 5px rgba(255,148,120,.45)); }
+  @media (min-width:640px){ .hero-cut{ height:72px; } }
+
+  /* ============================================================
+     TRAKA USLUGA — beskonačni "marquee" (sadržaj dupliciran u DOM-u,
+     animacija pomiče traku za točno -50%, pa se petlja ne primijeti).
+     Cijela traka (pozadina + tekst) zarotirana je za isti nagib kao
+     hero kosina i privučena tik uz nju.
+
+     Izgled: koraljno "staklo" — prozirni koraljni gradijent s
+     backdrop-blur, gornji bijeli rub-odsjaj, gornja polovica sa
+     sjajnim "glazurom" (::before), polagani odsjaj svjetla koji
+     povremeno prijeđe trakom (::after) i mekani koraljni sjaj ispod.
+     Tamni tekst (dobar kontrast na koraljnoj) s blagim reljefom,
+     bijele ✦ zvjezdice kao razdjelnici. Traka je šira od ekrana pa
+     njeni krajevi (ni pod nagibom) nikad ne ulaze u kadar.
+     Vrti se uvijek, bez pauze (ni na hover ni na scroll).
+     ============================================================ */
+  .services-ticker-wrap{
+    --tk-pull: -66px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    margin-top: var(--tk-pull);
+    margin-bottom: -48px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+  }
+  @media (min-width:640px){
+    .services-ticker-wrap{ --tk-pull: -108px; height: 260px; margin-bottom: -65px; }
+  }
+  .services-ticker{
+    position: relative;
+    width: 120%;
+    margin-left: -10%;
+    flex: none;
+    overflow: hidden;
+    pointer-events: auto;
+    background:
+      linear-gradient(100deg, rgba(255,150,122,.88) 0%, rgba(255,111,89,.80) 45%, rgba(240,87,63,.86) 100%);
+    -webkit-backdrop-filter: blur(16px) saturate(170%);
+            backdrop-filter: blur(16px) saturate(170%);
+    border-top: 1px solid rgba(255,255,255,.65);
+    border-bottom: 1px solid rgba(150,38,20,.35);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.35),
+      inset 0 -10px 22px -12px rgba(140,30,12,.35),
+      0 18px 32px -16px rgba(255,111,89,.6),
+      0 6px 12px -8px rgba(120,30,15,.32);
+    transform: rotate(var(--tk-angle, 2.5deg));
+    transform-origin: center center;
+  }
+  /* staklena "glazura" — sjajna gornja polovica */
+  .services-ticker::before{
+    content: "";
+    position: absolute; inset: 0; z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,.42) 0%,
+      rgba(255,255,255,.14) 38%,
+      rgba(255,255,255,0) 52%,
+      rgba(255,255,255,0) 80%,
+      rgba(255,255,255,.10) 100%);
+  }
+  /* polagani odsjaj svjetla koji prelazi preko trake */
+  .services-ticker::after{
+    content: "";
+    position: absolute; top: -20%; bottom: -20%; left: 0; width: 22%; z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,.0) 20%, rgba(255,255,255,.38) 50%, rgba(255,255,255,0) 80%, transparent 100%);
+    transform: translateX(-120%) skewX(-18deg);
+    animation: services-ticker-shine 7.5s cubic-bezier(.45,.05,.25,1) infinite;
+  }
+  @keyframes services-ticker-shine{
+    0%   { transform: translateX(-120%) skewX(-18deg); }
+    55%  { transform: translateX(560%)  skewX(-18deg); }
+    100% { transform: translateX(560%)  skewX(-18deg); }
+  }
+  .services-ticker__track{
+    position: relative; z-index: 2;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    width: max-content;
+    padding: 1.35rem 0;
+    animation: services-ticker-scroll 40s linear infinite;
+  }
+  @media (min-width:640px){ .services-ticker__track{ padding: 1.75rem 0; } }
+  @keyframes services-ticker-scroll{ to{ transform: translateX(-50%); } }
+  .services-ticker__item{
+    display: inline-flex; align-items: center;
+    font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 1.45rem;
+    line-height: 1.1;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: #1A0F14;
+    text-shadow: 0 1px 0 rgba(255,255,255,.28);
+  }
+  @media (min-width:640px){ .services-ticker__item{ font-size: 1.85rem; } }
+  .services-ticker__dot{
+    display: inline-block;
+    padding: 0 .9em;
+    font-size: 1.05rem;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255,255,255,.85), 0 0 22px rgba(255,220,205,.6);
+  }
+  @media (min-width:640px){ .services-ticker__dot{ font-size: 1.3rem; padding: 0 1.1em; } }
+  .sr-only{
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  /* Isti dijagonalni "rez" tehnika, ponovno iskorištena oko "Razlika"
+     sekcije: gornji rez ulazi suprotnim smjerom (zrcaljeno od heroja),
+     donji rez izlazi istim smjerom kao hero-cut. Oba dijele isti
+     koraljni gradijent (url(#heroCutGrad), definiran jednom gore u
+     heroju — ID je jedinstven u cijelom dokumentu pa ga oba reza
+     mogu ponovno koristiti). Pozadina same "Razlika" sekcije je
+     malo tamnija nijansa svijetle podloge (#E1E5F1 umjesto #F2F4FA)
+     da traka vizualno dođe do izražaja. */
+  #razlika{ background:#E1E5F1; }
+  #recenzije{ background:#080B14; color:#EBEFFA; }
+  /* Google zvjezdice — arbitrarna Tailwind klasa nije u kompiliranom
+     tailwind.css, pa boju postavljamo ovdje. */
+  .text-\[\#FBBC05\]{ color:#FBBC05; }
+  .cut-fill-band{ fill:#E1E5F1; }
+  .cut-fill-band.cut-fill-dark{ fill:#080B14; }
+
+  /* ============================================================
+     Glow buttons — premium layered shadow (ambient coral glow +
+     tight contact shadow for real depth), a one-shot diagonal shine
+     that sweeps across on hover/focus (plays only during that
+     transition, not a perpetual animation — no ongoing GPU cost
+     while idle), and a pressed/tap state on :active alone so touch
+     devices — which never trigger :hover — still get feedback.
+     .btn-glow      — full-size CTAs (primary + ghost/secondary)
+     .btn-glow-sm   — compact icon buttons (hamburger)
+     ============================================================ */
+  .btn-glow, .btn-glow-sm{
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    box-shadow:
+      0 1px 2px 0 rgba(14,21,38,.16),
+      0 0 6px 0 rgba(255,111,89,.28);
+    transition: box-shadow .3s ease, transform .15s ease;
+  }
+  .dark .btn-glow, .dark .btn-glow-sm{
+    box-shadow:
+      0 1px 2px 0 rgba(0,0,0,.35),
+      0 0 8px 0 rgba(255,148,120,.32);
+  }
+  .btn-glow:hover, .btn-glow:focus-visible,
+  .btn-glow-sm:hover, .btn-glow-sm:focus-visible{
+    box-shadow:
+      0 8px 20px -6px rgba(14,21,38,.25),
+      0 0 14px 1px rgba(255,111,89,.46);
+  }
+  .dark .btn-glow:hover, .dark .btn-glow:focus-visible,
+  .dark .btn-glow-sm:hover, .dark .btn-glow-sm:focus-visible{
+    box-shadow:
+      0 8px 22px -6px rgba(0,0,0,.45),
+      0 0 16px 2px rgba(255,148,120,.52);
+  }
+  /* Pressed/tap feedback — fires on :active alone (no :hover
+     dependency), so a finger tap on mobile gets the same tactile
+     response a mouse click gets on desktop. */
+  .btn-glow:active, .btn-glow-sm:active{
+    transform: scale(.96);
+    box-shadow:
+      0 1px 3px 0 rgba(14,21,38,.2),
+      0 0 6px 0 rgba(255,111,89,.3);
+  }
+  .dark .btn-glow:active, .dark .btn-glow-sm:active{
+    box-shadow:
+      0 1px 3px 0 rgba(0,0,0,.4),
+      0 0 8px 0 rgba(255,148,120,.34);
+  }
+
+  /* Soft glass highlight across the top of solid/gradient buttons —
+     a thin light sheen, purely cosmetic, no motion. */
+  .btn-glow::after{
+    content: "";
+    position: absolute;
+    inset: 1.5px;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,.30), transparent 55%);
+    opacity: .55;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .dark .btn-glow::after{ opacity: .22; }
+
+  /* One-shot diagonal shine — sweeps across on hover/focus only
+     (the transition itself is the whole animation), so it costs
+     nothing while a button just sits on the page. */
+  .btn-glow::before, .btn-glow-sm::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(115deg, transparent 15%, rgba(255,255,255,.4) 50%, transparent 85%);
+    transform: translateX(-130%);
+    transition: transform .65s cubic-bezier(.2,.7,.2,1);
+    pointer-events: none;
+  }
+  .dark .btn-glow::before, .dark .btn-glow-sm::before{
+    background: linear-gradient(115deg, transparent 15%, rgba(255,255,255,.18) 50%, transparent 85%);
+  }
+  .btn-glow:hover::before, .btn-glow:focus-visible::before,
+  .btn-glow-sm:hover::before, .btn-glow-sm:focus-visible::before{
+    transform: translateX(130%);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .btn-glow, .btn-glow-sm{ transition:none; }
+    .btn-glow::before, .btn-glow-sm::before{ transition:none; }
+  }
+
+  /* ============================================================
+     Extra "flagship" treatment for the hero section's two CTAs and
+     the nav-bar CTA — the first buttons a visitor sees. A slow
+     ambient glow breathes continuously (not just on hover), on top
+     of the sitewide .btn-glow premium treatment above. Paused while
+     actively scrolling (same mechanism used elsewhere on this page)
+     and under reduced-motion, so it never costs more than it's worth.
+     ============================================================ */
+  .btn-premium-glow{
+    animation: btn-premium-breathe 3.4s ease-in-out infinite;
+  }
+  .dark .btn-premium-glow{
+    animation-name: btn-premium-breathe-dark;
+  }
+  @keyframes btn-premium-breathe{
+    0%, 100%{
+      box-shadow:
+        0 1px 2px 0 rgba(14,21,38,.16),
+        0 0 10px 1px rgba(255,111,89,.32);
+    }
+    50%{
+      box-shadow:
+        0 4px 14px -4px rgba(14,21,38,.22),
+        0 0 22px 4px rgba(255,111,89,.52);
+    }
+  }
+  @keyframes btn-premium-breathe-dark{
+    0%, 100%{
+      box-shadow:
+        0 1px 2px 0 rgba(0,0,0,.35),
+        0 0 12px 1px rgba(255,148,120,.36);
+    }
+    50%{
+      box-shadow:
+        0 4px 16px -4px rgba(0,0,0,.4),
+        0 0 26px 5px rgba(255,148,120,.58);
+    }
+  }
+  /* Ghost/secondary variant (dark fill, no coral background) gets a
+     quieter breathing ring instead of the coral ambient glow above,
+     so it doesn't read as a second primary CTA. */
+  .btn-premium-glow--ghost{
+    animation-name: btn-premium-breathe-ghost;
+  }
+  .dark .btn-premium-glow--ghost{
+    animation-name: btn-premium-breathe-ghost-dark;
+  }
+  @keyframes btn-premium-breathe-ghost{
+    0%, 100%{ box-shadow: 0 0 0 1px rgba(255,111,89,.22), 0 1px 2px 0 rgba(14,21,38,.16); }
+    50%{ box-shadow: 0 0 0 1px rgba(255,111,89,.45), 0 4px 14px -4px rgba(14,21,38,.22); }
+  }
+  @keyframes btn-premium-breathe-ghost-dark{
+    0%, 100%{ box-shadow: 0 0 0 1px rgba(255,148,120,.26), 0 1px 2px 0 rgba(0,0,0,.35); }
+    50%{ box-shadow: 0 0 0 1px rgba(255,148,120,.5), 0 4px 16px -4px rgba(0,0,0,.4); }
+  }
+  body.is-scrolling .btn-premium-glow{ animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce){
+    .btn-premium-glow{ animation: none; }
+  }
+
+  /* ============================================================
+     Service cards — a soft ambient box-shadow glow on hover.
+     (Used to also spin an animated gradient-ring border, same
+     mechanism as the buttons above; removed for performance.)
+     ============================================================ */
+  .service-card{
+    isolation: isolate;
+    box-shadow: 0 0 0 0 rgba(255,111,89,0);
+    transition: box-shadow .4s ease, transform .3s ease;
+  }
+  .service-card:hover, .service-card:focus-within{
+    box-shadow: 0 0 14px 0px rgba(255,111,89,.06);
+  }
+  .dark .service-card:hover, .dark .service-card:focus-within{
+    box-shadow: 0 0 16px 0px rgba(255,148,120,.08);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .service-card{ transition:none; }
+  }
+
+  /* --- Hero 3D logo video ---
+     object-contain (not cover) so the full square logo is always visible,
+     sized close to the edges of the stage. Only the outer margin of the
+     frame fades out (the logo itself is left untouched), so it dissolves
+     into the stage instead of being cut off. An ambient glow layer sits
+     behind it so the light keeps spilling outward past the video edge. */
+  .hero-stage::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 46%, rgba(255,148,120,.40) 0%, rgba(255,148,120,.28) 28%, rgba(255,148,120,.10) 48%, transparent 68%);
+    filter: blur(38px);
+    pointer-events: none;
+  }
+  .hero-logo-mask{
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    -webkit-mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, #000 90%, transparent 100%);
+            mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, #000 90%, transparent 100%);
+  }
+  .hero-logo-video{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* "Ideja u posao." baked into the hero video's final logo-reveal
+     moment — a text overlay (not part of the video file itself) faded
+     in/out by JS in sync with playback, so the video asset never has
+     to be touched to change this. */
+  .hero-tagline-overlay{
+    z-index: 2;
+    opacity: 0;
+    text-shadow: 0 1px 12px rgba(0,0,0,.55);
+    transition: opacity .6s ease;
+    will-change: opacity;
+  }
+  .hero-tagline-overlay.is-visible{
+    opacity: 1;
+  }
+  /* --- Pull-to-refresh (mobile) --- */
+  #ptr{
+    position: fixed; top: 10px; left: 50%;
+    width: 40px; height: 40px; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    background: #fff; border: 1px solid #DBE0EC;
+    box-shadow: 0 10px 24px -12px rgba(14,21,38,.35);
+    z-index: 70; opacity: 0; pointer-events: none;
+    transform: translate(-50%, -60px) rotate(0deg);
+  }
+  .dark #ptr{ background:#10162A; border-color:#232B47; box-shadow: 0 10px 24px -12px rgba(0,0,0,.5); }
+  #ptr.snap{ transition: transform .25s ease, opacity .25s ease; }
+  #ptr svg{ width: 20px; height: 20px; color:#FF6F59; }
+  .dark #ptr svg{ color:#FF9478; }
+  #ptr.spinning svg{ animation: ptr-spin .7s linear infinite; }
+  @keyframes ptr-spin{ to{ transform: rotate(360deg); } }
+
+  /* ============================================================
+     Futuristic/professional polish pass — all static (no continuous
+     JS or new perpetual animations, per the earlier perf fix):
+     a faint fixed dot-grid atmosphere, glass panels, HUD-style
+     eyebrow/step badges, icon chips and gradient accent lines.
+     ============================================================ */
+
+  /* Fixed, very low-opacity dot grid behind the whole page — cheap
+     (one static background layer, GPU-composited, nothing repaints
+     on scroll) and gives sections outside the hero the same subtle
+     technical texture instead of a flat fill. */
+  body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(14,21,38,.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 78%);
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 78%);
+  }
+  .dark body::before{
+    background-image: radial-gradient(rgba(235,239,250,.06) 1px, transparent 1px);
+  }
+
+  /* Glass panels — service cards, portfolio cards, FAQ items and the
+     contact form move from a flat fill to a translucent, blurred
+     surface so the dot grid and ambient glows read through faintly. */
+  .glass-panel{
+    background: rgba(255,255,255,.72);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+            backdrop-filter: blur(14px) saturate(140%);
+    /* Scopes layout/style recalculation to each card instead of the
+       whole page — cheaper repaint bookkeeping on pages with many
+       glass-panel cards. Not `paint` containment: the "Popularno"
+       pricing badge overflows its card on purpose (negative top
+       offset) and paint containment would clip it. */
+    contain: layout style;
+  }
+  .dark .glass-panel{
+    background: rgba(13,18,36,.62);
+  }
+  /* Backdrop-blur is one of the more expensive things a browser paints,
+     and this page now has a lot of glass-panel cards. Dropping it for the
+     brief, already-established .is-scrolling window (same mechanism that
+     pauses the glow-ring animations below) removes that cost during the
+     scroll gesture itself, when it's least noticeable anyway. */
+  body.is-scrolling .glass-panel{
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+  }
+  /* While actively scrolling, content moves under a stationary mouse
+     cursor, which makes the browser re-evaluate :hover on whatever
+     passes underneath. .service-card / .btn-glow / .btn-glow-sm all
+     transition box-shadow (a paint-triggering property) on hover, so
+     that incidental re-evaluation can cause real repaint cost during
+     the scroll gesture itself. Suppressing the transition for the
+     scrolling window removes that cost without touching the resting
+     or intentional-hover look. */
+  body.is-scrolling .service-card,
+  body.is-scrolling .btn-glow,
+  body.is-scrolling .btn-glow-sm{
+    transition: none;
+  }
+
+  /* Eyebrow labels ("Usluge", "Portfolio"...) get a small glowing
+     status dot — a quiet HUD/console cue rather than plain text. */
+  .eyebrow{ display: inline-flex; align-items: center; gap: .55em; }
+  /* centrirani eyebrow uvijek u svom redu (inače stane u isti red
+     s kratkim inline-block naslovom, npr. "Što kažu klijenti.") */
+  .eyebrow.justify-center{ display: flex; }
+  .eyebrow::before{
+    content: "";
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 7px 1px currentColor;
+    flex: none;
+  }
+
+  /* Koraljna podcrta ispod section naslova (bio gradient cyan→koralj,
+     sad jednobojni koralj). */
+  /* Naslovi sekcija — samo tekst, bez koraljne crtice ispod. */
+  .section-heading{ position: relative; display: inline-block; }
+
+  /* "Korak 01–04" process labels as small bordered chips. */
+  .step-badge{
+    display: inline-flex; align-items: center;
+    border: 1px solid rgba(255,111,89,.35);
+    background: rgba(255,111,89,.06);
+    border-radius: 7px;
+    padding: .3em .65em;
+  }
+  .dark .step-badge{
+    border-color: rgba(255,148,120,.3);
+    background: rgba(255,148,120,.06);
+  }
+
+  /* "01–04" markers in O nama as small square data-readout tiles. */
+  .step-num{
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.9em; height: 1.9em; border-radius: 7px;
+    border: 1px solid rgba(255,111,89,.35);
+    background: rgba(255,111,89,.06);
+  }
+  .dark .step-num{
+    border-color: rgba(255,148,120,.32);
+    background: rgba(255,148,120,.07);
+  }
+
+  /* Bordered icon chips above each service card. */
+  .icon-badge{
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.75rem; height: 2.75rem; border-radius: .85rem;
+    border: 1px solid rgba(255,111,89,.32);
+    background: rgba(255,111,89,.07);
+    color: #FF6F59;
+    margin-bottom: 1rem;
+  }
+  .dark .icon-badge{
+    border-color: rgba(255,148,120,.3);
+    background: rgba(255,148,120,.08);
+    color: #FF9478;
+  }
+  .icon-badge svg{ width: 1.4rem; height: 1.4rem; }
+
+  /* Tanka koraljna isticajna linija ispod headera i iznad footera,
+     preko postojećeg punog obruba — bio dvobojni cyan→koralj gradient,
+     sad jednobojni koralj koji se gubi (fade) prema rubovima. */
+  header::after{
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,111,89,.55), transparent);
+    pointer-events: none;
+  }
+  .dark header::after{
+    background: linear-gradient(90deg, transparent, rgba(255,148,120,.6), transparent);
+  }
+  footer{ position: relative; }
+  footer::before{
+    content: "";
+    position: absolute; left: 0; right: 0; top: -1px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,111,89,.5), transparent);
+    pointer-events: none;
+  }
+  .dark footer::before{
+    background: linear-gradient(90deg, transparent, rgba(255,148,120,.55), transparent);
+  }
+
+  /* ============================================================
+     Usporedba ("razlika") sekcija — mala okrugla oznaka uz svaku
+     stavku (crveni križić / cijan kvačica) i istaknuti obrub oko
+     "pobjedničke" kartice.
+     ============================================================ */
+  .mark-icon{
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.35rem; height: 1.35rem; border-radius: 50%; flex: none;
+  }
+  .mark-icon svg{ width: .75rem; height: .75rem; }
+  .mark-x{ background: rgba(239,68,68,.10); color: #ef4444; }
+  .dark .mark-x{ background: rgba(248,113,113,.14); color: #f87171; }
+  .mark-ok{ background: rgba(255,111,89,.10); color: #FF6F59; }
+  .dark .mark-ok{ background: rgba(255,148,120,.14); color: #FF9478; }
+
+  .compare-win{
+    border: 1.5px solid rgba(255,111,89,.4);
+    box-shadow: 0 20px 44px -28px rgba(255,111,89,.35);
+  }
+  .dark .compare-win{
+    border-color: rgba(255,148,120,.4);
+    box-shadow: 0 20px 44px -28px rgba(255,148,120,.4);
+  }
+
+  .compare-vs{
+    display: none;
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    align-items: center; justify-content: center;
+    width: 3.25rem; height: 3.25rem; border-radius: 50%;
+    background: #0A0E1A; border: 1px solid rgba(255,255,255,.1);
+    font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: .7rem;
+    letter-spacing: .04em; color: #EBEFFA;
+    box-shadow: 0 0 0 6px var(--vs-ring, #F2F4FA);
+    z-index: 10;
+  }
+  .dark .compare-vs{ --vs-ring: #080B14; }
+  @media (min-width: 768px){
+    .compare-vs{ display: flex; }
+  }
+
+  /* ============================================================
+     Cjenik — 3 paketa u redu na desktopu (Tailwind's md:grid-cols-3
+     utility isn't in this build's compiled CSS, so the grid is
+     self-contained here), CTA gumb uvijek pri dnu kartice, i mala
+     "Popularno" značka nad srednjom karticom.
+     ============================================================ */
+  .price-grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  @media (min-width: 768px){
+    .price-grid{ grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  }
+  .price-cta-wrap{ margin-top: auto; }
+  .price-badge-pos{
+    position: absolute;
+    top: -0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  /* Jači "glassy" efekt specifično na cjeniku — veći blur i
+     saturacija, prozirnija podloga i tanka sjajna refleksija pri
+     vrhu kartice. Skalirano samo na #cjenik .glass-panel, da ne
+     dirne glass-panel korišten drugdje (portfolio, FAQ, recenzije,
+     kontakt forma). */
+  #cjenik .glass-panel{
+    background: rgba(255,255,255,.52);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+            backdrop-filter: blur(22px) saturate(170%);
+    box-shadow: inset 0 1px 0 0 rgba(255,255,255,.55), 0 24px 48px -28px rgba(14,21,38,.2);
+  }
+  .dark #cjenik .glass-panel{
+    background: rgba(13,18,36,.38);
+    box-shadow: inset 0 1px 0 0 rgba(255,255,255,.07), 0 24px 48px -28px rgba(0,0,0,.55);
+  }
+  #cjenik .glass-panel::before{
+    content: "";
+    position: absolute; inset: 0; border-radius: inherit;
+    background: linear-gradient(165deg, rgba(255,255,255,.4), transparent 42%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .dark #cjenik .glass-panel::before{
+    background: linear-gradient(165deg, rgba(255,255,255,.14), transparent 42%);
+  }
+  body.is-scrolling #cjenik .glass-panel{
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+  }
+
+  /* ============================================================
+     Intro — "build u terminalu" (kreirai-intro.js). Klasa ki-intro-on
+     se stavlja na <html> PRIJE prvog crtanja (vidi <script> na vrhu
+     <head>), pa sakrivamo cijeli <body> i otkrivamo samo direktnu
+     djecu koja čine sam intro (.ki-intro i .ki-intro__skip), kako bi
+     spriječili "flash" pravog sadržaja stranice prije intra.
+     ============================================================ */
+  html.ki-intro-on{ background:#080B14; }
+  html.ki-intro-on body{ visibility:hidden; }
+  html.ki-intro-on body > .ki-intro,
+  html.ki-intro-on body > .ki-intro__skip{ visibility:visible; }
+
+  @keyframes ki-fade-in{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .ki-intro{
+    position:fixed; inset:0; z-index:9999;
+    background:#080B14;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+    animation: ki-out .55s ease-in forwards;
+    animation-delay: var(--ki-out);
+  }
+  @keyframes ki-out{
+    0%{ opacity:1; transform:scale(1); }
+    100%{ opacity:0; transform:scale(1.04); }
+  }
+
+  /* Pozadina intra = pozadina hero sekcije: ista tamna podloga
+     (#080B14), ista fina mreža piksel-točaka kao "data field" u
+     heroju, s istom mekanom vinjetom prema rubovima, i isti
+     dijagonalni svijetli val koji polako klizi preko mreže. Tako
+     prijelaz intro → stranica izgleda kao da se samo prozor
+     terminala makne, a pozadina ostane ista. */
+  .ki-intro__glow{
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse 60% 50% at 50% 45%, rgba(120,150,210,.07), transparent 70%);
+    pointer-events:none;
+  }
+  .ki-intro__grid,
+  .ki-intro__scan{
+    position:absolute; inset:0;
+    background-image: radial-gradient(circle, rgba(168,192,232,1) 0.9px, transparent 1.3px);
+    background-size: 30px 30px;
+    background-position: 15px 15px;
+    pointer-events:none;
+  }
+  .ki-intro__grid{
+    opacity:.12;
+    -webkit-mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%);
+            mask-image: radial-gradient(ellipse 95% 85% at 50% 42%, #000 45%, rgba(0,0,0,.35) 75%, transparent 100%);
+  }
+  /* svjetliji sloj istih točaka, vidljiv samo u uskoj dijagonalnoj
+     traci koja putuje preko ekrana (kao val u heroju) */
+  .ki-intro__scan{
+    opacity:.42;
+    -webkit-mask-image: linear-gradient(115deg, transparent 42%, #000 50%, transparent 58%);
+            mask-image: linear-gradient(115deg, transparent 42%, #000 50%, transparent 58%);
+    -webkit-mask-size: 300% 300%;
+            mask-size: 300% 300%;
+    animation: ki-wave 3.4s linear infinite;
+  }
+  @keyframes ki-wave{
+    0%  { -webkit-mask-position: 100% 100%; mask-position: 100% 100%; }
+    100%{ -webkit-mask-position: 0% 0%;     mask-position: 0% 0%; }
+  }
+  @media (max-width:640px){
+    .ki-intro__grid, .ki-intro__scan{ background-size:24px 24px; background-position:12px 12px; }
+  }
+
+  .ki-intro__stage{
+    position:relative; width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    padding:1.5rem; box-sizing:border-box;
+    animation: ki-glitch .3s steps(2,end) both;
+    animation-delay: var(--ki-glitch);
+  }
+  @keyframes ki-glitch{
+    0%{ transform:translate(0,0); filter:none; }
+    20%{ transform:translate(-6px,2px); filter:hue-rotate(8deg); }
+    40%{ transform:translate(5px,-2px); filter:hue-rotate(-6deg); }
+    60%{ transform:translate(-3px,1px); filter:none; }
+    80%{ transform:translate(2px,-1px); }
+    100%{ transform:translate(0,0); filter:none; }
+  }
+  .ki-intro__jitter{
+    display:block;
+    animation: ki-idle-jitter 3.2s ease-in-out infinite;
+  }
+  @keyframes ki-idle-jitter{
+    0%,100%{ transform:translate(0,0); }
+    25%{ transform:translate(.4px,-.3px); }
+    50%{ transform:translate(-.3px,.4px); }
+    75%{ transform:translate(.3px,.3px); }
+  }
+
+  /* Okvir prozora — isti koraljni obrub s kometom kao oko hero
+     videa (koristi isti @property --hs-angle i keyframes
+     hero-frame-spin), samo malo brži jer intro kratko traje. */
+  .ki-intro__frame{
+    position:relative;
+    border-radius:18px;
+    isolation:isolate;
+    animation: hero-frame-spin 4.5s linear infinite;
+  }
+  .ki-intro__ring,
+  .ki-intro__frameglow::before{
+    content:"";
+    position:absolute;
+    border-radius:inherit;
+    pointer-events:none;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  .ki-intro__ring{
+    inset:0; z-index:3;
+    padding:1.5px;
+    background: conic-gradient(from var(--hs-angle),
+      rgba(255,111,89,.36) 0deg,
+      rgba(255,111,89,.36) 230deg,
+      rgba(255,148,120,.72) 300deg,
+      #FFE6DD 350deg,
+      rgba(255,111,89,.36) 358deg);
+  }
+  .ki-intro__frameglow{
+    position:absolute; inset:-3px; z-index:0;
+    border-radius:21px;
+    pointer-events:none;
+    filter:blur(10px);
+    opacity:.9;
+  }
+  .ki-intro__frameglow::before{
+    inset:0;
+    padding:5px;
+    background: conic-gradient(from var(--hs-angle),
+      transparent 0deg,
+      transparent 250deg,
+      rgba(255,111,89,.55) 310deg,
+      rgba(255,180,160,.95) 350deg,
+      transparent 358deg);
+  }
+  .ki-intro__win{
+    position:relative; z-index:1;
+    width:min(700px,92vw);
+    background: rgba(13,18,36,.9);
+    border:0;
+    border-radius:18px;
+    box-shadow: 0 30px 80px -24px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.03) inset;
+    overflow:hidden;
+    backdrop-filter: blur(6px);
+  }
+  .ki-intro__bar{
+    display:flex; align-items:center; gap:.5rem;
+    padding:.85rem 1.1rem;
+    background: rgba(255,255,255,.03);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .ki-intro__title{
+    flex:1; text-align:center;
+    font-family:'JetBrains Mono',monospace; font-size:.78rem; letter-spacing:.08em;
+    color:#A6AFC9;
+  }
+  .ki-intro__body{
+    padding: 1.5rem 1.7rem 1.75rem;
+    font-family:'JetBrains Mono',monospace; font-size:.98rem; line-height:1.6;
+    color:#EBEFFA;
+  }
+  .ki-intro__prompt{ display:flex; align-items:center; gap:.4em; flex-wrap:wrap; }
+  .ki-intro__user{ color:#FF9478; font-weight:600; }
+  .ki-intro__path{ color:#FF9478; }
+  .ki-intro__cmd{
+    display:inline-block; overflow:hidden; white-space:nowrap;
+    width:0; vertical-align:bottom;
+    animation: ki-type var(--ki-type-dur) steps(var(--ki-type-steps)) forwards;
+  }
+  @keyframes ki-type{ from{width:0} to{width:var(--ki-type-w)} }
+  .ki-intro__caret{
+    display:inline-block; width:.55ch; height:1em; margin-left:1px;
+    background:#FF9478; vertical-align:text-bottom;
+    animation: ki-caret 1s steps(1) infinite;
+  }
+  @keyframes ki-caret{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+
+  .ki-intro__log{ margin-top:.9rem; display:flex; flex-direction:column; gap:.42rem; }
+  .ki-intro__row{
+    display:flex; align-items:center; gap:.5em;
+    opacity:0; transform:translateY(4px);
+    animation: ki-fade-in .4s ease-out forwards;
+  }
+  .ki-intro__row i{ font-style:normal; color:#FF9478; opacity:.7; }
+  .ki-intro__row > span{ color:#C7CEE3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ki-intro__row u{ flex:1; min-width:1rem; align-self:flex-end; height:.55em; margin:0 .3em;
+    border-bottom:1px dotted rgba(166,175,201,.3); text-decoration:none; }
+  .ki-intro__row b{ font-weight:600; color:#FF9478; white-space:nowrap; }
+  .ki-intro__row b.is-human{ color:#FF9478; }
+
+  .ki-intro__progress{ display:flex; align-items:center; gap:.6em; margin-top:1rem; }
+  .ki-intro__progress > span:first-child{ color:#8893AD; font-size:.82rem; text-transform:uppercase; letter-spacing:.08em; }
+  .ki-intro__track{ flex:1; height:6px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; }
+  .ki-intro__fill{
+    display:block; height:100%; width:0; border-radius:inherit;
+    background: #FF9478; /* bio cyan→violet gradient, sad jednobojni koralj */
+    animation: ki-fill var(--ki-bar-dur) ease-out forwards;
+    animation-delay: var(--ki-bar);
+  }
+  @keyframes ki-fill{ from{width:0} to{width:100%} }
+  .ki-intro__pct{ color:#8893AD; font-size:.82rem; font-variant-numeric:tabular-nums; }
+
+  .ki-intro__done{
+    opacity:0; display:flex; align-items:baseline; gap:.6em; margin-top:1.3rem;
+    animation: ki-fade-in .5s ease-out forwards; animation-delay: var(--ki-done);
+  }
+  .ki-intro__mark{ font-family:'Inter Tight','Inter',system-ui,sans-serif; letter-spacing:-.02em; font-weight:700; font-size:1.9rem; }
+  .ki-k{ color:#EBEFFA; }
+  .ki-ai{ color:#FF9478; } /* isti koralj kao .dark .text-gradient — intro je uvijek na tamnoj podlozi */
+  .ki-intro__sub{ color:#8893AD; font-size:.86rem; }
+
+  .ki-intro__strip{
+    position:absolute; left:0; right:0;
+    background: linear-gradient(90deg, transparent, rgba(255,148,120,.55), transparent);
+    mix-blend-mode: screen;
+    opacity:0;
+    animation-name: var(--ki-strip-anim);
+    animation-duration: .45s;
+    animation-timing-function: cubic-bezier(.3,.6,.3,1);
+    animation-fill-mode: forwards;
+    animation-delay: var(--ki-strip-at);
+    pointer-events:none;
+  }
+  @keyframes ki-strip-l{
+    0%{ opacity:0; transform:translateX(-100%); }
+    12%{ opacity:1; }
+    88%{ opacity:1; }
+    100%{ opacity:0; transform:translateX(100%); }
+  }
+  @keyframes ki-strip-r{
+    0%{ opacity:0; transform:translateX(100%); }
+    12%{ opacity:1; }
+    88%{ opacity:1; }
+    100%{ opacity:0; transform:translateX(-100%); }
+  }
+
+  .ki-intro__skip{
+    position:fixed; right:1.25rem; bottom:1.25rem; z-index:10000;
+    font-family:'JetBrains Mono',monospace; font-size:.72rem; letter-spacing:.04em;
+    color:#A6AFC9; background:rgba(13,18,36,.6); border:1px solid rgba(166,175,201,.25);
+    border-radius:999px; padding:.5em 1em; cursor:pointer;
+    opacity:0; animation: ki-fade-in .5s ease-out forwards; animation-delay:.6s;
+  }
+  .ki-intro__skip:hover{ color:#EBEFFA; border-color:rgba(166,175,201,.45); }
+
+  @media (max-width:640px){
+    .ki-intro__win{ width:94vw; }
+    .ki-intro__body{ font-size:.8rem; padding:1.1rem 1.1rem 1.3rem; }
+    .ki-intro__mark{ font-size:1.45rem; }
+    .ki-intro__sub{ font-size:.74rem; }
+  }
+
+</style>
+<!-- Structured data: who KreirAI is, so Google can associate the brand
+     name with this site (knowledge panel / search result enrichment). -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "KreirAI",
+  "url": "https://kreirai.hr/",
+  "logo": "https://kreirai.hr/og-image.png",
+  "description": "Digitalni studio koji AI koristi za brzinu, a ljude za kvalitetu. Web stranice, aplikacije i oglasne kampanje — brzo i bez agencijske birokracije.",
+  "email": "info@kreirai.hr",
+  "areaServed": "HR"
+}
+</script>
+
+</head>
+<body>
+
+<div id="ptr" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+</div>
+
+<div id="cursorGlow" aria-hidden="true"></div>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<header class="dark fixed top-0 inset-x-0 z-50 bg-[#F2F4FA]/85 dark:bg-[#080B14]/85 backdrop-blur border-b border-line dark:border-[#232B47] transition-colors">
+  <div id="headerBar" class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
+    <a href="index.html" class="font-serif font-semibold text-xl tracking-tight shrink-0">
+      <span class="text-ink dark:text-[#EBEFFA]">Kreir</span><span class="text-gradient">AI</span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-1 bg-surface2 dark:bg-[#161D34] border border-line dark:border-[#232B47] rounded-full p-1 transition-colors">
+      <a href="index.html" class="nav-link is-active px-4 py-2 rounded-full text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">Početna</a>
+      <a href="usluge.html" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">Usluge</a>
+      <a href="portfolio.html" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">Portfolio</a>
+      <a href="blog.html" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">Blog</a>
+      <a href="onama.html" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">O nama</a>
+      <a href="kontakt.html" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">Kontakt</a>
+      <a href="faq.html" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-inksoft dark:text-[#A6AFC9] hover:text-ink dark:hover:text-[#EBEFFA] transition">Pitanja</a>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a href="kontakt.html" class="btn-glow btn-premium-glow inline-flex items-center gap-1.5 sm:gap-2 bg-coral text-[#0A0E1A] font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+        <span class="sm:hidden">Ponuda</span>
+        <span class="hidden sm:inline">Zatražite ponudu</span>
+      </a>
+
+      <button id="navToggle" type="button" aria-label="Otvori izbornik" aria-expanded="false"
+        class="btn-glow-sm md:hidden w-10 h-10 shrink-0 flex items-center justify-center rounded-lg border border-line dark:border-[#232B47] bg-white dark:bg-[#10162A] text-ink dark:text-[#EBEFFA] transition-colors">
+        <svg id="navToggleIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="w-5 h-5">
+          <path d="M3 6h18M3 12h18M3 18h18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobileNav" class="mobile-nav md:hidden border-t border-line dark:border-[#232B47] bg-white dark:bg-[#10162A] transition-colors">
+    <div class="px-5 py-3 flex flex-col">
+      <a href="index.html" class="mob-link py-3 text-sm font-semibold text-ink dark:text-[#EBEFFA] border-b border-line dark:border-[#232B47]">Početna</a>
+      <a href="usluge.html" class="mob-link py-3 text-sm font-semibold text-ink dark:text-[#EBEFFA] border-b border-line dark:border-[#232B47]">Usluge</a>
+      <a href="portfolio.html" class="mob-link py-3 text-sm font-semibold text-ink dark:text-[#EBEFFA] border-b border-line dark:border-[#232B47]">Portfolio</a>
+      <a href="blog.html" class="mob-link py-3 text-sm font-semibold text-ink dark:text-[#EBEFFA] border-b border-line dark:border-[#232B47]">Blog</a>
+      <a href="onama.html" class="mob-link py-3 text-sm font-semibold text-ink dark:text-[#EBEFFA] border-b border-line dark:border-[#232B47]">O nama</a>
+      <a href="kontakt.html" class="mob-link py-3 text-sm font-semibold text-ink dark:text-[#EBEFFA] border-b border-line dark:border-[#232B47]">Kontakt</a>
+      <a href="faq.html" class="mob-link py-3 text-sm font-semibold text-ink dark:text-[#EBEFFA]">Pitanja</a>
+    </div>
+  </nav>
+</header>
+
+
+<script>
+  // Header is fixed now, so <main> needs padding-top matching its real
+  // height (see --header-h in <style>). Measured from #headerBar (the
+  // top row only — not the mobile dropdown, whose open/close shouldn't
+  // shove page content around) and kept in sync on resize/orientation
+  // change. Runs here, before <main> is parsed, so there is no flash of
+  // hero content hidden under the header on first paint.
+  (function () {
+    var bar = document.getElementById('headerBar');
+    if (!bar) return;
+    function syncHeaderHeight() {
+      var h = bar.getBoundingClientRect().height;
+      if (h > 0) document.documentElement.style.setProperty('--header-h', h + 'px');
+    }
+    syncHeaderHeight();
+    window.addEventListener('resize', syncHeaderHeight, { passive: true });
+    window.addEventListener('orientationchange', syncHeaderHeight, { passive: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(syncHeaderHeight).catch(function () {});
+    }
+  })();
+</script>
+
+<main>
+
+<section id="pocetna" class="dark scroll-mt-20 relative bg-[#080B14] text-[#EBEFFA]">
+  <canvas class="hero-field" aria-hidden="true"></canvas>
+  <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 sm:pb-28 grid md:grid-cols-2 gap-14 items-center">
+    <div data-reveal="zoom-in" class="relative md:self-stretch md:flex md:flex-col">
+      <div class="hero-frame relative rounded-3xl aspect-[2/1] max-w-[420px] sm:max-w-[480px] mx-auto md:max-w-none md:w-full md:aspect-auto md:flex-1">
+      <span class="hero-frame__glow" aria-hidden="true"></span>
+      <div class="hero-stage absolute inset-0 rounded-3xl overflow-hidden transition-colors">
+        <div class="hero-grid absolute inset-0"></div>
+        <div class="hero-logo-mask">
+          <video
+            id="heroLogoVideo"
+            class="hero-logo-video border-0 outline-none"
+            src="assets/hero-video.mp4?v=3"
+            poster="assets/hero-poster.jpg?v=3"
+            autoplay muted loop playsinline webkit-playsinline preload="metadata"
+            aria-label="Promotivni video KreirAI — od koda do gotovog proizvoda"
+          ></video>
+        </div>
+        <p id="heroTaglineOverlay" class="hero-tagline-overlay absolute inset-x-0 bottom-[14%] font-mono font-semibold text-[10px] sm:text-sm tracking-[0.28em] uppercase text-coral text-center pointer-events-none" aria-hidden="true">Ideja u posao.</p>
+      </div>
+      <span class="hero-frame__ring" aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <div data-reveal="fade-left" data-reveal-delay="120">
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-coral">— AI Studio</p>
+      <h1 class="font-serif font-semibold text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mt-4">
+        Od ideje do <span class="text-gradient">gotovog proizvoda</span>, uz pomoć umjetne inteligencije.
+      </h1>
+      <p class="mt-5 text-inksoft dark:text-[#A6AFC9] text-lg max-w-[44ch]">
+        KreirAI spaja alate umjetne inteligencije i ljudsku reviziju kako bismo aplikacije, web stranice i oglasne kampanje isporučili brže, ali bez žrtvovanja kvalitete izrade.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="kontakt.html" class="btn-glow btn-premium-glow inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-6 py-3.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">Zatražite ponudu</a>
+        <a href="usluge.html" class="btn-glow btn-premium-glow btn-premium-glow--ghost inline-flex items-center gap-2 border border-[#12182D] bg-[#12182D] text-[#F5F7FC] dark:bg-transparent dark:border-[#232B47] dark:text-[#EBEFFA] font-bold text-sm px-6 py-3.5 rounded-full hover:bg-[#1F2745] dark:hover:bg-[#161D34] transition">Pogledajte usluge</a>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <!-- Presjek — dijagonalni rez gdje tamna hero pozadina prelazi u
+       svjetlu pozadinu ostatka stranice. Namjerno IZVAN #pocetna (kao
+       sestrinski element, ne dijete) — da "prazan" dio SVG-a stvarno
+       otkriva svjetlu pozadinu stranice iza sebe, a ne tamnu pozadinu
+       hero sekcije koja bi inače bila iza njega. Čisto dekorativno. -->
+  <div class="hero-cut" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="heroCutGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#FF6F59"/>
+          <stop offset="100%" stop-color="#FF9478"/>
+        </linearGradient>
+      </defs>
+      <path class="hero-cut__fill" d="M0,0 L1440,0 L1440,84 L0,6 Z"></path>
+      <path class="hero-cut__line" d="M0,6 L1440,84"></path>
+    </svg>
+  </div>
+
+  <!-- ============================================================
+       TRAKA USLUGA — beskonačni "marquee" odmah ispod hero kosine,
+       loop se vrti u krug (sadržaj dupliciran 2x za besprijekornu
+       petlju preko transform: translateX(-50%)).
+       ============================================================ -->
+  <div class="services-ticker-wrap">
+  <div class="services-ticker">
+    <p class="sr-only">Usluge: Web stranice za 10 dana, Web i mobilne aplikacije, Hosting i podrška 24/7, SEO optimizacija, Web trgovine.</p>
+    <div class="services-ticker__track" aria-hidden="true">
+      <span class="services-ticker__item">Web stranice za 10 dana</span>
+      <span class="services-ticker__dot">✦</span>
+      <span class="services-ticker__item">Web i mobilne aplikacije</span>
+      <span class="services-ticker__dot">✦</span>
+      <span class="services-ticker__item">Hosting i podrška 24/7</span>
+      <span class="services-ticker__dot">✦</span>
+      <span class="services-ticker__item">SEO optimizacija</span>
+      <span class="services-ticker__dot">✦</span>
+      <span class="services-ticker__item">Web trgovine</span>
+      <span class="services-ticker__dot">✦</span>
+      <span class="services-ticker__item">Web stranice za 10 dana</span>
+      <span class="services-ticker__dot">✦</span>
+      <span class="services-ticker__item">Web i mobilne aplikacije</span>
+      <span class="services-ticker__dot">✦</span>
+      <span class="services-ticker__item">Hosting i podrška 24/7</span>
+      <span class="services-ticker__dot">✦</span>
+      <span class="services-ticker__item">SEO optimizacija</span>
+      <span class="services-ticker__dot">✦</span>
+      <span class="services-ticker__item">Web trgovine</span>
+      <span class="services-ticker__dot">✦</span>
+    </div>
+  </div>
+  </div>
+
+  <!-- ============================================================
+       ZAŠTO KREIRAI — kratka izjava povjerenja ispod hero-a
+       ============================================================ -->
+  <section id="zasto" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-24">
+    <div class="max-w-[56ch]" data-reveal="fade-up">
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-coral">Vaša web stranica — naša stručnost</p>
+      <h2 class="section-heading font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
+        Vaše brige prestaju. <span class="text-gradient">Usmjerite se na svoj posao.</span>
+      </h2>
+      <p class="mt-5 text-inksoft dark:text-[#A6AFC9] text-lg leading-relaxed">
+        Između vođenja posla, brige o klijentima i vremena za obitelj — tko uopće ima vremena brinuti se o web stranici? Mi to preuzimamo na sebe. U potpunosti. Zamislite nas kao svoj tehnički tim čiji trošak tjedno je manji od večere za dvoje.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PREDNOSTI — 4 polja, centrirano, ispod "zasto" izjave
+       ============================================================ -->
+  <section id="prednosti" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
+    <div class="max-w-3xl mx-auto grid sm:grid-cols-2 gap-5 sm:gap-6">
+      <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 border border-line dark:border-[#232B47] transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="0">
+        <span class="icon-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+        </span>
+        <h3 class="font-semibold text-lg">Ne gubite klijente</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Spora stranica gubi potencijalne klijente već unutar prvih 3 sekunde. Kliknu, čekaju, odlaze — jave se konkurenciji. Naše stranice se očitaju puno brže, klijenti se zadrže, klijenti vas kontaktiraju.</p>
+      </article>
+
+      <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 border border-line dark:border-[#232B47] transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="80">
+        <span class="icon-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.35-4.35"/></svg>
+        </span>
+        <h3 class="font-semibold text-lg">Pronađeni baš kada treba</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Kada netko u blizini pretražuje djelatnost koju radite, vaša stranica se treba pojaviti baš kada ste im potrebni. Uz izradu stranica, SEO optimizacija je naš temelj kako bi klijenti našli baš vas, a ne konkurenciju.</p>
+      </article>
+
+      <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 border border-line dark:border-[#232B47] transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="160">
+        <span class="icon-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M13 10h6M13 14h4"/></svg>
+        </span>
+        <h3 class="font-semibold text-lg">Vaša stranica, vaša vizitka</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Vaša stranica je vaša digitalna vizitka i vaše mjesto online. Društvene mreže se mogu mijenjati, gasiti ili jednostavno tratiti vaše vrijeme, ali stranica je vaš digitalni dom — stoga način na koji poželite gostima dobrodošlicu oblikuje kako postaju klijenti.</p>
+      </article>
+
+      <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 border border-line dark:border-[#232B47] transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="240">
+        <span class="icon-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 2.5 5 13h5.5L10 21.5 19 11h-5.5L14 2.5Z"/></svg>
+        </span>
+        <h3 class="font-semibold text-lg">Ne gubimo vrijeme</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Vaša stranica uz nas ide online unutar 10 dana. Ne nekoliko mjeseci, već baš dana. Kada je nešto potrebno ažurirati, tu smo za vas već isti dan. Vrijeme je dragocjeno i mi to razumijemo!</p>
+        <a href="kontakt.html" class="btn-glow mt-5 inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-xs px-4 py-2 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+          Kontaktirajte nas
+        </a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RAZLIKA — usporedba tipične web stranice i KreirAI stranice
+
+       Puna širina s dvije dijagonalne "kosine" (ista tehnika kao
+       hero-cut): gornja ulazi suprotnim smjerom od heroja, donja
+       izlazi istim smjerom kao hero-cut. Pozadina trake je malo
+       tamnija nijansa (#E1E5F1) da se odvoji od ostatka stranice.
+       ============================================================ -->
+  <div class="hero-cut" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path class="cut-fill-band" d="M0,90 L1440,90 L1440,6 L0,84 Z"></path>
+      <path class="hero-cut__line" d="M0,84 L1440,6"></path>
+    </svg>
+  </div>
+
+  <section id="razlika" class="scroll-mt-20 relative">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-20 pb-20 sm:pb-28">
+    <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
+      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-coral">Razlika</p>
+      <h2 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
+        Ono s čime ste zaglavili <span class="text-gradient">u odnosu na ono što mi gradimo.</span>
+      </h2>
+    </div>
+
+    <div class="mt-14 relative grid md:grid-cols-2 gap-8 items-start">
+      <div class="compare-vs" aria-hidden="true">VS</div>
+
+      <div class="glass-panel rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8" data-reveal="fade-right">
+        <p class="font-mono text-xs tracking-[0.14em] uppercase text-red-500 dark:text-red-400 font-semibold">Tipična web stranica</p>
+        <h3 class="font-serif font-semibold text-2xl mt-2">Zamka gotovih predložaka</h3>
+        <ul class="mt-5 flex flex-col">
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-x mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Posjetitelji odustaju prije nego što se stranica uopće učita</span>
+          </li>
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-x mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Ne radi kako treba na mobitelu — a pola vaših klijenata je baš tamo</span>
+          </li>
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-x mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Podložna hakiranju zbog zastarjelih dodataka i softvera</span>
+          </li>
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-x mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Traži stalna ažuriranja koja koštaju i vremena i novca</span>
+          </li>
+          <li class="flex items-start gap-3 py-3">
+            <span class="mark-icon mark-x mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Nevidljiva na Googleu — zakopana ispod konkurencije</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="compare-win glass-panel relative rounded-2xl p-6 sm:p-8" data-reveal="fade-left">
+        <p class="font-mono text-xs tracking-[0.14em] uppercase text-coral font-semibold">Vaša KreirAI stranica</p>
+        <h3 class="font-serif font-semibold text-2xl mt-2">Izgrađena da vam donese klijente</h3>
+        <ul class="mt-5 flex flex-col">
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Učitava se trenutno — posjetitelji ostaju i razgledavaju</span>
+          </li>
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Izgleda odlično na svakom mobitelu, tabletu i računalu</span>
+          </li>
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Nema što hakirati — čist kod, bez ranjivosti</span>
+          </li>
+          <li class="flex items-start gap-3 py-3 border-b border-line dark:border-[#232B47]">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Mi vodimo brigu o svim ažuriranjima — vi o tome ne razmišljate</span>
+          </li>
+          <li class="flex items-start gap-3 py-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Izgrađena da se pojavi baš kad vas klijenti pretražuju</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <div class="hero-cut" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path class="cut-fill-band" d="M0,0 L1440,0 L1440,84 L0,6 Z"></path>
+      <path class="hero-cut__line" d="M0,6 L1440,84"></path>
+    </svg>
+  </div>
+
+  <!-- ============================================================
+       CJENIK — paketi za izradu web stranice
+       ============================================================ -->
+  <section id="cjenik" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
+    <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
+      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-coral">Cjenik</p>
+      <h2 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
+        Cjenik prilagođen <span class="text-gradient">svakom proračunu.</span>
+      </h2>
+    </div>
+
+    <div class="price-grid mt-14">
+      <!-- JEDNOKRATNO -->
+      <div class="glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8 flex flex-col" data-reveal="fade-up" data-reveal-delay="0">
+        <p class="font-mono text-xs tracking-[0.14em] uppercase text-inksoft dark:text-[#A6AFC9] font-semibold">Jednokratno</p>
+        <ul class="mt-5 flex flex-col gap-3">
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Dizajn i uređivanje</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Vlasnik ste koda</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">SEO optimizacija</span>
+          </li>
+        </ul>
+
+        <div class="price-cta-wrap">
+          <p class="font-serif font-bold text-4xl mt-5">1.000 €</p>
+          <p class="text-inksoft dark:text-[#A6AFC9] text-xs mt-1">Jednokratno plaćanje</p>
+          <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+            Započnimo
+          </a>
+        </div>
+      </div>
+
+      <!-- STANDARDNA — istaknuta kao popularna -->
+      <div class="compare-win glass-panel relative rounded-2xl p-6 sm:p-8 flex flex-col" data-reveal="fade-up" data-reveal-delay="80">
+        <span class="price-badge-pos inline-flex items-center gap-1 bg-coral text-[#0A0E1A] font-mono font-bold text-[10px] tracking-[0.14em] uppercase px-3 py-1 rounded-full shadow-soft">Popularno</span>
+        <p class="font-mono text-xs tracking-[0.14em] uppercase text-coral font-semibold">Standardna</p>
+        <ul class="mt-5 flex flex-col gap-3">
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Dizajn i uređivanje</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Hosting</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Neograničeno ažuriranje</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">SEO optimizacija</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">24/7 podrška</span>
+          </li>
+        </ul>
+
+        <div class="price-cta-wrap">
+          <p class="font-serif font-bold text-4xl mt-5">90 €</p>
+          <p class="text-inksoft dark:text-[#A6AFC9] text-xs mt-1">Mjesečno</p>
+          <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+            Zakažite konzultacije
+          </a>
+        </div>
+      </div>
+
+      <!-- PRILAGOĐENO -->
+      <div class="glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8 flex flex-col" data-reveal="fade-up" data-reveal-delay="160">
+        <p class="font-mono text-xs tracking-[0.14em] uppercase text-inksoft dark:text-[#A6AFC9] font-semibold">Prilagođeno</p>
+
+        <div class="price-cta-wrap">
+          <p class="font-serif font-bold text-4xl mt-5">Individualno</p>
+          <p class="text-inksoft dark:text-[#A6AFC9] text-xs mt-1">Ponuda skrojena za vas</p>
+          <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+            Kontaktirajte nas
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dekorativna kosina iznad Recenzija — suprotan smjer od heroja
+       (isti "/" nagib kao gornji rez Razlike), ista tamna pozadina
+       kao hero sekcija (#080B14) koja se bez prekida nastavlja do
+       podnožja; dno sekcije ostaje netaknuto. -->
+  <div class="hero-cut" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path class="cut-fill-band cut-fill-dark" d="M0,90 L1440,90 L1440,6 L0,84 Z"></path>
+      <path class="hero-cut__line" d="M0,84 L1440,6"></path>
+    </svg>
+  </div>
+
+  <!-- ============================================================
+       RECENZIJE — Google recenzije klijenata
+       ============================================================ -->
+  <section id="recenzije" class="dark scroll-mt-20 relative text-[#EBEFFA]">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 pt-16 sm:pt-20 pb-20 sm:pb-28">
+    <div class="max-w-2xl mx-auto text-center" data-reveal="fade-up">
+      <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-coral">Recenzije</p>
+      <h2 class="section-heading mx-auto font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">
+        Što kažu <span class="text-gradient">klijenti.</span>
+      </h2>
+    </div>
+
+    <div class="max-w-2xl mx-auto mt-14" data-reveal="fade-up" data-reveal-delay="0">
+      <figure class="glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1 text-[#FBBC05]" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2.5 14.9 9l7.1.6-5.4 4.7 1.7 6.9L12 17.6 5.7 21.2l1.7-6.9-5.4-4.7L9.1 9Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2.5 14.9 9l7.1.6-5.4 4.7 1.7 6.9L12 17.6 5.7 21.2l1.7-6.9-5.4-4.7L9.1 9Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2.5 14.9 9l7.1.6-5.4 4.7 1.7 6.9L12 17.6 5.7 21.2l1.7-6.9-5.4-4.7L9.1 9Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2.5 14.9 9l7.1.6-5.4 4.7 1.7 6.9L12 17.6 5.7 21.2l1.7-6.9-5.4-4.7L9.1 9Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M12 2.5 14.9 9l7.1.6-5.4 4.7 1.7 6.9L12 17.6 5.7 21.2l1.7-6.9-5.4-4.7L9.1 9Z"/></svg>
+          </div>
+          <span class="font-mono text-xs text-inksoft dark:text-[#A6AFC9]">5,0 na Googleu</span>
+        </div>
+        <blockquote class="mt-5 font-serif text-lg sm:text-xl leading-snug text-ink dark:text-[#EBEFFA]">
+          „Super komunikacija, vrlo fleksibilni za sve korekcije i nove ideje… Preporuka apsolutna.”
+        </blockquote>
+        <figcaption class="mt-5 flex items-center gap-2 text-sm text-inksoft dark:text-[#A6AFC9]">
+          <span class="font-semibold text-ink dark:text-[#EBEFFA]">Tin Ostrošić</span>
+          <span aria-hidden="true">·</span>
+          <span>Google recenzija</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="mt-8 text-center" data-reveal="fade-up" data-reveal-delay="80">
+      <a href="https://www.google.com/maps?cid=9429391216034258674" target="_blank" rel="noopener"
+        class="btn-glow inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+        Pogledajte sve recenzije na Googleu
+      </a>
+    </div>
+  </div>
+  </section>
+
+</main>
+
+<footer class="border-t border-line dark:border-[#232B47] transition-colors">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-inksoft dark:text-[#A6AFC9]">
+    <span class="font-serif font-semibold text-ink dark:text-[#EBEFFA]"><span>Kreir</span><span class="text-gradient">AI</span></span>
+    <nav class="flex items-center gap-4">
+      <a href="uvjeti.html" class="hover:text-ink dark:hover:text-[#EBEFFA] transition">Uvjeti korištenja</a>
+      <a href="privatnost.html" class="hover:text-ink dark:hover:text-[#EBEFFA] transition">Pravila privatnosti</a>
+      <a href="cjenik.xml" class="hover:text-ink dark:hover:text-[#EBEFFA] transition">Cjenik (XML)</a>
+      <a href="cjenik.csv" class="hover:text-ink dark:hover:text-[#EBEFFA] transition">Cjenik (CSV)</a>
+    </nav>
+    <span>© 2026 KreirAI. Sva prava pridržana.</span>
+  </div>
+</footer>
+
+<script>
+  // ============================================================
+  // JS — mobile nav toggle + scroll progress bar + scroll-reveal
+  // (vanilla JS, IntersectionObserver — no external animation lib)
+  // ============================================================
+  (function () {
+    // ---- mobile nav ----
+    var navToggle = document.getElementById('navToggle');
+    var navToggleIcon = document.getElementById('navToggleIcon');
+    var mobileNav = document.getElementById('mobileNav');
+    var iconMenu = 'M3 6h18M3 12h18M3 18h18';
+    var iconClose = 'M5 5l14 14M19 5L5 19';
+
+    function closeMobileNav() {
+      mobileNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggleIcon.querySelector('path').setAttribute('d', iconMenu);
+    }
+    function toggleMobileNav() {
+      var isOpen = mobileNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      navToggleIcon.querySelector('path').setAttribute('d', isOpen ? iconClose : iconMenu);
+    }
+    navToggle.addEventListener('click', toggleMobileNav);
+    document.querySelectorAll('.mob-link').forEach(function (link) {
+      link.addEventListener('click', closeMobileNav);
+    });
+
+    // ---- pause the always-on glow-ring animations while scrolling ----
+    // Buttons, service cards and the hero stage all have a rotating
+    // conic-gradient ring animating 100% of the time. Freeing up that
+    // compositing work during an active scroll gesture (resuming ~160ms
+    // after it stops) is a real, measurable smoothness win, with no
+    // visible change outside of scrolling itself.
+    (function () {
+      var body = document.body;
+      var resumeTimer = null;
+      window.addEventListener('scroll', function () {
+        body.classList.add('is-scrolling');
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(function () {
+          body.classList.remove('is-scrolling');
+        }, 160);
+      }, { passive: true });
+    })();
+
+    // ---- cursor-following ambient glow (desktop / fine-pointer only) ----
+    (function () {
+      var glow = document.getElementById('cursorGlow');
+      if (!glow) return;
+      var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!fine || reduced) return;
+
+      var rafId = null, x = 0, y = 0, hideTimer = null;
+
+      function render() {
+        glow.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
+        rafId = null;
+      }
+
+      window.addEventListener('mousemove', function (e) {
+        x = e.clientX; y = e.clientY;
+        glow.classList.add('is-active');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(function () { glow.classList.remove('is-active'); }, 2200);
+        if (!rafId) rafId = requestAnimationFrame(render);
+      }, { passive: true });
+
+      document.addEventListener('mouseleave', function () {
+        glow.classList.remove('is-active');
+      });
+    })();
+
+    // ---- pull-to-refresh (mobile) ----
+    (function () {
+      var ptr = document.getElementById('ptr');
+      if (!ptr || !('ontouchstart' in window)) return;
+      var THRESHOLD = 70;
+      var startY = null, lastDelta = 0, pulling = false, refreshing = false;
+
+      function atTop() {
+        return (window.scrollY || document.documentElement.scrollTop || 0) <= 0;
+      }
+      function reset() {
+        pulling = false; startY = null; lastDelta = 0;
+        ptr.classList.add('snap');
+        ptr.style.opacity = 0;
+        ptr.style.transform = 'translate(-50%, -60px) rotate(0deg)';
+      }
+
+      document.addEventListener('touchstart', function (e) {
+        if (refreshing || !atTop()) { startY = null; return; }
+        startY = e.touches[0].clientY;
+        pulling = true;
+        ptr.classList.remove('snap');
+      }, { passive: true });
+
+      document.addEventListener('touchmove', function (e) {
+        if (!pulling || refreshing || startY === null) return;
+        var delta = e.touches[0].clientY - startY;
+        if (delta <= 0 || !atTop()) { reset(); return; }
+        e.preventDefault();
+        lastDelta = delta;
+        var progress = Math.min(delta / THRESHOLD, 1);
+        var pullPx = Math.min(delta * 0.5, 64);
+        ptr.style.opacity = progress;
+        ptr.style.transform = 'translate(-50%, ' + (-60 + pullPx + 60 * progress) + 'px) rotate(' + (progress * 180) + 'deg)';
+      }, { passive: false });
+
+      document.addEventListener('touchend', function () {
+        if (!pulling || refreshing) return;
+        pulling = false;
+        ptr.classList.add('snap');
+        if (lastDelta >= THRESHOLD) {
+          refreshing = true;
+          ptr.style.opacity = 1;
+          ptr.style.transform = 'translate(-50%, 10px) rotate(0deg)';
+          ptr.classList.add('spinning');
+          setTimeout(function () { window.location.reload(); }, 500);
+        } else {
+          reset();
+        }
+      });
+      document.addEventListener('touchcancel', reset);
+    })();
+
+    // ---- hero 3D logo video: robust mobile autoplay ----
+    // Some mobile browsers (iOS Safari especially, or pages loaded over a
+    // slow/cellular connection) silently block the "autoplay" attribute.
+    // Force muted (some autoplay policies check the JS property, not just
+    // the HTML attribute), try to play as soon as it's ready, and retry on
+    // the very first touch/click anywhere on the page as a guaranteed
+    // fallback so the animation is never stuck on a frozen still frame.
+    var heroVideo = document.getElementById('heroLogoVideo');
+    if (heroVideo) {
+      var HERO_RATE = 1;
+      heroVideo.muted = true;
+      heroVideo.defaultMuted = true;
+      heroVideo.defaultPlaybackRate = HERO_RATE;
+      heroVideo.playbackRate = HERO_RATE;
+      heroVideo.addEventListener('ratechange', function () {
+        if (heroVideo.playbackRate !== HERO_RATE) heroVideo.playbackRate = HERO_RATE;
+      });
+      var tryPlayHeroVideo = function () {
+        heroVideo.playbackRate = HERO_RATE;
+        var p = heroVideo.play();
+        if (p && typeof p.catch === 'function') { p.catch(function () {}); }
+      };
+      // Native "loop" attribute handles seamless looping — no manual
+      // end-hold pause, it jumps straight back to the start.
+      // "Ideja u posao." fades in earlier during the video's logo-reveal
+      // moment, and fades out again as soon as it loops back to the start —
+      // a plain text overlay kept in sync by playback time, not baked into
+      // the video file itself.
+      var heroTagline = document.getElementById('heroTaglineOverlay');
+      if (heroTagline) {
+        var TAGLINE_WINDOW = 3; // seconds before the end where it appears
+        heroVideo.addEventListener('timeupdate', function () {
+          var dur = heroVideo.duration;
+          var showTagline = isFinite(dur) && (dur - heroVideo.currentTime) <= TAGLINE_WINDOW;
+          heroTagline.classList.toggle('is-visible', showTagline);
+        });
+      }
+      if (heroVideo.readyState >= 3) {
+        tryPlayHeroVideo();
+      } else {
+        heroVideo.addEventListener('canplaythrough', tryPlayHeroVideo, { once: true });
+        heroVideo.addEventListener('loadeddata', tryPlayHeroVideo, { once: true });
+      }
+      ['touchstart', 'click'].forEach(function (evt) {
+        document.addEventListener(evt, function () {
+          if (heroVideo.paused) tryPlayHeroVideo();
+        }, { once: true, passive: true });
+      });
+    }
+
+    // ---- scroll-triggered reveal animations ----
+    var revealEls = document.querySelectorAll('[data-reveal]');
+    if (!('IntersectionObserver' in window)) {
+      revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            var delay = parseInt(el.getAttribute('data-reveal-delay') || '0', 10);
+            setTimeout(function () {
+              // Promote to a GPU layer only for the ~0.8s the reveal
+              // transition actually runs, then drop it — leaving
+              // will-change on every revealed element forever (as before)
+              // meant dozens of permanent compositing layers sitting
+              // around for the rest of the visit, which is real scroll-
+              // jank fuel on a page with this many reveal elements.
+              el.style.willChange = 'opacity, transform';
+              el.classList.add('is-visible');
+              var clearWillChange = function () { el.style.willChange = 'auto'; };
+              el.addEventListener('transitionend', clearWillChange, { once: true });
+              setTimeout(clearWillChange, 1000); // fallback if transitionend never fires
+            }, delay);
+            io.unobserve(el);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+      revealEls.forEach(function (el) { io.observe(el); });
+    }
+
+  })();
+</script>
+
+<div id="cookieBanner" hidden role="dialog" aria-live="polite" aria-label="Obavijest o kolačićima" class="fixed inset-x-0 bottom-0 z-50 border-t border-line dark:border-[#232B47] bg-white dark:bg-[#10162A] shadow-soft transition-colors">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex flex-col sm:flex-row items-center gap-4">
+    <p class="text-sm text-inksoft dark:text-[#A6AFC9] flex-1">
+      Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje vašeg pristanka na ovu obavijest). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html" class="underline hover-coral">Pravilima privatnosti</a>.
+    </p>
+    <button id="cookieAccept" type="button" class="btn-glow shrink-0 inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
+      Slažem se
+    </button>
+  </div>
+</div>
+<script>
+  (function () {
+    var KEY = 'kreirai-cookie-consent';
+    var banner = document.getElementById('cookieBanner');
+    if (!banner) return;
+    var alreadyConsented = false;
+    try { alreadyConsented = !!localStorage.getItem(KEY); } catch (e) {}
+    if (!alreadyConsented) banner.hidden = false;
+    var acceptBtn = document.getElementById('cookieAccept');
+    acceptBtn.addEventListener('click', function () {
+      try { localStorage.setItem(KEY, '1'); } catch (e) {}
+      banner.hidden = true;
+    });
+  })();
+</script>
+<script>
+  /* Kut trake usluga = stvarni kut hero kosine. SVG kosine je rastegnut
+     (preserveAspectRatio="none"), pa joj se nagib mijenja sa širinom
+     ekrana — ovdje ga izračunamo i predamo traci kao --tk-angle. */
+  (function () {
+    var cut = document.querySelector('#pocetna ~ .hero-cut');
+    var wrap = document.querySelector('.services-ticker-wrap');
+    if (!cut || !wrap) return;
+    function setAngle() {
+      var r = cut.getBoundingClientRect();
+      if (!r.width) return;
+      var deg = Math.atan((78 / 90 * r.height) / r.width) * 180 / Math.PI;
+      wrap.style.setProperty('--tk-angle', deg.toFixed(3) + 'deg');
+    }
+    setAngle();
+    window.addEventListener('resize', setAngle);
+  })();
+</script>
+<script>
+  /* Hero "data field" — vidi komentar uz .hero-field u CSS-u. */
+  (function () {
+    var canvas = document.querySelector('.hero-field');
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var section = canvas.parentElement;
+    var body = document.body;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var GLYPHS = '01{}<>/;=()[]*+#$&_'.split('');
+    var W = 0, H = 0, gap = 30, cols = 0, rows = 0, mobile = false;
+    var glyphs = [], occupied = {};
+    var mouse = { x: -9999, y: -9999, tx: -9999, ty: -9999, a: 0, ta: 0 };
+    var t0 = performance.now(), raf = 0, inView = true, lastFrame = 0;
+
+    function resize() {
+      var r = section.getBoundingClientRect();
+      W = Math.max(1, r.width); H = Math.max(1, r.height);
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      mobile = W < 640;
+      gap = mobile ? 24 : 30;
+      cols = Math.ceil(W / gap); rows = Math.ceil(H / gap);
+      glyphs = []; occupied = {};
+      if (reduce) draw(t0 + 4000);
+    }
+
+    // Dijagonalni val: uzak, mekan greben koji polako putuje
+    // s gornjeg-lijevog prema donjem-desnom kutu.
+    function wave(x, y, t) {
+      var v = Math.sin((x * 0.55 + y) * 0.0105 - t * 0.75);
+      v = v > 0 ? v : 0;
+      return v * v * v * v; // ^4 → mekan, uzak svijetli greben
+    }
+
+    function spawn(now, t) {
+      var max = mobile ? 8 : 20, tries = 0;
+      while (glyphs.length < max && tries++ < 12) {
+        var i = (Math.random() * cols) | 0, j = (Math.random() * rows) | 0, key = i + ',' + j;
+        if (occupied[key]) continue;
+        var w = wave(i * gap + gap / 2, j * gap + gap / 2, t);
+        if (w < 0.35 && Math.random() > 0.04) continue; // većinom na grebenu vala
+        var g = { i: i, j: j, key: key, ch: GLYPHS[(Math.random() * GLYPHS.length) | 0],
+                  born: now, life: 2400 + Math.random() * 2600, accent: Math.random() < 0.22 };
+        glyphs.push(g); occupied[key] = g;
+        break;
+      }
+    }
+
+    function draw(now) {
+      var t = (now - t0) / 1000;
+      ctx.clearRect(0, 0, W, H);
+
+      // glatko praćenje kursora
+      mouse.x += (mouse.tx - mouse.x) * 0.12;
+      mouse.y += (mouse.ty - mouse.y) * 0.12;
+      mouse.a += (mouse.ta - mouse.a) * 0.06;
+      var R = 190, R2 = R * R;
+
+      // 1) piksel-mreža
+      ctx.fillStyle = 'rgb(168,192,232)';
+      for (var j = 0; j < rows; j++) {
+        var y = j * gap + gap / 2;
+        for (var i = 0; i < cols; i++) {
+          if (occupied[i + ',' + j]) continue;
+          var x = i * gap + gap / 2;
+          var w = wave(x, y, t);
+          var a = 0.085 + w * 0.42;
+          if (mouse.a > 0.01) {
+            var dx = x - mouse.x, dy = y - mouse.y, d2 = dx * dx + dy * dy;
+            if (d2 < R2) { var f = 1 - Math.sqrt(d2) / R; a += f * f * 0.5 * mouse.a; }
+          }
+          var sz = 1.3 + w * 1.1;
+          ctx.globalAlpha = a > 0.65 ? 0.65 : a;
+          ctx.fillRect(x - sz / 2, y - sz / 2, sz, sz);
+        }
+      }
+
+      // 2) znakovi koji se "dekodiraju" na grebenu vala
+      ctx.font = '500 ' + (mobile ? 11 : 12.5) + 'px "JetBrains Mono", ui-monospace, monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      for (var k = glyphs.length - 1; k >= 0; k--) {
+        var g = glyphs[k], age = now - g.born;
+        if (age > g.life) { delete occupied[g.key]; glyphs.splice(k, 1); continue; }
+        var p = age / g.life;
+        var env = p < 0.18 ? p / 0.18 : (p > 0.7 ? (1 - p) / 0.3 : 1); // fade in → drži → fade out
+        var ch = age < 420 ? GLYPHS[(Math.random() * GLYPHS.length) | 0] : g.ch; // decode treperenje
+        var gx = g.i * gap + gap / 2, gy = g.j * gap + gap / 2;
+        ctx.globalAlpha = env * (g.accent ? 0.78 : 0.42);
+        ctx.fillStyle = g.accent ? '#8FDBFF' : '#C9D6F2';
+        if (g.accent) { ctx.shadowColor = 'rgba(125,211,252,.65)'; ctx.shadowBlur = 8; }
+        ctx.fillText(ch, gx, gy + 0.5);
+        ctx.shadowBlur = 0;
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function loop(now) {
+      raf = requestAnimationFrame(loop);
+      if (!inView || document.hidden || body.classList.contains('is-scrolling')) return;
+      if (mobile && now - lastFrame < 32) return; // ~30fps na mobitelu
+      lastFrame = now;
+      if (Math.random() < (mobile ? 0.07 : 0.12)) spawn(now, (now - t0) / 1000);
+      draw(now);
+    }
+
+    resize();
+    canvas.classList.add('is-ready');
+    if (reduce) { draw(t0 + 4000); return; }
+
+    if ('ResizeObserver' in window) { new ResizeObserver(resize).observe(section); }
+    else { window.addEventListener('resize', resize); }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { inView = en[0].isIntersecting; }, { threshold: 0 }).observe(section);
+    }
+
+    if (window.matchMedia && window.matchMedia('(hover: hover)').matches) {
+      section.addEventListener('pointermove', function (e) {
+        var r = section.getBoundingClientRect();
+        mouse.tx = e.clientX - r.left; mouse.ty = e.clientY - r.top;
+        if (mouse.a < 0.01) { mouse.x = mouse.tx; mouse.y = mouse.ty; }
+        mouse.ta = 1;
+      });
+      section.addEventListener('pointerleave', function () { mouse.ta = 0; });
+    }
+
+    raf = requestAnimationFrame(loop);
+  })();
+</script>
+<script src="kreirai-intro.js"></script>
+</body>
+</html>
