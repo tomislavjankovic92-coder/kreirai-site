@@ -12,7 +12,7 @@
     if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
     var p = location.pathname, n = p;
     if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
-    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt)\/?$/);
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica)\/?$/);
     if (m) n = '/' + m[1] + '.html';
     if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
   })();
@@ -725,6 +725,10 @@
   .post-cta{ margin-top:3rem; padding:1.8rem 1.6rem; border-radius:1.25rem; }
   .post-cta h3{ font-family:'Inter Tight',Inter,sans-serif; font-weight:700; font-size:1.35rem; letter-spacing:-.02em; color:#0E1526; }
   .dark .post-cta h3{ color:#EBEFFA; }
+  .post-related{ margin-top:2.5rem; display:block; padding:1.2rem 1.3rem; border-radius:1rem; text-decoration:none !important; }
+  .post-related small{ display:block; font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:#FF6F59; }
+  .post-related strong{ display:block; margin-top:.35rem; font-family:'Inter Tight',Inter,sans-serif; font-size:1.1rem; color:#0E1526; }
+  .dark .post-related strong{ color:#EBEFFA; }
   .post-sources{ margin-top:2.5rem; padding-top:1.5rem; border-top:1px solid rgba(14,21,38,.08); font-size:.9rem; }
   .dark .post-sources{ border-color:rgba(255,255,255,.08); }
   .post-sources h2{ font-size:.8rem !important; margin-top:0 !important; font-family:'JetBrains Mono',monospace !important; letter-spacing:.14em !important; text-transform:uppercase; color:#6B7493 !important; }
@@ -791,8 +795,40 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "BlogPosting",
+      "@id": "https://kreirai.hr/koliko-kosta-web-stranica-za-obrt.html#article",
+      "mainEntityOfPage": "https://kreirai.hr/koliko-kosta-web-stranica-za-obrt.html",
+      "headline": "Koliko košta web stranica za obrt u 2026. i na što paziti?",
+      "description": "Realne cijene web stranica za obrt u Hrvatskoj 2026. — od predloška do webshopa, što ulazi u cijenu, skriveni godišnji troškovi i 7 stvari koje treba provjeriti prije potpisivanja ponude.",
+      "image": "https://kreirai.hr/og-cover.jpg",
+      "datePublished": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "inLanguage": "hr",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://kreirai.hr/#organization",
+        "name": "KreirAI",
+        "url": "https://kreirai.hr/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://kreirai.hr/#organization",
+        "name": "KreirAI",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://kreirai.hr/logo-512.png"
+        }
+      },
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://kreirai.hr/blog.html#blog",
+        "name": "KreirAI blog"
+      },
+      "keywords": "cijena web stranice, web stranica za obrt, izrada web stranice 2026, objava cjenika CSV XML"
+    },
+    {
       "@type": "BreadcrumbList",
-      "@id": "https://kreirai.hr/blog.html#breadcrumb",
+      "@id": "https://kreirai.hr/koliko-kosta-web-stranica-za-obrt.html#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -805,6 +841,12 @@
           "position": 2,
           "name": "Blog",
           "item": "https://kreirai.hr/blog.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Koliko košta web stranica za obrt u 2026.",
+          "item": "https://kreirai.hr/koliko-kosta-web-stranica-za-obrt.html"
         }
       ]
     }
@@ -975,6 +1017,10 @@
         </div>
       </div>
 
+      <a href="web-stranica-ili-facebook-stranica.html" class="post-related glass-panel border border-line dark:border-[#232B47]">
+        <small>Pročitajte i</small>
+        <strong>Web stranica ili samo Facebook stranica: što je bolje za mali posao? →</strong>
+      </a>
       <div class="post-sources">
         <h2>Izvori</h2>
         <ul class="post-list">

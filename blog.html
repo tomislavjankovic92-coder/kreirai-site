@@ -12,7 +12,7 @@
     if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
     var p = location.pathname, n = p;
     if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
-    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt)\/?$/);
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica)\/?$/);
     if (m) n = '/' + m[1] + '.html';
     if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
   })();
@@ -472,6 +472,7 @@
   .icon-badge svg{ width: 1.4rem; height: 1.4rem; }
   /* Popis članaka na blogu */
   .blog-list{ max-width: 48rem; }
+  .blog-list.glass-stage{ display:grid; gap:1.25rem; }
   .blog-card{ padding: 1.6rem 1.5rem 1.5rem; }
   @media (min-width:640px){ .blog-card{ padding: 2.1rem 2.25rem 2rem; } }
   .blog-card h2{ font-size: 1.45rem; line-height: 1.25; letter-spacing: -.02em; }
@@ -764,6 +765,13 @@
           "headline": "Koliko košta web stranica za obrt u 2026. i na što paziti?",
           "url": "https://kreirai.hr/koliko-kosta-web-stranica-za-obrt.html",
           "datePublished": "2026-10-15"
+        },
+        {
+          "@type": "BlogPosting",
+          "@id": "https://kreirai.hr/web-stranica-ili-facebook-stranica.html#article",
+          "headline": "Web stranica ili samo Facebook stranica: što je bolje za mali posao?",
+          "url": "https://kreirai.hr/web-stranica-ili-facebook-stranica.html",
+          "datePublished": "2026-10-15"
         }
       ]
     }
@@ -867,6 +875,15 @@
         </div>
         <h2 class="font-serif font-semibold text-2xl mt-4 group-hover-coral transition">Koliko košta web stranica za obrt u 2026. i na što paziti?</h2>
         <p class="mt-3 text-inksoft dark:text-[#A6AFC9] text-sm sm:text-base leading-relaxed">Realne cijene na hrvatskom tržištu — od predloška do webshopa, što ulazi u cijenu, koji se troškovi plaćaju svake godine i 7 stvari koje treba provjeriti prije potpisivanja ponude.</p>
+        <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-coral mt-5">Pročitajte članak <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a href="web-stranica-ili-facebook-stranica.html" class="blog-card pf-card glass-premium group glass-panel relative block rounded-2xl border border-line dark:border-[#232B47] hover:-translate-y-1" data-reveal="fade-up" data-reveal-delay="80">
+        <div class="flex items-center gap-3 flex-wrap">
+          <span class="step-badge font-mono text-xs uppercase tracking-wide">Usporedba</span>
+          <time datetime="2026-10-15" class="font-mono text-xs text-inksoft dark:text-[#A6AFC9]">15. listopada 2026. · 5 min čitanja</time>
+        </div>
+        <h2 class="font-serif font-semibold text-2xl mt-4 group-hover-coral transition">Web stranica ili samo Facebook stranica: što je bolje za mali posao?</h2>
+        <p class="mt-3 text-inksoft dark:text-[#A6AFC9] text-sm sm:text-base leading-relaxed">Je li Facebook stranica dovoljna ili vam treba vlastita web stranica? Usporedba vidljivosti na Googleu, vlasništva, dosega i troškova — i kako ih povezati da donose upite.</p>
         <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-coral mt-5">Pročitajte članak <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
       <div class="glass-aura" aria-hidden="true"><span></span><span></span><span></span></div>
