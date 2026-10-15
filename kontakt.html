@@ -524,6 +524,15 @@
   .glass-panel{ -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(255,255,255,.80); }
   .dark .glass-panel{ background: rgba(13,18,36,.74); }
   header.dark{ -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(8,11,20,.94); }
+
+  /* Footer — puni naziv obrta i napomena o PDV-u */
+  .footer-legal{ padding-top: 1.1rem; padding-bottom: 1.6rem; text-align: center; font-size: .75rem; line-height: 1.6; color: #6B7493; border-top: 1px solid rgba(14,21,38,.06); }
+  .footer-legal p + p{ margin-top: .2rem; }
+  .footer-legal strong{ font-weight: 600; color: #3A4260; }
+  .dark .footer-legal{ color: #7F89A8; border-top-color: rgba(255,255,255,.05); }
+  .dark .footer-legal strong{ color: #B4BCD6; }
+  footer nav{ flex-wrap: wrap; justify-content: center; row-gap: .4rem; }
+  footer nav a{ white-space: nowrap; }
 </style>
 <script type="application/ld+json">
 {
@@ -823,6 +832,10 @@
       <a href="cjenik.csv" class="hover:text-ink dark:hover:text-[#EBEFFA] transition">Cjenik (CSV)</a>
     </nav>
     <span>© 2026 KreirAI. Sva prava pridržana.</span>
+  </div>
+  <div class="footer-legal max-w-6xl mx-auto px-5 sm:px-8">
+    <p><strong>KreirAI, obrt za računalno stvaralaštvo</strong>, vl. Tomislav Janković <span aria-hidden="true">·</span> Osijek, Hrvatska</p>
+    <p>Nismo u sustavu PDV-a — PDV nije obračunat temeljem čl. 90. st. 1. Zakona o PDV-u. Sve navedene cijene su konačne.</p>
   </div>
 </footer>
 
