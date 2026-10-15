@@ -750,16 +750,8 @@
 
   /* Koraljna podcrta ispod section naslova (bio gradient cyan→koralj,
      sad jednobojni koralj). */
-  .section-heading{ position: relative; display: inline-block; padding-bottom: .3em; }
-  .section-heading::after{
-    content: "";
-    position: absolute; left: 0; bottom: 0;
-    width: 52px; height: 2px; border-radius: 2px;
-    background: #FF6F59;
-  }
-  .dark .section-heading::after{
-    background: #FF9478;
-  }
+  /* Naslovi sekcija — samo tekst, bez koraljne crtice ispod. */
+  .section-heading{ position: relative; display: inline-block; }
 
   /* "Korak 01–04" process labels as small bordered chips. */
   .step-badge{
