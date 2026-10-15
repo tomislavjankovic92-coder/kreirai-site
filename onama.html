@@ -28,7 +28,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>O nama — KreirAI digitalni studio</title>
-<meta name="description" content="KreirAI je digitalni studio koji umjetnu inteligenciju koristi kao alat za brzinu, uz ljudsku reviziju i odgovornost prema klijentu.">
+<meta name="description" content="Upoznajte KreirAI i osnivača Tomislava Jankovića — digitalni studio iz Osijeka koji izrađuje web stranice, webshopove i aplikacije za obrte i tvrtke diljem Hrvatske.">
 <link rel="canonical" href="https://kreirai.hr/onama.html">
 
 <!-- Social share preview (link thumbnail) -->
@@ -37,7 +37,7 @@
 <meta property="og:url" content="https://kreirai.hr/onama.html">
 <meta property="og:site_name" content="KreirAI">
 <meta property="og:title" content="O nama — KreirAI digitalni studio">
-<meta property="og:description" content="KreirAI je digitalni studio koji umjetnu inteligenciju koristi kao alat za brzinu, uz ljudsku reviziju i odgovornost prema klijentu.">
+<meta property="og:description" content="Upoznajte KreirAI i osnivača Tomislava Jankovića — digitalni studio iz Osijeka koji izrađuje web stranice, webshopove i aplikacije za obrte i tvrtke diljem Hrvatske.">
 <meta property="og:image" content="https://kreirai.hr/og-cover.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -45,7 +45,7 @@
 <meta property="og:image:alt" content="KreirAI — od ideje do gotovog proizvoda, uz pomoć umjetne inteligencije">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="O nama — KreirAI digitalni studio">
-<meta name="twitter:description" content="KreirAI je digitalni studio koji umjetnu inteligenciju koristi kao alat za brzinu, uz ljudsku reviziju i odgovornost prema klijentu.">
+<meta name="twitter:description" content="Upoznajte KreirAI i osnivača Tomislava Jankovića — digitalni studio iz Osijeka koji izrađuje web stranice, webshopove i aplikacije za obrte i tvrtke diljem Hrvatske.">
 <meta name="twitter:image" content="https://kreirai.hr/og-cover.jpg">
 
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -521,6 +521,252 @@
   /* Koraljni focus prsten na poljima forme (bivši focus:ring-cyan/40 focus:border-cyan). */
   .focus-coral:focus{ border-color: #FF6F59; box-shadow: 0 0 0 2px rgba(255,111,89,.4); }
   .dark .focus-coral:focus{ border-color: #FF9478; box-shadow: 0 0 0 2px rgba(255,148,120,.4); }
+
+  /* ============================================================
+     PREMIUM STAKLENE KARTICE (:is(.service-card, .glass-premium).glass-panel)
+     Prava "staklena" kartica treba nešto iza sebe što se kroz nju
+     zamućeno vidi — zato iza mreže kartica stoji .glass-aura: tri
+     mekane obojene mrlje (koralj, breskva, hladna plava) koje vrlo
+     polako lebde. Kartica je prozirni bijeli gradijent s jakim
+     backdrop-blurom, bijelim gornjim odsjajem i tankim gradijentnim
+     rubom (bijelo → koraljno, ::before). Na hover: kartica se lagano
+     podigne, rub dobije više koralja, a mekana "svjetiljka" (::after)
+     prati kursor po staklu. Sve stoji i bez JS-a; reduced-motion
+     zaustavlja lebdenje mrlja.
+     ============================================================ */
+  .glass-stage{ position: relative; isolation: isolate; }
+  .glass-aura{
+    position: absolute; inset: -70px -60px; z-index: -1;
+    pointer-events: none;
+    /* mrlje se mekano gase prema rubovima omotača, da obojeni sjaj
+       nikad ne dođe do ruba sekcije (inače se vidi šav uz kosine) */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 76%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 76%, transparent 100%);
+  }
+  .glass-aura span{
+    position: absolute; border-radius: 50%;
+    will-change: transform;
+    animation: glass-aura-drift 22s ease-in-out infinite alternate;
+  }
+  .glass-aura span:nth-child(1){
+    width: 46%; aspect-ratio: 1; left: 2%; top: 4%;
+    background: radial-gradient(circle, rgba(255,111,89,.30) 0%, rgba(255,111,89,.12) 38%, transparent 68%);
+  }
+  .glass-aura span:nth-child(2){
+    width: 52%; aspect-ratio: 1; right: 0; bottom: -6%;
+    background: radial-gradient(circle, rgba(120,160,255,.26) 0%, rgba(120,160,255,.10) 40%, transparent 68%);
+    animation-duration: 26s; animation-delay: -8s;
+  }
+  .glass-aura span:nth-child(3){
+    width: 34%; aspect-ratio: 1; left: 38%; top: 30%;
+    background: radial-gradient(circle, rgba(255,176,140,.30) 0%, rgba(255,176,140,.10) 40%, transparent 68%);
+    animation-duration: 19s; animation-delay: -4s;
+  }
+  @keyframes glass-aura-drift{
+    0%  { transform: translate3d(0,0,0) scale(1); }
+    50% { transform: translate3d(6%,8%,0) scale(1.08); }
+    100%{ transform: translate3d(-5%,3%,0) scale(.95); }
+  }
+  .dark .glass-aura span:nth-child(1){ opacity: .8; }
+  .dark .glass-aura span:nth-child(2){ opacity: .7; }
+  body.is-scrolling .glass-aura span,
+  .glass-stage.is-offscreen .glass-aura span{ animation-play-state: paused; }
+
+  :is(.service-card, .glass-premium).glass-panel{
+    background: linear-gradient(150deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.40) 100%);
+    /* PERFORMANSE: bez backdrop-filtera — iza kartica su samo mekane,
+       već zamućene mrlje (.glass-aura), pa blur ne mijenja ništa
+       vidljivo (izmjereno: razlika najviše 4/255 po pikselu), a
+       računao bi se iznova u svakom frameu dok mrlje lebde. */
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+    border: 1px solid rgba(255,255,255,.7);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.95),
+      inset 0 -1px 0 rgba(14,21,38,.03),
+      0 1px 2px rgba(14,21,38,.04),
+      0 22px 44px -26px rgba(14,21,38,.28);
+    transition: box-shadow .45s ease, transform .35s cubic-bezier(.2,.7,.2,1), background .45s ease;
+  }
+  :is(.service-card, .glass-premium).glass-panel::before{
+    content: "";
+    position: absolute; inset: -1px; z-index: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(140deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,.25) 38%, rgba(255,111,89,.22) 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    transition: opacity .45s ease;
+  }
+  :is(.service-card, .glass-premium).glass-panel::after{
+    content: "";
+    position: absolute; inset: 0; z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgba(255,255,255,.75), rgba(255,200,185,.18) 45%, transparent 70%);
+    opacity: 0;
+    transition: opacity .4s ease;
+  }
+  :is(.service-card, .glass-premium).glass-panel > *:not(.price-badge-pos){ position: relative; z-index: 1; }
+  :is(.service-card, .glass-premium).glass-panel:hover,
+  :is(.service-card, .glass-premium).glass-panel:focus-within{
+    background: linear-gradient(150deg, rgba(255,255,255,.80) 0%, rgba(255,255,255,.48) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,1),
+      0 1px 2px rgba(14,21,38,.04),
+      0 30px 56px -28px rgba(255,111,89,.38),
+      0 16px 32px -24px rgba(14,21,38,.22);
+  }
+  :is(.service-card, .glass-premium).glass-panel:hover::after,
+  :is(.service-card, .glass-premium).glass-panel:focus-within::after{ opacity: 1; }
+  :is(.service-card, .glass-premium).glass-panel:hover::before{
+    background: linear-gradient(140deg, rgba(255,255,255,1) 0%, rgba(255,170,150,.45) 45%, rgba(255,111,89,.55) 100%);
+  }
+
+  .dark :is(.service-card, .glass-premium).glass-panel{
+    background: linear-gradient(150deg, rgba(26,33,58,.66) 0%, rgba(13,18,36,.44) 100%);
+    border-color: rgba(255,255,255,.07);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.07),
+      0 24px 48px -28px rgba(0,0,0,.7);
+  }
+  .dark :is(.service-card, .glass-premium).glass-panel::before{
+    background: linear-gradient(140deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.04) 40%, rgba(255,148,120,.28) 100%);
+  }
+  .dark :is(.service-card, .glass-premium).glass-panel::after{
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgba(255,148,120,.16), rgba(120,160,255,.06) 45%, transparent 70%);
+  }
+  .dark :is(.service-card, .glass-premium).glass-panel:hover,
+  .dark :is(.service-card, .glass-premium).glass-panel:focus-within{
+    background: linear-gradient(150deg, rgba(32,40,68,.72) 0%, rgba(16,22,42,.5) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.1),
+      0 30px 56px -28px rgba(255,148,120,.28);
+  }
+
+  /* staklena ikona */
+  :is(.service-card, .glass-premium).glass-panel .icon-badge{
+    background: linear-gradient(145deg, rgba(255,255,255,.9), rgba(255,111,89,.10));
+    border-color: rgba(255,111,89,.26);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 8px 18px -10px rgba(255,111,89,.55);
+    transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease;
+  }
+  :is(.service-card, .glass-premium).glass-panel:hover .icon-badge{
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,1), 0 12px 22px -10px rgba(255,111,89,.65);
+  }
+  .dark :is(.service-card, .glass-premium).glass-panel .icon-badge{
+    background: linear-gradient(145deg, rgba(255,148,120,.16), rgba(255,148,120,.05));
+    border-color: rgba(255,148,120,.3);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 18px -10px rgba(255,148,120,.45);
+  }
+  body.is-scrolling :is(.service-card, .glass-premium).glass-panel::after{ transition: none; }
+  @media (max-width: 640px){
+    .glass-aura{ inset: -40px -20px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .glass-aura span{ animation: none; }
+    :is(.service-card, .glass-premium).glass-panel, :is(.service-card, .glass-premium).glass-panel .icon-badge{ transition: none; }
+  }
+
+  .band-dark{
+    position: relative;
+    isolation: isolate;
+    padding-top: 4.5rem;
+  }
+  @media (min-width:640px){ .band-dark{ padding-top: 6rem; } }
+  .band-dark::before{
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    left: calc(50% - 50vw); right: calc(50% - 50vw);
+    z-index: -1;
+    background: #E1E5F1;
+    border-top: 1px solid rgba(14,21,38,.05);
+    pointer-events: none;
+  }
+  .dark .band-dark::before{
+    background: #0D1222;
+    border-color: rgba(255,255,255,.05);
+  }
+
+  /* ============================================================
+     O NAMA — osnivač, vrijednosti, činjenice, CTA
+     ============================================================ */
+  .ab-band{ position:relative; isolation:isolate; padding:5rem 0 5.5rem; color:#EBEFFA; }
+  @media (min-width:640px){ .ab-band{ padding:7rem 0 7.5rem; } }
+  .ab-band::before{
+    content:""; position:absolute; top:0; bottom:0; left:calc(50% - 50vw); right:calc(50% - 50vw); z-index:-1;
+    background:
+      radial-gradient(900px 420px at 18% 30%, rgba(255,111,89,.13), transparent 70%),
+      radial-gradient(700px 380px at 90% 80%, rgba(120,150,255,.07), transparent 70%),
+      #080B14;
+    border-top:1px solid rgba(255,255,255,.05); border-bottom:1px solid rgba(255,255,255,.05);
+  }
+  .ab-founder{ display:grid; gap:2.5rem; align-items:start; }
+  @media (min-width:900px){ .ab-founder{ grid-template-columns: 22rem minmax(0,1fr); gap:4rem; } }
+  .ab-card{ padding:2.25rem 1.75rem 2rem; text-align:center; border-radius:1.5rem; }
+  @media (min-width:900px){ .ab-card{ position:sticky; top:calc(var(--header-h, 72px) + 2rem); } }
+  .ab-avatar{ position:relative; width:11rem; height:11rem; margin:0 auto; border-radius:50%; padding:5px; }
+  .ab-avatar::before{
+    content:""; position:absolute; inset:0; border-radius:50%;
+    background: conic-gradient(from 0deg, rgba(255,148,120,0) 0deg, rgba(255,148,120,.15) 120deg, #FF9478 250deg, #FF6F59 300deg, rgba(255,111,89,0) 360deg);
+    animation: ab-spin 7s linear infinite; will-change: transform;
+  }
+  .ab-avatar::after{
+    content:""; position:absolute; inset:-18px; border-radius:50%; z-index:-1;
+    background: radial-gradient(closest-side, rgba(255,111,89,.32), transparent 75%);
+  }
+  .ab-avatar img{ position:relative; display:block; width:100%; height:100%; border-radius:50%; object-fit:cover; border:4px solid #0B0F1C; background:#E9EAEE; }
+  @keyframes ab-spin{ to{ transform: rotate(360deg); } }
+  .ab-name{ font-family:"Inter Tight",Inter,sans-serif; font-weight:700; font-size:1.65rem; letter-spacing:-.025em; margin-top:1.5rem; line-height:1.15; }
+  .ab-role{ margin-top:.35rem; font-size:.875rem; color:#A6AFC9; }
+  .ab-chips{ display:flex; flex-wrap:wrap; justify-content:center; gap:.5rem; margin-top:1.4rem; }
+  .ab-chip{ display:inline-flex; align-items:center; gap:.4rem; font-size:.75rem; font-weight:600; padding:.4rem .75rem; border-radius:999px;
+    border:1px solid rgba(255,148,120,.28); background:rgba(255,148,120,.07); color:#FFC2B1; }
+  .ab-chip svg{ width:.9rem; height:.9rem; }
+  .ab-card-links{ display:flex; justify-content:center; gap:.75rem; margin-top:1.6rem; }
+  .ab-story h2{ font-family:"Inter Tight",Inter,sans-serif; font-weight:700; letter-spacing:-.028em; font-size:clamp(1.9rem,4.2vw,2.75rem); line-height:1.08; margin-top:.9rem; }
+  .ab-story p:not(.eyebrow){ margin-top:1.15rem; color:#B4BCD6; font-size:1.0625rem; line-height:1.8; }
+  .ab-story p:not(.eyebrow) strong{ color:#F5F7FC; font-weight:600; }
+  .ab-lead{ font-size:1.2rem !important; color:#DCE2F2 !important; line-height:1.65 !important; }
+  .ab-quote{ position:relative; margin-top:2.2rem; padding:1.5rem 1.6rem 1.5rem 1.9rem; border-radius:1.1rem;
+    background:linear-gradient(135deg, rgba(255,111,89,.12), rgba(255,111,89,.03)); border:1px solid rgba(255,148,120,.22); }
+  .ab-quote::before{ content:""; position:absolute; left:0; top:1.1rem; bottom:1.1rem; width:3px; border-radius:3px; background:linear-gradient(#FF9478,#FF6F59); }
+  .ab-quote p{ margin:0 !important; font-family:"Inter Tight",Inter,sans-serif; font-size:1.2rem !important; line-height:1.5 !important; color:#F5F7FC !important; font-weight:500; letter-spacing:-.01em; }
+  .ab-quote cite{ display:block; margin-top:.7rem; font-style:normal; font-size:.8rem; color:#FF9478; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.08em; text-transform:uppercase; }
+  .ab-sign{ margin-top:1.6rem; font-family:"Inter Tight",Inter,sans-serif; font-size:1rem; color:#EBEFFA; }
+  .ab-sign span{ display:block; font-size:.8rem; color:#7F89A8; margin-top:.15rem; }
+
+  .ab-values{ display:grid; gap:1.25rem; margin-top:3rem; }
+  @media (min-width:640px){ .ab-values{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media (min-width:1024px){ .ab-values{ grid-template-columns:repeat(4,minmax(0,1fr)); } }
+  .ab-value{ padding:1.75rem 1.5rem 1.6rem; border-radius:1.25rem; }
+  .ab-value h3{ font-weight:600; font-size:1.05rem; }
+  .ab-value p{ margin-top:.55rem; font-size:.9rem; line-height:1.65; }
+
+  .ab-facts{ display:grid; gap:1rem; margin-top:3rem; }
+  @media (min-width:640px){ .ab-facts{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media (min-width:1024px){ .ab-facts{ grid-template-columns:repeat(4,minmax(0,1fr)); } }
+  .ab-fact{ padding:1.4rem 1.4rem 1.35rem; border-radius:1.1rem; }
+  .ab-fact dt{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:#FF6F59; }
+  .dark .ab-fact dt{ color:#FF9478; }
+  .ab-fact dd{ margin-top:.5rem; font-family:"Inter Tight",Inter,sans-serif; font-weight:600; font-size:1.2rem; letter-spacing:-.015em; line-height:1.3; }
+  .ab-fact dd small{ display:block; margin-top:.3rem; font-family:Inter,sans-serif; font-weight:400; font-size:.8rem; letter-spacing:0; color:#6B7493; line-height:1.5; }
+  .dark .ab-fact dd small{ color:#A6AFC9; }
+
+  .ab-cta{ margin-top:1rem; padding:2.5rem 1.75rem; border-radius:1.5rem; text-align:center; }
+  @media (min-width:640px){ .ab-cta{ padding:3.25rem 3rem; } }
+  .ab-cta h2{ font-family:"Inter Tight",Inter,sans-serif; font-weight:700; letter-spacing:-.025em; font-size:clamp(1.6rem,3.4vw,2.2rem); line-height:1.12; }
+  .ab-cta p{ margin:.8rem auto 0; max-width:36rem; }
+  .ab-cta .ab-cta-btns{ display:flex; flex-wrap:wrap; justify-content:center; gap:.75rem; margin-top:1.6rem; }
+  .ab-center{ text-align:center; max-width:42rem; margin:0 auto; }
+  .ab-center .eyebrow{ justify-content:center; }
+  @media (prefers-reduced-motion: reduce){ .ab-avatar::before{ animation:none; } }
+  body.is-scrolling .ab-avatar::before{ animation-play-state:paused; }
+  @media (max-width:640px){ .glass-aura{ inset:-40px 0; } }
 </style>
 <script type="application/ld+json">
 {
@@ -554,6 +800,47 @@
       },
       "breadcrumb": {
         "@id": "https://kreirai.hr/onama.html#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://kreirai.hr/onama.html#tomislav-jankovic"
+      },
+      "description": "Upoznajte KreirAI i osnivača Tomislava Jankovića — digitalni studio iz Osijeka koji radi diljem Hrvatske."
+    },
+    {
+      "@type": "Person",
+      "@id": "https://kreirai.hr/onama.html#tomislav-jankovic",
+      "name": "Tomislav Janković",
+      "jobTitle": "Osnivač i vlasnik",
+      "image": "https://kreirai.hr/assets/tomislav-jankovic.jpg",
+      "url": "https://kreirai.hr/onama.html",
+      "worksFor": {
+        "@id": "https://kreirai.hr/#organization"
+      },
+      "homeLocation": {
+        "@type": "Place",
+        "name": "Osijek, Hrvatska"
+      },
+      "knowsAbout": [
+        "Izrada web stranica",
+        "Web dizajn",
+        "Grafički dizajn",
+        "Umjetna inteligencija",
+        "Video produkcija"
+      ]
+    },
+    {
+      "@id": "https://kreirai.hr/#organization",
+      "founder": {
+        "@id": "https://kreirai.hr/onama.html#tomislav-jankovic"
+      },
+      "foundingDate": "2026-09-14",
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Osijek, Hrvatska"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Hrvatska"
       }
     }
   ]
@@ -652,21 +939,129 @@
     <ul class="flex flex-col gap-6">
       <li class="flex gap-4" data-reveal="fade-left" data-reveal-delay="0">
         <span class="step-num font-mono text-xs text-coral font-semibold pt-1">01</span>
-        <div><h4 class="font-semibold">Brzina bez prečaca</h4><p class="mt-1 text-inksoft dark:text-[#A6AFC9] text-sm">AI ubrzava izradu prve verzije; kvaliteta konačne verzije ostaje na ljudima.</p></div>
+        <div><h3 class="font-semibold">Brzina bez prečaca</h3><p class="mt-1 text-inksoft dark:text-[#A6AFC9] text-sm">AI ubrzava izradu prve verzije; kvaliteta konačne verzije ostaje na ljudima.</p></div>
       </li>
       <li class="flex gap-4" data-reveal="fade-left" data-reveal-delay="100">
         <span class="step-num font-mono text-xs text-coral font-semibold pt-1">02</span>
-        <div><h4 class="font-semibold">Transparentan proces</h4><p class="mt-1 text-inksoft dark:text-[#A6AFC9] text-sm">Vidite napredak u svakom koraku, od početka do isporuke.</p></div>
+        <div><h3 class="font-semibold">Transparentan proces</h3><p class="mt-1 text-inksoft dark:text-[#A6AFC9] text-sm">Vidite napredak u svakom koraku, od početka do isporuke.</p></div>
       </li>
       <li class="flex gap-4" data-reveal="fade-left" data-reveal-delay="200">
         <span class="step-num font-mono text-xs text-coral font-semibold pt-1">03</span>
-        <div><h4 class="font-semibold">Prilagođeno vašem opsegu</h4><p class="mt-1 text-inksoft dark:text-[#A6AFC9] text-sm">Od jednostavne web stranice do složenije aplikacije — opseg definiramo zajedno.</p></div>
+        <div><h3 class="font-semibold">Prilagođeno vašem opsegu</h3><p class="mt-1 text-inksoft dark:text-[#A6AFC9] text-sm">Od jednostavne web stranice do složenije aplikacije — opseg definiramo zajedno.</p></div>
       </li>
       <li class="flex gap-4" data-reveal="fade-left" data-reveal-delay="300">
         <span class="step-num font-mono text-xs text-coral font-semibold pt-1">04</span>
-        <div><h4 class="font-semibold">Dugoročna suradnja</h4><p class="mt-1 text-inksoft dark:text-[#A6AFC9] text-sm">Radije gradimo odnos kroz više manjih projekata nego jedan veliki i kraj.</p></div>
+        <div><h3 class="font-semibold">Dugoročna suradnja</h3><p class="mt-1 text-inksoft dark:text-[#A6AFC9] text-sm">Radije gradimo odnos kroz više manjih projekata nego jedan veliki i kraj.</p></div>
       </li>
     </ul>
+  </section>
+
+  <!-- OSNIVAČ — tamna traka preko cijele širine -->
+  <section id="osnivac" class="dark ab-band scroll-mt-20" aria-labelledby="osnivac-naslov">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="glass-stage ab-founder">
+        <aside class="ab-card glass-premium glass-panel relative border border-[#232B47]" data-reveal="fade-right">
+          <div class="ab-avatar"><img src="assets/tomislav-jankovic.jpg" alt="Tomislav Janković, osnivač i vlasnik KreirAI-ja" width="420" height="420" loading="lazy" decoding="async"></div>
+          <p class="ab-name">Tomislav Janković</p>
+          <p class="ab-role">Osnivač i vlasnik · KreirAI</p>
+          <div class="ab-chips">
+            <span class="ab-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Osijek</span>
+            <span class="ab-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>Diljem Hrvatske</span>
+          </div>
+          <div class="ab-card-links">
+            <a href="kontakt.html" class="btn-glow inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">Javite mi se <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </aside>
+
+        <div class="ab-story" data-reveal="fade-left">
+          <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-coral">Tko stoji iza KreirAI-ja</p>
+          <h2 id="osnivac-naslov">Iza svakog projekta stoji <span class="text-gradient">stvarna osoba.</span></h2>
+          <p class="ab-lead">Bok, ja sam Tomislav. Dolazim iz Osijeka, a s klijentima radim diljem cijele Hrvatske — od Slavonije do Dalmacije, većinom na daljinu, a kad treba, i uživo uz kavu.</p>
+          <p>Ljubav prema dizajnu razvila se gotovo usput: iz znatiželje kako stvari izgledaju i zašto neke jednostavno „rade“, a druge ne. S vremenom sam shvatio da me ipak najviše pokreće <strong>stvaranje nečeg novog</strong> — onaj trenutak kada nešto što je jučer bilo samo ideja na papiru danas radi, izgleda dobro i nekome donosi posao.</p>
+          <p>KreirAI sam pokrenuo s jednostavnim uvjerenjem: <strong>mali poduzetnici i obrtnici zaslužuju digitalni nastup jednako kvalitetan kao velike tvrtke</strong> — bez agencijskih cijena, mjeseci čekanja i žargona koji nitko ne razumije. Umjetna inteligencija mi pomaže raditi brže, ali svaki tekst, svaki piksel i svaki redak koda i dalje prolaze kroz moje ruke prije nego što stignu do vas.</p>
+          <p>Tehnologija se mijenja gotovo svaki tjedan, pa mi je <strong>konstantno učenje</strong> dio posla, a ne hobi. Nove alate i pristupe prvo isprobam na vlastitim projektima, a tek onda ih ponudim klijentima — tako vi dobivate ono što stvarno funkcionira, a ne ono što je trenutno u modi.</p>
+          <blockquote class="ab-quote">
+            <p>„Najdraži mi je projekt onaj nakon kojeg klijent kaže: ovo je baš ono što sam zamišljao — samo bolje.“</p>
+            <cite>— Tomislav Janković</cite>
+          </blockquote>
+        </div>
+        <div class="glass-aura" aria-hidden="true"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ŠTO ME POKREĆE -->
+  <section id="vrijednosti" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 py-20 sm:py-28">
+    <div class="ab-center" data-reveal="fade-up">
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-coral">Što nas pokreće</p>
+      <h2 class="section-heading font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">Četiri stvari koje <span class="text-gradient">ne prepuštamo slučaju.</span></h2>
+    </div>
+    <div class="glass-stage ab-values">
+      <article class="ab-value glass-premium glass-panel relative border border-line dark:border-[#232B47]" data-reveal="fade-up" data-reveal-delay="0">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6L20 9.3l-4 4 1 5.7-5-2.8-5 2.8 1-5.7-4-4 5.4-.7Z"/></svg></span>
+        <h3>Dizajn s razlogom</h3>
+        <p class="text-inksoft dark:text-[#A6AFC9]">Lijepo nije dovoljno. Svaki element na stranici ima zadatak — da vas posjetitelj brzo razumije, vjeruje vam i javi se.</p>
+      </article>
+      <article class="ab-value glass-premium glass-panel relative border border-line dark:border-[#232B47]" data-reveal="fade-up" data-reveal-delay="70">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3Z"/></svg></span>
+        <h3>Stvaranje novog</h3>
+        <p class="text-inksoft dark:text-[#A6AFC9]">Najviše volim trenutak kad ideja postane nešto opipljivo. Ne lijepimo gotove predloške — gradimo rješenje koje pristaje baš vašem poslu.</p>
+      </article>
+      <article class="ab-value glass-premium glass-panel relative border border-line dark:border-[#232B47]" data-reveal="fade-up" data-reveal-delay="140">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V6a2 2 0 0 1 2-2h13v13H6a2 2 0 0 0-2 2.5Z"/><path d="M8 8h7M8 11.5h5"/></svg></span>
+        <h3>Učenje bez pauze</h3>
+        <p class="text-inksoft dark:text-[#A6AFC9]">AI alati i web standardi mijenjaju se iz mjeseca u mjesec. Pratim ih da vi ne morate, i u svaki projekt unosim ono najbolje što trenutno postoji.</p>
+      </article>
+      <article class="ab-value glass-premium glass-panel relative border border-line dark:border-[#232B47]" data-reveal="fade-up" data-reveal-delay="210">
+        <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M2 20c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><path d="M16 11.5a3 3 0 1 0 0-6"/><path d="M17.5 15c2.3.4 3.9 2.1 4.5 5"/></svg></span>
+        <h3>Osobni pristup</h3>
+        <p class="text-inksoft dark:text-[#A6AFC9]">Ne razgovarate s call centrom ni s nizom posrednika. Razgovarate sa mnom — od prvog poziva do objave stranice i dugo nakon nje.</p>
+      </article>
+      <div class="glass-aura" aria-hidden="true"><span></span><span></span><span></span></div>
+    </div>
+  </section>
+
+  <!-- ČINJENICE -->
+  <section id="cinjenice" class="band-dark scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
+    <div class="ab-center" data-reveal="fade-up">
+      <p class="eyebrow font-mono text-xs tracking-[0.18em] uppercase text-coral">KreirAI ukratko</p>
+      <h2 class="section-heading font-serif font-semibold text-3xl sm:text-4xl leading-[1.05] mt-4">Lokalni studio, <span class="text-gradient">nacionalni doseg.</span></h2>
+    </div>
+    <dl class="glass-stage ab-facts">
+      <div class="ab-fact glass-premium glass-panel relative border border-line dark:border-[#232B47]" data-reveal="fade-up" data-reveal-delay="0">
+        <dt>Sjedište</dt>
+        <dd>Osijek<small>Slavonija — odakle sve kreće</small></dd>
+      </div>
+      <div class="ab-fact glass-premium glass-panel relative border border-line dark:border-[#232B47]" data-reveal="fade-up" data-reveal-delay="70">
+        <dt>Područje rada</dt>
+        <dd>Cijela Hrvatska<small>Na daljinu ili uživo, kako vam više odgovara</small></dd>
+      </div>
+      <div class="ab-fact glass-premium glass-panel relative border border-line dark:border-[#232B47]" data-reveal="fade-up" data-reveal-delay="140">
+        <dt>Registrirano</dt>
+        <dd>Obrt od 2026.<small>Upisan u Obrtni registar Republike Hrvatske</small></dd>
+      </div>
+      <div class="ab-fact glass-premium glass-panel relative border border-line dark:border-[#232B47]" data-reveal="fade-up" data-reveal-delay="210">
+        <dt>Djelatnosti</dt>
+        <dd>Web, dizajn, video<small>Računalno programiranje, grafički dizajn, video produkcija i promidžba</small></dd>
+      </div>
+      <div class="glass-aura" aria-hidden="true"><span></span><span></span><span></span></div>
+    </dl>
+  </section>
+
+  <!-- CTA -->
+  <section class="max-w-6xl mx-auto px-5 sm:px-8 py-20 sm:py-24">
+    <div class="glass-stage">
+      <div class="ab-cta glass-premium glass-panel compare-win relative border" data-reveal="fade-up">
+        <p class="eyebrow justify-center font-mono text-xs tracking-[0.18em] uppercase text-coral">Upoznajmo se</p>
+        <h2 class="mt-3">Imate ideju? Pretvorimo je u nešto <span class="text-gradient">što radi.</span></h2>
+        <p class="text-inksoft dark:text-[#A6AFC9]">Napišite mi par rečenica o svom poslu — javit ću vam se s prijedlogom i okvirnom ponudom, bez obveze.</p>
+        <div class="ab-cta-btns">
+          <a href="kontakt.html" class="btn-glow inline-flex items-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-6 py-3.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">Zatražite ponudu <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a href="portfolio.html" class="inline-flex items-center gap-2 border border-line dark:border-[#232B47] font-bold text-sm px-6 py-3.5 rounded-full hover:-translate-y-0.5 transition">Pogledajte radove</a>
+        </div>
+      </div>
+      <div class="glass-aura" aria-hidden="true"><span></span><span></span><span></span></div>
+    </div>
   </section>
 
 </main>
@@ -867,6 +1262,28 @@
     acceptBtn.addEventListener('click', function () {
       try { localStorage.setItem(KEY, '1'); } catch (e) {}
       banner.hidden = true;
+    });
+  })();
+</script>
+<script>
+  /* Lebdeće mrlje iza staklenih kartica animiraju se samo dok je
+     sekcija na ekranu (štedi CPU/GPU i bateriju). */
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { e.target.classList.toggle('is-offscreen', !e.isIntersecting); });
+    }, { rootMargin: '120px 0px' });
+    document.querySelectorAll('.glass-stage').forEach(function (el) { el.classList.add('is-offscreen'); io.observe(el); });
+  })();
+  /* Staklene kartice — mekana "svjetiljka" prati kursor (samo uređaji s mišem). */
+  (function () {
+    if (!window.matchMedia || !window.matchMedia('(hover: hover)').matches) return;
+    document.querySelectorAll('.service-card.glass-panel, .glass-premium.glass-panel').forEach(function (card) {
+      card.addEventListener('pointermove', function (e) {
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
     });
   })();
 </script>
