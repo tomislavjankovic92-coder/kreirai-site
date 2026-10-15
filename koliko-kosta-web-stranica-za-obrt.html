@@ -398,10 +398,6 @@
      brief, already-established .is-scrolling window (same mechanism that
      pauses the glow-ring animations below) removes that cost during the
      scroll gesture itself, when it's least noticeable anyway. */
-  body.is-scrolling .glass-panel{
-    -webkit-backdrop-filter: none;
-            backdrop-filter: none;
-  }
   /* While actively scrolling, content moves under a stationary mouse
      cursor, which makes the browser re-evaluate :hover on whatever
      passes underneath. .service-card / .btn-glow / .btn-glow-sm all
@@ -792,6 +788,42 @@
   /* Koraljni focus prsten na poljima forme (bivši focus:ring-cyan/40 focus:border-cyan). */
   .focus-coral:focus{ border-color: #FF6F59; box-shadow: 0 0 0 2px rgba(255,111,89,.4); }
   .dark .focus-coral:focus{ border-color: #FF9478; box-shadow: 0 0 0 2px rgba(255,148,120,.4); }
+
+  /* PERFORMANSE: staklene plohe bez backdrop-blura (bio je najskuplji
+     efekt pri scrollanju, a iza ploha je ionako mirna pozadina) —
+     umjesto toga malo gušća podloga, vizualno gotovo isto. */
+  .glass-panel{ -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(255,255,255,.80); }
+  .dark .glass-panel{ background: rgba(13,18,36,.74); }
+  header.dark{ -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(8,11,20,.94); }
+
+  /* PERFORMANSE (glatki scroll): aura iza staklenih kartica je sada JEDAN
+     sloj s tri mekane mrlje naslikane u pozadini (umjesto tri zasebna
+     animirana sloja + maske preko njih). Mrlje su "closest-side" elipse,
+     pa se same ugase prije ruba — bez maske i bez šava uz kosine.
+     Lebdi cijela aura, samo transformom (GPU), i staje izvan ekrana. */
+  .glass-aura{
+    -webkit-mask-image: none; mask-image: none;
+    background:
+      radial-gradient(ellipse closest-side at 25% 40%, rgba(255,111,89,.28) 0%, rgba(255,111,89,.11) 45%, rgba(255,111,89,0) 100%),
+      radial-gradient(ellipse closest-side at 74% 64%, rgba(120,160,255,.24) 0%, rgba(120,160,255,.09) 45%, rgba(120,160,255,0) 100%),
+      radial-gradient(ellipse closest-side at 54% 50%, rgba(255,176,140,.24) 0%, rgba(255,176,140,.08) 30%, rgba(255,176,140,0) 62%);
+    animation: glass-aura-float 24s ease-in-out infinite alternate;
+  }
+  .dark .glass-aura{
+    background:
+      radial-gradient(ellipse closest-side at 25% 40%, rgba(255,111,89,.22) 0%, rgba(255,111,89,.09) 45%, rgba(255,111,89,0) 100%),
+      radial-gradient(ellipse closest-side at 74% 64%, rgba(120,160,255,.17) 0%, rgba(120,160,255,.06) 45%, rgba(120,160,255,0) 100%),
+      radial-gradient(ellipse closest-side at 54% 50%, rgba(255,176,140,.24) 0%, rgba(255,176,140,.08) 30%, rgba(255,176,140,0) 62%);
+  }
+  .glass-aura span{ display: none !important; }
+  @keyframes glass-aura-float{
+    0%  { transform: translate3d(0,0,0) scale(1); }
+    50% { transform: translate3d(2.5%,3%,0) scale(1.04); }
+    100%{ transform: translate3d(-2%,1%,0) scale(.98); }
+  }
+  body.is-scrolling .glass-aura,
+  .glass-stage.is-offscreen .glass-aura{ animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce){ .glass-aura{ animation: none; } }
 </style>
 <script type="application/ld+json">
 {
@@ -1153,7 +1185,7 @@
         ptr.classList.remove('snap');
       }, { passive: true });
 
-      document.addEventListener('touchmove', function (e) {
+      function onPullMove(e) {
         if (!pulling || refreshing || startY === null) return;
         var delta = e.touches[0].clientY - startY;
         if (delta <= 0 || !atTop()) { reset(); return; }
@@ -1163,7 +1195,18 @@
         var pullPx = Math.min(delta * 0.5, 64);
         ptr.style.opacity = progress;
         ptr.style.transform = 'translate(-50%, ' + (-60 + pullPx + 60 * progress) + 'px) rotate(' + (progress * 180) + 'deg)';
-      }, { passive: false });
+      }
+      /* PERFORMANSE: blokirajući (non-passive) touchmove sluša samo dok je
+         stranica na samom vrhu — inače bi preglednik kod SVAKOG poteza
+         prstom čekao JavaScript prije nego krene scrollati (zapinjanje). */
+      var moveBound = false;
+      function syncPullListener() {
+        var top = atTop();
+        if (top && !moveBound) { document.addEventListener('touchmove', onPullMove, { passive: false }); moveBound = true; }
+        else if (!top && moveBound) { document.removeEventListener('touchmove', onPullMove, { passive: false }); moveBound = false; }
+      }
+      syncPullListener();
+      window.addEventListener('scroll', syncPullListener, { passive: true });
 
       document.addEventListener('touchend', function () {
         if (!pulling || refreshing) return;

@@ -337,7 +337,7 @@
       ptr.classList.remove('snap');
     }, { passive: true });
 
-    document.addEventListener('touchmove', function (e) {
+    function onPullMove(e) {
       if (!pulling || refreshing || startY === null) return;
       var delta = e.touches[0].clientY - startY;
       if (delta <= 0 || !atTop()) { reset(); return; }
@@ -347,7 +347,16 @@
       var pullPx = Math.min(delta * 0.5, 64);
       ptr.style.opacity = progress;
       ptr.style.transform = 'translate(-50%, ' + (-60 + pullPx + 60 * progress) + 'px) rotate(' + (progress * 180) + 'deg)';
-    }, { passive: false });
+    }
+    /* PERFORMANSE: blokirajući touchmove samo dok je stranica na vrhu. */
+    var moveBound = false;
+    function syncPullListener() {
+      var top = atTop();
+      if (top && !moveBound) { document.addEventListener('touchmove', onPullMove, { passive: false }); moveBound = true; }
+      else if (!top && moveBound) { document.removeEventListener('touchmove', onPullMove, { passive: false }); moveBound = false; }
+    }
+    syncPullListener();
+    window.addEventListener('scroll', syncPullListener, { passive: true });
 
     document.addEventListener('touchend', function () {
       if (!pulling || refreshing) return;
