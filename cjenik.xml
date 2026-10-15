@@ -8,7 +8,7 @@
   <paket id="jednokratno">
     <naziv>Jednokratno</naziv>
     <tipNaplate>jednokratno</tipNaplate>
-    <cijena>1000</cijena>
+    <cijena>990</cijena>
     <cijenaOpis>Jednokratno plaćanje</cijenaOpis>
     <istaknuto>false</istaknuto>
     <znacajke>

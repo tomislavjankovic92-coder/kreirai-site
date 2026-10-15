@@ -524,6 +524,18 @@
   .glass-panel{ -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(255,255,255,.80); }
   .dark .glass-panel{ background: rgba(13,18,36,.74); }
   header.dark{ -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(8,11,20,.94); }
+
+  /* FAQ — prozračnije kartice pitanja (p-5/px-5 nisu u kompiliranom tailwind.css-u) */
+  #faq details > summary{ padding: 1.3rem 1.5rem; line-height: 1.45; }
+  #faq details > p{ padding: 0 1.5rem 1.4rem; }
+  #faq details{ border-radius: 1.1rem; }
+  #faq details > summary svg{ transition: transform .25s ease; }
+  #faq details[open] > summary svg{ transform: rotate(45deg); color:#FF6F59; }
+  #faq details > summary::-webkit-details-marker{ display:none; }
+  @media (min-width:640px){
+    #faq details > summary{ padding: 1.45rem 1.85rem; font-size: 1.0625rem; }
+    #faq details > p{ padding: 0 1.85rem 1.6rem; font-size: .95rem; }
+  }
 </style>
 <!-- Structured data for the FAQ section below — mirrors that visible
      text exactly (search engines require the two to match). -->
@@ -553,7 +565,7 @@
       "name": "Koliko košta izrada web stranice ili aplikacije?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Nudimo tri opcije: jednokratnu izradu za 1.000 € (kod je u potpunosti vaš), standardni mjesečni paket od 90 € koji uključuje hosting, neograničene izmjene sadržaja (tekst, fotografije, cijene i kontakti), SEO optimizaciju i podršku s odgovorom isti dan, te individualnu ponudu za veće ili prilagođene projekte poput web i mobilnih aplikacija. Cijeli cjenik pogledajte na početnoj stranici ili pod Usluge."
+        "text": "Nudimo tri opcije: jednokratnu izradu za 990 € (kod je u potpunosti vaš), standardni mjesečni paket od 90 € koji uključuje hosting, neograničene izmjene sadržaja (tekst, fotografije, cijene i kontakti), SEO optimizaciju i podršku s odgovorom isti dan, te individualnu ponudu za veće ili prilagođene projekte poput web i mobilnih aplikacija. Cijeli cjenik pogledajte na početnoj stranici ili pod Usluge."
       }
     },
     {
@@ -720,7 +732,7 @@
           <span>Koliko košta izrada web stranice ili aplikacije?</span>
           <svg class="w-5 h-5 shrink-0 text-inksoft dark:text-[#A6AFC9] transition-transform group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
         </summary>
-        <p class="px-5 pb-5 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Nudimo tri opcije: jednokratnu izradu za 1.000 € (kod je u potpunosti vaš), standardni mjesečni paket od 90 € koji uključuje hosting, neograničene izmjene sadržaja (tekst, fotografije, cijene i kontakti), SEO optimizaciju i podršku s odgovorom isti dan, te individualnu ponudu za veće ili prilagođene projekte poput web i mobilnih aplikacija. Cijeli cjenik pogledajte na početnoj stranici ili pod Usluge.</p>
+        <p class="px-5 pb-5 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Nudimo tri opcije: jednokratnu izradu za 990 € (kod je u potpunosti vaš), standardni mjesečni paket od 90 € koji uključuje hosting, neograničene izmjene sadržaja (tekst, fotografije, cijene i kontakti), SEO optimizaciju i podršku s odgovorom isti dan, te individualnu ponudu za veće ili prilagođene projekte poput web i mobilnih aplikacija. Cijeli cjenik pogledajte na početnoj stranici ili pod Usluge.</p>
       </details>
 
       <details class="group glass-panel border border-line dark:border-[#232B47] rounded-2xl transition-colors" data-reveal="fade-up" data-reveal-delay="180">
