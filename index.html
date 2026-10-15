@@ -794,6 +794,146 @@
   }
   .icon-badge svg{ width: 1.4rem; height: 1.4rem; }
 
+  /* ============================================================
+     PREMIUM STAKLENE KARTICE (.service-card.glass-panel)
+     Prava "staklena" kartica treba nešto iza sebe što se kroz nju
+     zamućeno vidi — zato iza mreže kartica stoji .glass-aura: tri
+     mekane obojene mrlje (koralj, breskva, hladna plava) koje vrlo
+     polako lebde. Kartica je prozirni bijeli gradijent s jakim
+     backdrop-blurom, bijelim gornjim odsjajem i tankim gradijentnim
+     rubom (bijelo → koraljno, ::before). Na hover: kartica se lagano
+     podigne, rub dobije više koralja, a mekana "svjetiljka" (::after)
+     prati kursor po staklu. Sve stoji i bez JS-a; reduced-motion
+     zaustavlja lebdenje mrlja.
+     ============================================================ */
+  .glass-stage{ position: relative; isolation: isolate; }
+  .glass-aura{
+    position: absolute; inset: -70px -60px; z-index: -1;
+    pointer-events: none;
+  }
+  .glass-aura span{
+    position: absolute; border-radius: 50%;
+    will-change: transform;
+    animation: glass-aura-drift 22s ease-in-out infinite alternate;
+  }
+  .glass-aura span:nth-child(1){
+    width: 46%; aspect-ratio: 1; left: 2%; top: 4%;
+    background: radial-gradient(circle, rgba(255,111,89,.30) 0%, rgba(255,111,89,.12) 38%, transparent 68%);
+  }
+  .glass-aura span:nth-child(2){
+    width: 52%; aspect-ratio: 1; right: 0; bottom: -6%;
+    background: radial-gradient(circle, rgba(120,160,255,.26) 0%, rgba(120,160,255,.10) 40%, transparent 68%);
+    animation-duration: 26s; animation-delay: -8s;
+  }
+  .glass-aura span:nth-child(3){
+    width: 34%; aspect-ratio: 1; left: 38%; top: 30%;
+    background: radial-gradient(circle, rgba(255,176,140,.30) 0%, rgba(255,176,140,.10) 40%, transparent 68%);
+    animation-duration: 19s; animation-delay: -4s;
+  }
+  @keyframes glass-aura-drift{
+    0%  { transform: translate3d(0,0,0) scale(1); }
+    50% { transform: translate3d(6%,8%,0) scale(1.08); }
+    100%{ transform: translate3d(-5%,3%,0) scale(.95); }
+  }
+  .dark .glass-aura span:nth-child(1){ opacity: .8; }
+  .dark .glass-aura span:nth-child(2){ opacity: .7; }
+  body.is-scrolling .glass-aura span{ animation-play-state: paused; }
+
+  .service-card.glass-panel{
+    background: linear-gradient(150deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.40) 100%);
+    -webkit-backdrop-filter: blur(20px) saturate(170%);
+            backdrop-filter: blur(20px) saturate(170%);
+    border: 1px solid rgba(255,255,255,.7);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.95),
+      inset 0 -1px 0 rgba(14,21,38,.03),
+      0 1px 2px rgba(14,21,38,.04),
+      0 22px 44px -26px rgba(14,21,38,.28);
+    transition: box-shadow .45s ease, transform .35s cubic-bezier(.2,.7,.2,1), background .45s ease;
+  }
+  .service-card.glass-panel::before{
+    content: "";
+    position: absolute; inset: -1px; z-index: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(140deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,.25) 38%, rgba(255,111,89,.22) 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    transition: opacity .45s ease;
+  }
+  .service-card.glass-panel::after{
+    content: "";
+    position: absolute; inset: 0; z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgba(255,255,255,.75), rgba(255,200,185,.18) 45%, transparent 70%);
+    opacity: 0;
+    transition: opacity .4s ease;
+  }
+  .service-card.glass-panel > *{ position: relative; z-index: 1; }
+  .service-card.glass-panel:hover,
+  .service-card.glass-panel:focus-within{
+    background: linear-gradient(150deg, rgba(255,255,255,.80) 0%, rgba(255,255,255,.48) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,1),
+      0 1px 2px rgba(14,21,38,.04),
+      0 30px 56px -28px rgba(255,111,89,.38),
+      0 16px 32px -24px rgba(14,21,38,.22);
+  }
+  .service-card.glass-panel:hover::after,
+  .service-card.glass-panel:focus-within::after{ opacity: 1; }
+  .service-card.glass-panel:hover::before{
+    background: linear-gradient(140deg, rgba(255,255,255,1) 0%, rgba(255,170,150,.45) 45%, rgba(255,111,89,.55) 100%);
+  }
+
+  .dark .service-card.glass-panel{
+    background: linear-gradient(150deg, rgba(26,33,58,.66) 0%, rgba(13,18,36,.44) 100%);
+    border-color: rgba(255,255,255,.07);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.07),
+      0 24px 48px -28px rgba(0,0,0,.7);
+  }
+  .dark .service-card.glass-panel::before{
+    background: linear-gradient(140deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.04) 40%, rgba(255,148,120,.28) 100%);
+  }
+  .dark .service-card.glass-panel::after{
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgba(255,148,120,.16), rgba(120,160,255,.06) 45%, transparent 70%);
+  }
+  .dark .service-card.glass-panel:hover,
+  .dark .service-card.glass-panel:focus-within{
+    background: linear-gradient(150deg, rgba(32,40,68,.72) 0%, rgba(16,22,42,.5) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.1),
+      0 30px 56px -28px rgba(255,148,120,.28);
+  }
+
+  /* staklena ikona */
+  .service-card.glass-panel .icon-badge{
+    background: linear-gradient(145deg, rgba(255,255,255,.9), rgba(255,111,89,.10));
+    border-color: rgba(255,111,89,.26);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 8px 18px -10px rgba(255,111,89,.55);
+    transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease;
+  }
+  .service-card.glass-panel:hover .icon-badge{
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,1), 0 12px 22px -10px rgba(255,111,89,.65);
+  }
+  .dark .service-card.glass-panel .icon-badge{
+    background: linear-gradient(145deg, rgba(255,148,120,.16), rgba(255,148,120,.05));
+    border-color: rgba(255,148,120,.3);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 18px -10px rgba(255,148,120,.45);
+  }
+  body.is-scrolling .service-card.glass-panel::after{ transition: none; }
+  @media (max-width: 640px){
+    .glass-aura{ inset: -40px -20px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .glass-aura span{ animation: none; }
+    .service-card.glass-panel, .service-card.glass-panel .icon-badge{ transition: none; }
+  }
+
   /* Tanka koraljna isticajna linija ispod headera i iznad footera,
      preko postojećeg punog obruba — bio dvobojni cyan→koralj gradient,
      sad jednobojni koralj koji se gubi (fade) prema rubovima. */
@@ -1377,7 +1517,7 @@
        PREDNOSTI — 4 polja, centrirano, ispod "zasto" izjave
        ============================================================ -->
   <section id="prednosti" class="scroll-mt-20 max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
-    <div class="max-w-3xl mx-auto grid sm:grid-cols-2 gap-5 sm:gap-6">
+    <div class="glass-stage max-w-3xl mx-auto grid sm:grid-cols-2 gap-5 sm:gap-6">
       <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 border border-line dark:border-[#232B47] transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="0">
         <span class="icon-badge" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
@@ -1412,6 +1552,7 @@
           Kontaktirajte nas
         </a>
       </article>
+      <div class="glass-aura" aria-hidden="true"><span></span><span></span><span></span></div>
     </div>
   </section>
 
@@ -2051,5 +2192,18 @@
   })();
 </script>
 <script src="kreirai-intro.js"></script>
+<script>
+  /* Staklene kartice — mekana "svjetiljka" prati kursor (samo uređaji s mišem). */
+  (function () {
+    if (!window.matchMedia || !window.matchMedia('(hover: hover)').matches) return;
+    document.querySelectorAll('.service-card.glass-panel').forEach(function (card) {
+      card.addEventListener('pointermove', function (e) {
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+  })();
+</script>
 </body>
 </html>
