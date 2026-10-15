@@ -457,7 +457,7 @@
   .icon-badge svg{ width: 1.4rem; height: 1.4rem; }
 
   /* ============================================================
-     PREMIUM STAKLENE KARTICE (.service-card.glass-panel)
+     PREMIUM STAKLENE KARTICE (:is(.service-card, .glass-premium).glass-panel)
      Prava "staklena" kartica treba nešto iza sebe što se kroz nju
      zamućeno vidi — zato iza mreže kartica stoji .glass-aura: tri
      mekane obojene mrlje (koralj, breskva, hladna plava) koje vrlo
@@ -475,6 +475,10 @@
   .glass-aura{
     position: absolute; inset: -70px -60px; z-index: -1;
     pointer-events: none;
+    /* mrlje se mekano gase prema rubovima omotača, da obojeni sjaj
+       nikad ne dođe do ruba sekcije (inače se vidi šav uz kosine) */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 76%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 76%, transparent 100%);
   }
   .glass-aura span{
     position: absolute; border-radius: 50%;
@@ -504,7 +508,7 @@
   .dark .glass-aura span:nth-child(2){ opacity: .7; }
   body.is-scrolling .glass-aura span{ animation-play-state: paused; }
 
-  .service-card.glass-panel{
+  :is(.service-card, .glass-premium).glass-panel{
     background: linear-gradient(150deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.40) 100%);
     -webkit-backdrop-filter: blur(20px) saturate(170%);
             backdrop-filter: blur(20px) saturate(170%);
@@ -516,7 +520,7 @@
       0 22px 44px -26px rgba(14,21,38,.28);
     transition: box-shadow .45s ease, transform .35s cubic-bezier(.2,.7,.2,1), background .45s ease;
   }
-  .service-card.glass-panel::before{
+  :is(.service-card, .glass-premium).glass-panel::before{
     content: "";
     position: absolute; inset: -1px; z-index: 0;
     border-radius: inherit;
@@ -528,7 +532,7 @@
             mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
     transition: opacity .45s ease;
   }
-  .service-card.glass-panel::after{
+  :is(.service-card, .glass-premium).glass-panel::after{
     content: "";
     position: absolute; inset: 0; z-index: 0;
     border-radius: inherit;
@@ -537,9 +541,9 @@
     opacity: 0;
     transition: opacity .4s ease;
   }
-  .service-card.glass-panel > *{ position: relative; z-index: 1; }
-  .service-card.glass-panel:hover,
-  .service-card.glass-panel:focus-within{
+  :is(.service-card, .glass-premium).glass-panel > *:not(.price-badge-pos){ position: relative; z-index: 1; }
+  :is(.service-card, .glass-premium).glass-panel:hover,
+  :is(.service-card, .glass-premium).glass-panel:focus-within{
     background: linear-gradient(150deg, rgba(255,255,255,.80) 0%, rgba(255,255,255,.48) 100%);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,1),
@@ -547,27 +551,27 @@
       0 30px 56px -28px rgba(255,111,89,.38),
       0 16px 32px -24px rgba(14,21,38,.22);
   }
-  .service-card.glass-panel:hover::after,
-  .service-card.glass-panel:focus-within::after{ opacity: 1; }
-  .service-card.glass-panel:hover::before{
+  :is(.service-card, .glass-premium).glass-panel:hover::after,
+  :is(.service-card, .glass-premium).glass-panel:focus-within::after{ opacity: 1; }
+  :is(.service-card, .glass-premium).glass-panel:hover::before{
     background: linear-gradient(140deg, rgba(255,255,255,1) 0%, rgba(255,170,150,.45) 45%, rgba(255,111,89,.55) 100%);
   }
 
-  .dark .service-card.glass-panel{
+  .dark :is(.service-card, .glass-premium).glass-panel{
     background: linear-gradient(150deg, rgba(26,33,58,.66) 0%, rgba(13,18,36,.44) 100%);
     border-color: rgba(255,255,255,.07);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,.07),
       0 24px 48px -28px rgba(0,0,0,.7);
   }
-  .dark .service-card.glass-panel::before{
+  .dark :is(.service-card, .glass-premium).glass-panel::before{
     background: linear-gradient(140deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.04) 40%, rgba(255,148,120,.28) 100%);
   }
-  .dark .service-card.glass-panel::after{
+  .dark :is(.service-card, .glass-premium).glass-panel::after{
     background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgba(255,148,120,.16), rgba(120,160,255,.06) 45%, transparent 70%);
   }
-  .dark .service-card.glass-panel:hover,
-  .dark .service-card.glass-panel:focus-within{
+  .dark :is(.service-card, .glass-premium).glass-panel:hover,
+  .dark :is(.service-card, .glass-premium).glass-panel:focus-within{
     background: linear-gradient(150deg, rgba(32,40,68,.72) 0%, rgba(16,22,42,.5) 100%);
     box-shadow:
       inset 0 1px 0 rgba(255,255,255,.1),
@@ -575,29 +579,46 @@
   }
 
   /* staklena ikona */
-  .service-card.glass-panel .icon-badge{
+  :is(.service-card, .glass-premium).glass-panel .icon-badge{
     background: linear-gradient(145deg, rgba(255,255,255,.9), rgba(255,111,89,.10));
     border-color: rgba(255,111,89,.26);
     box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 8px 18px -10px rgba(255,111,89,.55);
     transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease;
   }
-  .service-card.glass-panel:hover .icon-badge{
+  :is(.service-card, .glass-premium).glass-panel:hover .icon-badge{
     transform: translateY(-2px) scale(1.04);
     box-shadow: inset 0 1px 0 rgba(255,255,255,1), 0 12px 22px -10px rgba(255,111,89,.65);
   }
-  .dark .service-card.glass-panel .icon-badge{
+  .dark :is(.service-card, .glass-premium).glass-panel .icon-badge{
     background: linear-gradient(145deg, rgba(255,148,120,.16), rgba(255,148,120,.05));
     border-color: rgba(255,148,120,.3);
     box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 18px -10px rgba(255,148,120,.45);
   }
-  body.is-scrolling .service-card.glass-panel::after{ transition: none; }
+  body.is-scrolling :is(.service-card, .glass-premium).glass-panel::after{ transition: none; }
   @media (max-width: 640px){
     .glass-aura{ inset: -40px -20px; }
   }
   @media (prefers-reduced-motion: reduce){
     .glass-aura span{ animation: none; }
-    .service-card.glass-panel, .service-card.glass-panel .icon-badge{ transition: none; }
+    :is(.service-card, .glass-premium).glass-panel, :is(.service-card, .glass-premium).glass-panel .icon-badge{ transition: none; }
   }
+
+  /* Iste premium staklene kartice i za "Razliku" i "Cjenik"
+     (.glass-premium). Pobjednička / popularna kartica (.compare-win)
+     zadržava jači koraljni rub i koraljni sjaj ispod. */
+  .compare-win.glass-premium{ border-color: rgba(255,111,89,.38); }
+  .compare-win.glass-premium::before{
+    padding: 1.5px;
+    background: linear-gradient(140deg, rgba(255,255,255,.95) 0%, rgba(255,148,120,.65) 40%, rgba(255,111,89,.9) 100%);
+  }
+  .compare-win.glass-premium{
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.95),
+      0 1px 2px rgba(14,21,38,.04),
+      0 28px 56px -28px rgba(255,111,89,.48);
+  }
+  .dark .compare-win.glass-premium{ border-color: rgba(255,148,120,.34); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 28px 56px -28px rgba(255,148,120,.4); }
+  .price-badge-pos{ z-index: 2; }
 
   /* Thin gradient accent lines under the header and above the footer,
      layered over the existing solid border for a bit more depth. */
@@ -665,34 +686,6 @@
     white-space: nowrap;
   }
 
-  /* Jači "glassy" efekt specifično na cjeniku — veći blur i
-     saturacija, prozirnija podloga i tanka sjajna refleksija pri
-     vrhu kartice. Skalirano samo na #cjenik .glass-panel, da ne
-     dirne glass-panel korišten drugdje. */
-  #cjenik .glass-panel{
-    background: rgba(255,255,255,.52);
-    -webkit-backdrop-filter: blur(22px) saturate(170%);
-            backdrop-filter: blur(22px) saturate(170%);
-    box-shadow: inset 0 1px 0 0 rgba(255,255,255,.55), 0 24px 48px -28px rgba(14,21,38,.2);
-  }
-  .dark #cjenik .glass-panel{
-    background: rgba(13,18,36,.38);
-    box-shadow: inset 0 1px 0 0 rgba(255,255,255,.07), 0 24px 48px -28px rgba(0,0,0,.55);
-  }
-  #cjenik .glass-panel::before{
-    content: "";
-    position: absolute; inset: 0; border-radius: inherit;
-    background: linear-gradient(165deg, rgba(255,255,255,.4), transparent 42%);
-    mix-blend-mode: overlay;
-    pointer-events: none;
-  }
-  .dark #cjenik .glass-panel::before{
-    background: linear-gradient(165deg, rgba(255,255,255,.14), transparent 42%);
-  }
-  body.is-scrolling #cjenik .glass-panel{
-    -webkit-backdrop-filter: none;
-            backdrop-filter: none;
-  }
 
   /* ============================================================
      Djelatnosti kojima služimo — 1 / 2 / 5 stupaca. Tailwind's
@@ -973,9 +966,9 @@
       </h2>
     </div>
 
-    <div class="price-grid mt-14">
+    <div class="glass-stage price-grid mt-14">
       <!-- JEDNOKRATNO -->
-      <div class="glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8 flex flex-col" data-reveal="fade-up" data-reveal-delay="0">
+      <div class="glass-premium glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8 flex flex-col transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="0">
         <p class="font-mono text-xs tracking-[0.14em] uppercase text-inksoft dark:text-[#A6AFC9] font-semibold">Jednokratno</p>
         <ul class="mt-5 flex flex-col gap-3">
           <li class="flex items-start gap-3">
@@ -1002,7 +995,7 @@
       </div>
 
       <!-- STANDARDNA — istaknuta kao popularna -->
-      <div class="compare-win glass-panel relative rounded-2xl p-6 sm:p-8 flex flex-col" data-reveal="fade-up" data-reveal-delay="80">
+      <div class="compare-win glass-premium glass-panel relative rounded-2xl p-6 sm:p-8 flex flex-col transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="80">
         <span class="price-badge-pos inline-flex items-center gap-1 bg-coral text-[#0A0E1A] font-mono font-bold text-[10px] tracking-[0.14em] uppercase px-3 py-1 rounded-full shadow-soft">Popularno</span>
         <p class="font-mono text-xs tracking-[0.14em] uppercase text-coral font-semibold">Standardna</p>
         <ul class="mt-5 flex flex-col gap-3">
@@ -1038,7 +1031,7 @@
       </div>
 
       <!-- PRILAGOĐENO -->
-      <div class="glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8 flex flex-col" data-reveal="fade-up" data-reveal-delay="160">
+      <div class="glass-premium glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8 flex flex-col transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="160">
         <p class="font-mono text-xs tracking-[0.14em] uppercase text-inksoft dark:text-[#A6AFC9] font-semibold">Prilagođeno</p>
 
         <div class="price-cta-wrap">
@@ -1049,6 +1042,7 @@
           </a>
         </div>
       </div>
+      <div class="glass-aura" aria-hidden="true"><span></span><span></span><span></span></div>
     </div>
   </section>
 
@@ -1257,7 +1251,7 @@
   /* Staklene kartice — mekana "svjetiljka" prati kursor (samo uređaji s mišem). */
   (function () {
     if (!window.matchMedia || !window.matchMedia('(hover: hover)').matches) return;
-    document.querySelectorAll('.service-card.glass-panel').forEach(function (card) {
+    document.querySelectorAll('.service-card.glass-panel, .glass-premium.glass-panel').forEach(function (card) {
       card.addEventListener('pointermove', function (e) {
         var r = card.getBoundingClientRect();
         card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
