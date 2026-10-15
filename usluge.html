@@ -12,22 +12,22 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://d8j0ntlcm91z4.cloudfront.net; media-src 'self' https://d8j0ntlcm91z4.cloudfront.net; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Usluge — web stranice, aplikacije, brendiranje i podrška | KreirAI</title>
-<meta name="description" content="Web stranice i webshopovi, web i mobilne aplikacije, brendiranje uz AI te održavanje i podrška — sve u jednom digitalnom studiju.">
+<title>Usluge — web stranice, webshopovi, aplikacije i podrška | KreirAI</title>
+<meta name="description" content="Web stranice, webshopovi, web i mobilne aplikacije te održavanje i podrška — sve u jednom digitalnom studiju.">
 <link rel="canonical" href="https://kreirai.hr/usluge.html">
 
 <!-- Social share preview (link thumbnail) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kreirai.hr/usluge.html">
 <meta property="og:site_name" content="KreirAI">
-<meta property="og:title" content="Usluge — web stranice, aplikacije, brendiranje i podrška | KreirAI">
-<meta property="og:description" content="Web stranice i webshopovi, web i mobilne aplikacije, brendiranje uz AI te održavanje i podrška — sve u jednom digitalnom studiju.">
+<meta property="og:title" content="Usluge — web stranice, webshopovi, aplikacije i podrška | KreirAI">
+<meta property="og:description" content="Web stranice, webshopovi, web i mobilne aplikacije te održavanje i podrška — sve u jednom digitalnom studiju.">
 <meta property="og:image" content="https://kreirai.hr/og-image.png">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Usluge — web stranice, aplikacije, brendiranje i podrška | KreirAI">
-<meta name="twitter:description" content="Web stranice i webshopovi, web i mobilne aplikacije, brendiranje uz AI te održavanje i podrška — sve u jednom digitalnom studiju.">
+<meta name="twitter:title" content="Usluge — web stranice, webshopovi, aplikacije i podrška | KreirAI">
+<meta name="twitter:description" content="Web stranice, webshopovi, web i mobilne aplikacije te održavanje i podrška — sve u jednom digitalnom studiju.">
 <meta name="twitter:image" content="https://kreirai.hr/og-image.png">
 
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -416,6 +416,29 @@
   .section-heading{ position: relative; display: inline-block; }
 
   /* "Korak 01–04" process labels as small bordered chips. */
+  /* Koraci rada — malo tamnija traka preko cijele širine ekrana
+     (ista nijansa kao "Razlika" na početnoj), da se proces istakne. */
+  .steps-band{
+    position: relative;
+    isolation: isolate;
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+  .steps-band::before{
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    left: calc(50% - 50vw); right: calc(50% - 50vw);
+    z-index: -1;
+    background: #E1E5F1;
+    border-top: 1px solid rgba(14,21,38,.05);
+    border-bottom: 1px solid rgba(14,21,38,.05);
+    pointer-events: none;
+  }
+  .dark .steps-band::before{
+    background: #0D1222;
+    border-color: rgba(255,255,255,.05);
+  }
   .step-badge{
     display: inline-flex; align-items: center;
     border: 1px solid rgba(255,111,89,.35);
@@ -833,7 +856,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="13" rx="2"/><path d="M8 21h8M12 17.5V21"/></svg>
         </span>
         <h3 class="font-semibold text-lg">Web stranice</h3>
-        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Brzo postavljanje web stranica i webshopova — prilagođeni vašem brendu i optimizirani za mobitel.</p>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Brzo postavljanje web stranica — prilagođenih vašem brendu i optimiziranih za mobitel.</p>
       </article>
       <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="80">
         <span class="icon-badge" aria-hidden="true">
@@ -844,10 +867,10 @@
       </article>
       <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="160">
         <span class="icon-badge" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3.5M12 17.5V21M3 12h3.5M17.5 12H21M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="2.75"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.1a2 2 0 0 1-2 1.9H8.2a2 2 0 0 1-2-1.9Z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg>
         </span>
-        <h3 class="font-semibold text-lg">Brendiranje uz AI</h3>
-        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Logotipi, vizualni identitet i predlošci za društvene mreže generirani uz AI, dorađeni ručno do finalne verzije.</p>
+        <h3 class="font-semibold text-lg">Webshop</h3>
+        <p class="mt-2 text-inksoft dark:text-[#A6AFC9] text-sm">Online trgovina spremna za prodaju od prvog dana — pregledan katalog proizvoda, košarica i sigurno plaćanje, uz jednostavno upravljanje artiklima i narudžbama. Brza na mobitelu i optimizirana za Google.</p>
       </article>
       <article class="service-card glass-panel relative rounded-2xl p-6 sm:p-7 transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="240">
         <span class="icon-badge" aria-hidden="true">
@@ -859,7 +882,7 @@
       <div class="glass-aura" aria-hidden="true"><span></span><span></span><span></span></div>
     </div>
 
-    <ol class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <ol class="steps-band mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
       <li data-reveal="fade-up" data-reveal-delay="0">
         <div class="step-badge font-mono text-xs tracking-[0.14em] uppercase text-coral">Korak 01</div>
         <h4 class="font-semibold text-lg mt-2">Informiranje</h4>
@@ -1038,6 +1061,16 @@
       <!-- PRILAGOĐENO -->
       <div class="glass-premium glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8 flex flex-col transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="160">
         <p class="font-mono text-xs tracking-[0.14em] uppercase text-inksoft dark:text-[#A6AFC9] font-semibold">Prilagođeno</p>
+        <ul class="mt-5 flex flex-col gap-3">
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Webshop i online trgovina</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Funkcionalnosti po mjeri vašeg posla</span>
+          </li>
+        </ul>
 
         <div class="price-cta-wrap">
           <p class="font-serif font-bold text-4xl mt-5">Individualno</p>
