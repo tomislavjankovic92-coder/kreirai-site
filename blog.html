@@ -12,7 +12,7 @@
     if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
     var p = location.pathname, n = p;
     if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
-    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica)\/?$/);
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke)\/?$/);
     if (m) n = '/' + m[1] + '.html';
     if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
   })();
@@ -810,6 +810,14 @@
       "blogPost": [
         {
           "@type": "BlogPosting",
+          "@id": "https://kreirai.hr/google-profil-tvrtke.html#article",
+          "headline": "Google profil tvrtke: 7 koraka do više lokalnih kupaca",
+          "url": "https://kreirai.hr/google-profil-tvrtke.html",
+          "datePublished": "2026-10-16",
+          "image": "https://kreirai.hr/blog-google-profil-thumb.jpg"
+        },
+        {
+          "@type": "BlogPosting",
           "@id": "https://kreirai.hr/koliko-kosta-web-stranica-za-obrt.html#article",
           "headline": "Koliko košta web stranica za obrt u 2026. i na što paziti?",
           "url": "https://kreirai.hr/koliko-kosta-web-stranica-za-obrt.html",
@@ -918,7 +926,19 @@
     </div>
 
     <div class="glass-stage blog-list mt-10">
-      <a href="koliko-kosta-web-stranica-za-obrt.html" class="blog-card pf-card glass-premium group glass-panel relative block rounded-2xl border border-line dark:border-[#232B47] hover:-translate-y-1" data-reveal="fade-up" data-reveal-delay="0">
+      <a href="google-profil-tvrtke.html" class="blog-card pf-card glass-premium group glass-panel relative block rounded-2xl border border-line dark:border-[#232B47] hover:-translate-y-1" data-reveal="fade-up" data-reveal-delay="0">
+        <div class="pf-media blog-thumb"><img src="blog-google-profil-thumb.jpg" alt="Lokalna karta s istaknutom tvrtkom, ocjenom 4,9 i gumbima Nazovi, Upute i Web-lokacija" width="1200" height="675" loading="lazy" decoding="async"></div>
+        <div class="blog-card-body">
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="step-badge font-mono text-xs uppercase tracking-wide">Vodič</span>
+            <time datetime="2026-10-16" class="font-mono text-xs text-inksoft dark:text-[#A6AFC9]">16. listopada 2026. · 6 min čitanja</time>
+          </div>
+          <h2 class="font-serif font-semibold text-2xl mt-4 group-hover-coral transition">Google profil tvrtke: 7 koraka do više lokalnih kupaca</h2>
+          <p class="mt-3 text-inksoft dark:text-[#A6AFC9] text-sm sm:text-base leading-relaxed">Kako urediti besplatni Google profil tvrtke da vas kupci iz vašeg mjesta lakše pronađu na Google kartama i tražilici — sedam praktičnih koraka za obrtnike.</p>
+          <span class="blog-more inline-flex items-center gap-1.5 text-sm font-semibold text-coral">Pročitajte članak <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+      <a href="koliko-kosta-web-stranica-za-obrt.html" class="blog-card pf-card glass-premium group glass-panel relative block rounded-2xl border border-line dark:border-[#232B47] hover:-translate-y-1" data-reveal="fade-up" data-reveal-delay="80">
         <div class="pf-media blog-thumb"><img src="blog-koliko-kosta-thumb.jpg" alt="Cjenik izrade web stranica za obrt 2026. s istaknutom prezentacijskom stranicom od 900 do 2.500 €" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async"></div>
         <div class="blog-card-body">
           <div class="flex items-center gap-3 flex-wrap">
@@ -930,7 +950,7 @@
           <span class="blog-more inline-flex items-center gap-1.5 text-sm font-semibold text-coral">Pročitajte članak <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </div>
       </a>
-      <a href="web-stranica-ili-facebook-stranica.html" class="blog-card pf-card glass-premium group glass-panel relative block rounded-2xl border border-line dark:border-[#232B47] hover:-translate-y-1" data-reveal="fade-up" data-reveal-delay="80">
+      <a href="web-stranica-ili-facebook-stranica.html" class="blog-card pf-card glass-premium group glass-panel relative block rounded-2xl border border-line dark:border-[#232B47] hover:-translate-y-1" data-reveal="fade-up" data-reveal-delay="160">
         <div class="pf-media blog-thumb"><img src="blog-web-ili-facebook-thumb.jpg" alt="Usporedba objave na društvenoj mreži i vlastite web stranice koja je prva na Googleu" width="1200" height="675" loading="lazy" decoding="async"></div>
         <div class="blog-card-body">
           <div class="flex items-center gap-3 flex-wrap">

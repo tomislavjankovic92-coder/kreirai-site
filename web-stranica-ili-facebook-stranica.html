@@ -12,7 +12,7 @@
     if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
     var p = location.pathname, n = p;
     if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
-    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica)\/?$/);
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke)\/?$/);
     if (m) n = '/' + m[1] + '.html';
     if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
   })();
@@ -1083,7 +1083,7 @@
       <p>Pitanje zapravo nije „web ili Facebook“, nego kako ih povezati. Najbolje funkcionira ovaj trokut:</p>
       <ol class="post-steps">
         <li><strong>Web stranica kao središte:</strong> usluge, cjenik, radovi i kontakt na vašoj domeni.</li>
-        <li><strong>Google Business profil</strong> koji vas stavlja na kartu kad vas lokalni kupci traže.</li>
+        <li><strong><a href="google-profil-tvrtke.html">Google profil tvrtke</a></strong> koji vas stavlja na kartu kad vas lokalni kupci traže.</li>
         <li><strong>Facebook i Instagram</strong> za svakodnevne objave, poruke i oglase koji vode na stranicu.</li>
       </ol>
       <p>Tako društvene mreže dovode pažnju, Google dovodi ljude koji već traže vašu uslugu, a web stranica ih pretvara u upite.</p>
