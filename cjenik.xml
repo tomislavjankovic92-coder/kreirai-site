@@ -3,7 +3,7 @@
   <tvrtka>KreirAI</tvrtka>
   <web>kreirai.hr</web>
   <valuta>EUR</valuta>
-  <azurirano>2026-10-15</azurirano>
+  <azurirano>2026-10-22</azurirano>
 
   <paket id="jednokratno">
     <naziv>Jednokratno</naziv>
@@ -48,6 +48,20 @@
       <znacajka>Funkcionalnosti po mjeri vašeg posla</znacajka>
     </znacajke>
     <pozivNaAkciju>Kontaktirajte nas</pozivNaAkciju>
+  </paket>
+
+  <paket id="nfc-kartica">
+    <naziv>NFC kartica za Google recenzije</naziv>
+    <tipNaplate>po komadu</tipNaplate>
+    <cijena>20</cijena>
+    <cijenaOpis>Po komadu; dodatni popust na veće količine</cijenaOpis>
+    <istaknuto>false</istaknuto>
+    <znacajke>
+      <znacajka>Prislanjanjem mobitela vodi na Google recenzije</znacajka>
+      <znacajka>Može voditi i na Instagram, web stranicu ili kontakt</znacajka>
+      <znacajka>Izrada s vašim logom i bojama</znacajka>
+    </znacajke>
+    <pozivNaAkciju>Naručite kartice</pozivNaAkciju>
   </paket>
 
   <usluge>

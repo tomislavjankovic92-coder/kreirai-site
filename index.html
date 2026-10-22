@@ -1421,6 +1421,29 @@
   .bonus-chip{ display:inline-block; margin-right:.4rem; padding:.1rem .45rem; border-radius:999px; vertical-align:.1em;
     font-family:'JetBrains Mono',ui-monospace,monospace; font-size:.6rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
     color:#0A0E1A; background:linear-gradient(135deg,#FF9478,#FF6F59); box-shadow:0 4px 10px -4px rgba(255,111,89,.6); }
+
+  /* Cjenik — podnaslovi kategorija + NFC kartice */
+  .cj-sub{ display:flex; align-items:center; gap:1rem; margin-top:3.5rem; }
+  .cj-sub h3{ font-family:"Inter Tight",Inter,sans-serif; font-weight:700; font-size:1.35rem; letter-spacing:-.02em; white-space:nowrap; color:#0E1526; }
+  .dark .cj-sub h3{ color:#EBEFFA; }
+  .cj-sub-line{ flex:1; height:1px; background:linear-gradient(90deg, rgba(255,111,89,.45), rgba(255,111,89,0)); }
+  .cj-sub + .price-grid{ margin-top:1.6rem !important; }
+  .cj-sub--nfc{ margin-top:4rem; margin-bottom:1.6rem; }
+  .nfc-offer{ display:grid; gap:1.5rem; padding:1.5rem; align-items:center; }
+  @media (min-width:860px){ .nfc-offer{ grid-template-columns: minmax(0,.95fr) minmax(0,1.05fr); gap:2.5rem; padding:2.25rem 2.5rem 2.25rem 1.5rem; } }
+  .nfc-media{ margin:0; position:relative; }
+  .nfc-media::before{ content:""; position:absolute; inset:8% 6%; border-radius:50%; background:radial-gradient(closest-side, rgba(255,111,89,.22), transparent 75%); z-index:0; }
+  .nfc-media img{ position:relative; z-index:1; display:block; width:100%; max-width:30rem; height:auto; margin:0 auto; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+  .nfc-offer:hover .nfc-media img{ transform: translateY(-4px) rotate(-1deg); }
+  .nfc-body h4{ font-family:"Inter Tight",Inter,sans-serif; font-weight:700; font-size:1.6rem; letter-spacing:-.025em; line-height:1.15; margin-top:.6rem; color:#0E1526; }
+  .dark .nfc-body h4{ color:#EBEFFA; }
+  .nfc-lead{ margin-top:.8rem; font-size:.95rem; line-height:1.7; }
+  .nfc-price{ display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:1rem 1.5rem; margin-top:1.6rem; padding-top:1.4rem; border-top:1px solid rgba(14,21,38,.08); }
+  .dark .nfc-price{ border-top-color: rgba(255,255,255,.08); }
+  .nfc-per{ font-size:1rem; font-weight:600; margin-left:.35rem; color:#6B7493; }
+  .dark .nfc-per{ color:#A6AFC9; }
+  @media (max-width:560px){ .cj-sub h3{ font-size:1.15rem; } .nfc-price a{ width:100%; } }
+  @media (prefers-reduced-motion: reduce){ .nfc-media img{ transition:none; } }
 </style>
 <!-- Structured data: who KreirAI is, so Google can associate the brand
      name with this site (knowledge panel / search result enrichment). -->
@@ -1510,6 +1533,24 @@
           "name": "Prilagođeno",
           "description": "Webshop i online trgovina, funkcionalnosti po mjeri vašeg posla — po personaliziranoj ponudi.",
           "url": "https://kreirai.hr/kontakt.html",
+          "seller": {
+            "@id": "https://kreirai.hr/#organization"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "NFC kartica za Google recenzije",
+          "description": "NFC kartica koja prislanjanjem mobitela vodi kupca na Google recenzije, Instagram, web ili kontakt. Dodatni popust na veće količine.",
+          "price": "20",
+          "priceCurrency": "EUR",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": "20",
+            "priceCurrency": "EUR",
+            "unitCode": "C62",
+            "unitText": "po komadu"
+          },
+          "url": "https://kreirai.hr/usluge.html#cjenik",
           "seller": {
             "@id": "https://kreirai.hr/#organization"
           }
@@ -1667,7 +1708,7 @@
        ============================================================ -->
   <div class="services-ticker-wrap">
   <div class="services-ticker">
-    <p class="sr-only">Usluge: Web stranice za 10 dana, Web i mobilne aplikacije, Hosting i održavanje, SEO optimizacija, Web trgovine.</p>
+    <p class="sr-only">Usluge: Web stranice za 10 dana, Web i mobilne aplikacije, Hosting i održavanje, SEO optimizacija, Web trgovine, NFC kartice za recenzije.</p>
     <div class="services-ticker__track" aria-hidden="true">
       <span class="services-ticker__item">Web stranice za 10 dana</span>
       <span class="services-ticker__dot">✦</span>
@@ -1679,6 +1720,8 @@
       <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">Web trgovine</span>
       <span class="services-ticker__dot">✦</span>
+      <span class="services-ticker__item">NFC kartice za recenzije</span>
+      <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">Web stranice za 10 dana</span>
       <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">Web i mobilne aplikacije</span>
@@ -1688,6 +1731,8 @@
       <span class="services-ticker__item">SEO optimizacija</span>
       <span class="services-ticker__dot">✦</span>
       <span class="services-ticker__item">Web trgovine</span>
+      <span class="services-ticker__dot">✦</span>
+      <span class="services-ticker__item">NFC kartice za recenzije</span>
       <span class="services-ticker__dot">✦</span>
     </div>
   </div>
@@ -1854,6 +1899,11 @@
       </h2>
     </div>
 
+    <div class="cj-sub" data-reveal="fade-up">
+      <h3>Web stranice i webshop</h3>
+      <span class="cj-sub-line" aria-hidden="true"></span>
+    </div>
+
     <div class="glass-stage price-grid mt-14">
       <!-- JEDNOKRATNO -->
       <div class="glass-premium glass-panel relative rounded-2xl border border-line dark:border-[#232B47] p-6 sm:p-8 flex flex-col transition-transform duration-300 hover:-translate-y-1.5" data-reveal="fade-up" data-reveal-delay="0">
@@ -1942,6 +1992,50 @@
           <a href="kontakt.html" class="btn-glow mt-5 w-full inline-flex items-center justify-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-5 py-2.5 rounded-full shadow-soft hover:-translate-y-0.5 transition">
             Kontaktirajte nas
           </a>
+        </div>
+      </div>
+      <div class="glass-aura" aria-hidden="true"><span></span><span></span><span></span></div>
+    </div>
+
+    <div class="cj-sub cj-sub--nfc" data-reveal="fade-up">
+      <h3>NFC kartice</h3>
+      <span class="cj-sub-line" aria-hidden="true"></span>
+    </div>
+
+    <div class="glass-stage">
+      <div class="nfc-offer glass-premium glass-panel relative rounded-2xl border border-line dark:border-[#232B47]" data-reveal="fade-up">
+        <figure class="nfc-media">
+          <img src="assets/nfc-kartica.webp" alt="NFC kartica za Google recenzije s natpisom Ostavite nam recenziju i mobitel koji je očitava" width="834" height="720" loading="lazy" decoding="async">
+        </figure>
+        <div class="nfc-body">
+          <p class="font-mono text-xs tracking-[0.14em] uppercase text-coral font-semibold">Više recenzija, bez muke</p>
+          <h4>NFC kartice za Google recenzije</h4>
+          <p class="nfc-lead text-inksoft dark:text-[#A6AFC9]">Najlakši način da zadovoljni kupci ostave recenziju: kartica stoji na pultu, u vozilu ili uz račun, a kupac je samo dotakne mobitelom. Više recenzija znači bolju vidljivost na Google kartama i više povjerenja novih kupaca.</p>
+          <ul class="mt-5 flex flex-col gap-3">
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Kupac prisloni mobitel i odmah je na vašoj stranici za Google recenzije — bez aplikacije i bez traženja</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Mogu voditi i na Instagram, web stranicu, kontakt ili jelovnik</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Izrada s vašim logom i bojama, otporne i dugotrajne</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Radi na većini modernih mobitela (iPhone i Android)</span>
+          </li>
+          </ul>
+          <div class="nfc-price">
+            <div>
+              <p class="font-serif font-bold text-4xl">20 €<span class="nfc-per">/ kom</span></p>
+              <p class="text-inksoft dark:text-[#A6AFC9] text-xs mt-1">Dodatni popust na veće količine · 10 kartica uključeno u Standardnu ponudu</p>
+            </div>
+            <a href="kontakt.html" class="btn-glow inline-flex items-center justify-center gap-2 bg-coral text-[#0A0E1A] font-bold text-sm px-6 py-3 rounded-full shadow-soft hover:-translate-y-0.5 transition">Naručite kartice <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
         </div>
       </div>
       <div class="glass-aura" aria-hidden="true"><span></span><span></span><span></span></div>
