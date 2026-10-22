@@ -12,7 +12,7 @@
     if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
     var p = location.pathname, n = p;
     if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
-    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica)\/?$/);
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke|izrada-webshopa-za-mali-posao)\/?$/);
     if (m) n = '/' + m[1] + '.html';
     if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
   })();
@@ -1417,6 +1417,10 @@
   .dark .footer-legal strong{ color: #B4BCD6; }
   footer nav{ flex-wrap: wrap; justify-content: center; row-gap: .4rem; }
   footer nav a{ white-space: nowrap; }
+
+  .bonus-chip{ display:inline-block; margin-right:.4rem; padding:.1rem .45rem; border-radius:999px; vertical-align:.1em;
+    font-family:'JetBrains Mono',ui-monospace,monospace; font-size:.6rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:#0A0E1A; background:linear-gradient(135deg,#FF9478,#FF6F59); box-shadow:0 4px 10px -4px rgba(255,111,89,.6); }
 </style>
 <!-- Structured data: who KreirAI is, so Google can associate the brand
      name with this site (knowledge panel / search result enrichment). -->
@@ -1486,7 +1490,7 @@
         {
           "@type": "Offer",
           "name": "Standardna",
-          "description": "Dizajn i uređivanje, hosting, neograničene izmjene sadržaja (tekst, fotografije, cijene i kontakti), SEO optimizacija, podrška s odgovorom isti dan.",
+          "description": "Dizajn i uređivanje, hosting, neograničene izmjene sadržaja (tekst, fotografije, cijene i kontakti), SEO optimizacija, podrška s odgovorom isti dan, 10 NFC kartica za Google recenzije.",
           "price": "90",
           "priceCurrency": "EUR",
           "priceSpecification": {
@@ -1902,6 +1906,10 @@
           <li class="flex items-start gap-3">
             <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
             <span class="text-inksoft dark:text-[#A6AFC9] text-sm">Podrška s odgovorom isti dan<small class="price-note">za sve upite, izmjene i tehničke probleme</small></span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mark-icon mark-ok mt-0.5" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7.5"/></svg></span>
+            <span class="text-inksoft dark:text-[#A6AFC9] text-sm"><b class="bonus-chip">Bonus</b>10 NFC kartica za Google recenzije<small class="price-note">kupac prisloni mobitel i odmah ostavlja recenziju — mogu voditi i na Instagram, web ili kontakt</small></span>
           </li>
         </ul>
 

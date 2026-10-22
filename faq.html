@@ -12,7 +12,7 @@
     if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
     var p = location.pathname, n = p;
     if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
-    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica)\/?$/);
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke|izrada-webshopa-za-mali-posao)\/?$/);
     if (m) n = '/' + m[1] + '.html';
     if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
   })();
@@ -574,7 +574,7 @@
       "name": "Koliko košta izrada web stranice ili aplikacije?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Nudimo tri opcije: jednokratnu izradu za 990 € (kod je u potpunosti vaš), standardni mjesečni paket od 90 € koji uključuje hosting, neograničene izmjene sadržaja (tekst, fotografije, cijene i kontakti), SEO optimizaciju i podršku s odgovorom isti dan, te individualnu ponudu za veće ili prilagođene projekte poput web i mobilnih aplikacija. Cijeli cjenik pogledajte na početnoj stranici ili pod Usluge."
+        "text": "Nudimo tri opcije: jednokratnu izradu za 990 € (kod je u potpunosti vaš), standardni mjesečni paket od 90 € koji uključuje hosting, neograničene izmjene sadržaja (tekst, fotografije, cijene i kontakti), SEO optimizaciju, podršku s odgovorom isti dan i 10 NFC kartica za Google recenzije, te individualnu ponudu za veće ili prilagođene projekte poput web i mobilnih aplikacija. Cijeli cjenik pogledajte na početnoj stranici ili pod Usluge."
       }
     },
     {
@@ -741,7 +741,7 @@
           <span>Koliko košta izrada web stranice ili aplikacije?</span>
           <svg class="w-5 h-5 shrink-0 text-inksoft dark:text-[#A6AFC9] transition-transform group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
         </summary>
-        <p class="px-5 pb-5 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Nudimo tri opcije: jednokratnu izradu za 990 € (kod je u potpunosti vaš), standardni mjesečni paket od 90 € koji uključuje hosting, neograničene izmjene sadržaja (tekst, fotografije, cijene i kontakti), SEO optimizaciju i podršku s odgovorom isti dan, te individualnu ponudu za veće ili prilagođene projekte poput web i mobilnih aplikacija. Cijeli cjenik pogledajte na početnoj stranici ili pod Usluge.</p>
+        <p class="px-5 pb-5 text-inksoft dark:text-[#A6AFC9] text-sm leading-relaxed">Nudimo tri opcije: jednokratnu izradu za 990 € (kod je u potpunosti vaš), standardni mjesečni paket od 90 € koji uključuje hosting, neograničene izmjene sadržaja (tekst, fotografije, cijene i kontakti), SEO optimizaciju, podršku s odgovorom isti dan i 10 NFC kartica za Google recenzije, te individualnu ponudu za veće ili prilagođene projekte poput web i mobilnih aplikacija. Cijeli cjenik pogledajte na početnoj stranici ili pod Usluge.</p>
       </details>
 
       <details class="group glass-panel border border-line dark:border-[#232B47] rounded-2xl transition-colors" data-reveal="fade-up" data-reveal-delay="180">
