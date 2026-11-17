@@ -38,7 +38,7 @@
   var lastTick = 0;
   function tick(f) { var n = Date.now(); if (n - lastTick < 60) return; lastTick = n; beep(f, .035); }
   $$('.nav__links a,.nav__logo,.nav__cta,.nav__burger,.menu a,.foot__row nav a').forEach(function (el, i) { el.addEventListener('mouseenter', function () { tick(i % 2 ? 1175 : 1047); }); });
-  $$('.btn,.tv__knob,.faq summary,.win__btns a,.win__btns button,.hud button').forEach(function (el) { el.addEventListener('mouseenter', function () { tick(784); }); });
+  $$('.btn,.tv__knob,.faq summary,.msg__btns a,.msg__btns button,.hud button').forEach(function (el) { el.addEventListener('mouseenter', function () { tick(784); }); });
 
   /* ---------- bodovi i postignuća ---------- */
   var scoreEl = $('#score'), shown = 0, score = parseInt(store('kaiScore') || '0', 10) || 0;
@@ -203,17 +203,98 @@
   if (knobP) knobP.addEventListener('click', function () { knobPDeg -= 90; knobP.style.transform = 'rotate(' + knobPDeg + 'deg)'; setCh(ch - 1, true); auto(); });
   if (tv) auto();
 
-  /* ---------- retro popup (jednom po sesiji) ---------- */
-  var win = $('#win');
-  function closeWin() { win.classList.remove('is-on'); win.setAttribute('aria-hidden', 'true'); store('kaiWin', '1'); }
-  if (win && $('#prednosti') && !store('kaiWin') && 'IntersectionObserver' in window) {
-    var wio = new IntersectionObserver(function (es) {
-      if (es[0].isIntersecting) { wio.disconnect(); setTimeout(function () { win.classList.add('is-on'); win.setAttribute('aria-hidden', 'false'); beep(880, .12); setTimeout(function () { beep(660, .2); }, 120); }, 1400); }
-    }, { threshold: .5 });
-    wio.observe($('#prednosti'));
-    $('#winX').addEventListener('click', closeWin); $('#winC').addEventListener('click', closeWin);
-    win.querySelector('a').addEventListener('click', function () { store('kaiWin', '1'); });
-  }
+  /* ---------- retro poruka: povremeno iskoči u kutu, ne blokira sadržaj ---------- */
+  var msg = $('#msg');
+  if (msg && !/kontakt/.test(location.pathname)) (function () {
+    var MSGS = [
+      ['Od: vašeg telefona', '„Zašto više ne zvonim?“'],
+      ['Od: vašeg inboxa', '„Ovdje je tiho. Sumnjivo tiho.“'],
+      ['Od: Googlea', '„Tražio sam vas na prvoj stranici. Nema vas.“'],
+      ['Od: vaše blagajne', '„Gladna sam. Pošaljite kupce.“'],
+      ['Od: posjetitelja', '„Stranica se učitava 8 sekundi? Idem kod konkurencije.“'],
+      ['Od: konkurencije', '„Hvala što još uvijek nemate novu stranicu.“'],
+      ['Od: stare stranice', '„Učitavam se… još malo… samo malo…“']
+    ];
+    var MAX = 3, FIRST = 20000, GAP = 70000;
+    var mobile = matchMedia('(max-width: 760px)').matches, LIFE = mobile ? 11000 : 18000;
+    var n = parseInt(store('kaiMsgN') || '0', 10) || 0, closes = parseInt(store('kaiMsgX') || '0', 10) || 0;
+    var start = parseInt(store('kaiMsgS') || '-1', 10); if (start < 0) { start = Math.floor(Math.random() * MSGS.length); store('kaiMsgS', start); }
+    var hideT, open = false, hover = false, stopped = store('kaiMsgStop') === '1';
+    var from = $('#msgFrom'), txt = $('#msgTxt'), bar = $('#msgBar'), cb = $('#cookieBanner');
+    function busy() {
+      var a = doc.activeElement, tag = a && a.tagName;
+      return doc.hidden || (cb && !cb.hidden) || (menu && menu.classList.contains('is-open')) || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+    }
+    function schedule(ms) { if (stopped || n >= MAX) return; setTimeout(tryShow, ms); }
+    function tryShow() { if (stopped || open) return; if (busy()) return setTimeout(tryShow, 6000); show(); }
+    function ring() { for (var k = 0; k < 8; k++) (function (k) { setTimeout(function () { beep(k % 2 ? 1046 : 1318, .05); }, k * 65); })(k); }
+    function show() {
+      var m = MSGS[(start + n) % MSGS.length];
+      from.textContent = m[0]; txt.textContent = m[1];
+      n++; store('kaiMsgN', n);
+      msg.style.left = msg.style.top = msg.style.right = msg.style.bottom = msg.style.width = ''; msg.style.transform = '';
+      msg.classList.remove('is-fly'); msg.classList.add('is-on'); msg.setAttribute('aria-hidden', 'false'); open = true;
+      if (!reduce) { msg.classList.add('is-shake'); setTimeout(function () { msg.classList.remove('is-shake'); }, 1000); }
+      ring(); armHide();
+    }
+    function armHide() { clearTimeout(hideT); hideT = setTimeout(function () { if (hover || drag) return armHide(); hide(); }, LIFE); }
+    function hide(fly) {
+      if (!open) return; open = false; clearTimeout(hideT);
+      msg.setAttribute('aria-hidden', 'true');
+      if (!fly) msg.classList.remove('is-on');
+      setTimeout(function () { msg.classList.remove('is-on', 'is-fly'); msg.style.left = msg.style.top = msg.style.right = msg.style.bottom = msg.style.width = ''; msg.style.transform = ''; }, fly ? 600 : 450);
+      schedule(GAP);
+    }
+    function userClose() { closes++; store('kaiMsgX', closes); if (closes >= 2) { stopped = true; store('kaiMsgStop', '1'); } hide(); beep(440, .06); }
+    $('#msgX').addEventListener('click', userClose); $('#msgC').addEventListener('click', userClose);
+    $('#msgGo').addEventListener('click', function () { stopped = true; store('kaiMsgStop', '1'); });
+    msg.addEventListener('mouseenter', function () { hover = true; }); msg.addEventListener('mouseleave', function () { hover = false; });
+    msg.addEventListener('focusin', function () { hover = true; }); msg.addEventListener('focusout', function () { hover = false; });
+
+    /* "baci me": povuci za plavu traku; jači zamah izbaci poruku s ekrana */
+    var drag = false, ox = 0, oy = 0, px = 0, py = 0, lx = 0, ly = 0, lt = 0, vx = 0, vy = 0;
+    bar.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('button') || !open) return;
+      var r = msg.getBoundingClientRect();
+      msg.style.right = msg.style.bottom = 'auto'; msg.style.width = r.width + 'px'; msg.style.left = r.left + 'px'; msg.style.top = r.top + 'px';
+      ox = e.clientX - r.left; oy = e.clientY - r.top; lx = e.clientX; ly = e.clientY; lt = performance.now(); vx = vy = 0;
+      drag = true; msg.classList.add('is-drag'); try { bar.setPointerCapture(e.pointerId); } catch (er) {}
+      e.preventDefault();
+    });
+    bar.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var t = performance.now(), dt = Math.max(1, t - lt);
+      vx = vx * .5 + ((e.clientX - lx) / dt) * .5; vy = vy * .5 + ((e.clientY - ly) / dt) * .5;
+      lx = e.clientX; ly = e.clientY; lt = t;
+      px = e.clientX - ox; py = e.clientY - oy;
+      msg.style.left = px + 'px'; msg.style.top = py + 'px';
+      msg.style.transform = 'rotate(' + Math.max(-12, Math.min(12, vx * 6)) + 'deg)';
+    });
+    function drop() {
+      if (!drag) return; drag = false; msg.classList.remove('is-drag');
+      var sp = Math.sqrt(vx * vx + vy * vy);
+      if (sp > 1.1 && performance.now() - lt < 80) {
+        msg.classList.add('is-fly');
+        msg.style.transform = 'translate(' + (vx * 700) + 'px,' + (vy * 700) + 'px) rotate(' + (vx > 0 ? 40 : -40) + 'deg)';
+        beep(880, .25, 'square', 110);
+        if (window.KAI) KAI.achieve('msg', 'Bacili ste poruku', 25);
+        hide(true);
+      } else {
+        var r = msg.getBoundingClientRect(), W = innerWidth, H = innerHeight;
+        msg.style.left = Math.max(8, Math.min(W - r.width - 8, r.left)) + 'px';
+        msg.style.top = Math.max(70, Math.min(H - r.height - 8, r.top)) + 'px';
+        msg.style.transform = '';
+        armHide();
+      }
+    }
+    bar.addEventListener('pointerup', drop); bar.addEventListener('pointercancel', drop);
+
+    if (!stopped && n < MAX) {
+      var first = function () { schedule(FIRST); removeEventListener('scroll', first); clearTimeout(ft); };
+      addEventListener('scroll', first, { passive: true, once: true });
+      var ft = setTimeout(first, 15000);
+    }
+  })();
 
   /* ---------- konfeti + Konami kod (↑↑↓↓←→←→BA) ---------- */
   var cf = $('#confetti');

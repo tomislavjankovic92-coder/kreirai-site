@@ -55,7 +55,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=VT323&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="arcade.css?v=5">
+<link rel="stylesheet" href="arcade.css?v=6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -265,6 +265,11 @@
   <button type="button" class="hud__min" id="hudMin" aria-label="Sakrij traku s bodovima">–</button>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"><small>Postignuće otključano</small><strong id="toastT">—</strong><em id="toastP">+0</em></div>
+<div class="msg" id="msg" role="status" aria-live="polite" aria-hidden="true">
+  <div class="msg__bar" id="msgBar"><span>1 nova poruka <em>(baci me)</em></span><button class="msg__x" type="button" id="msgX" aria-label="Zatvori poruku">×</button></div>
+  <div class="msg__body"><span class="msg__ico" aria-hidden="true">!</span><div><strong id="msgFrom">Od: vašeg telefona</strong><p id="msgTxt">„Zašto više ne zvonim?“</p></div></div>
+  <div class="msg__btns"><a href="kontakt.html" id="msgGo" data-snd="coin">Obratite se KreirAI-ju</a><button type="button" id="msgC">Zatvori</button></div>
+</div>
 <div id="cookieBanner" class="cookie" hidden role="dialog" aria-live="polite" aria-label="Obavijest o kolačićima">
   <strong>Kolačić? 🍪</strong>
   <p>Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje bodova i postavki). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html">Pravilima privatnosti</a>.</p>
@@ -272,6 +277,6 @@
 </div>
 <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
 
-<script src="arcade.js?v=5"></script>
+<script src="arcade.js?v=6"></script>
 </body>
 </html>

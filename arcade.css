@@ -225,19 +225,28 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 .tile--ultra .tile__ico{background:var(--ultra);color:#fff}
 .tile--mint .tile__ico{background:var(--mint)}
 
-/* retro popup */
-.win{position:fixed;left:24px;bottom:96px;z-index:70;width:min(360px,calc(100% - 32px));background:var(--silver);border:3px solid var(--ink);box-shadow:var(--sh);border-radius:6px;
-  transform:translateY(30px) scale(.9);opacity:0;visibility:hidden;transition:transform .35s cubic-bezier(.3,1.6,.5,1),opacity .2s,visibility .2s}
-.win.is-on{transform:none;opacity:1;visibility:visible}
-.win__bar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,var(--ultra),#6b72ff);color:#fff;padding:4px 6px 4px 10px;font-weight:700;font-size:.85rem}
-.win__x{width:22px;height:20px;background:var(--silver);border:2px solid var(--ink);color:var(--ink);font-weight:900;line-height:1;font-size:.85rem}
-.win__body{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:14px 14px 10px}
-.win__ico{width:40px;height:40px;border-radius:50%;background:var(--lemon);border:3px solid var(--ink);display:grid;place-items:center;font-weight:900;font-size:1.4rem}
-.win__body strong{display:block;font-weight:900;font-stretch:78%;text-transform:uppercase;font-size:1.3rem;line-height:1}
-.win__body p{font-size:.9rem;margin-top:5px}
-.win__btns{display:flex;gap:8px;justify-content:flex-end;padding:0 14px 14px}
-.win__btns a,.win__btns button{border:2px solid var(--ink);background:#eceef1;box-shadow:2px 2px 0 var(--ink);padding:6px 12px;font-size:.85rem;font-weight:700;text-decoration:none}
-.win__btns a:active,.win__btns button:active{transform:translate(2px,2px);box-shadow:none}
+/* retro poruka (povremeno, ne blokira sadržaj) */
+.msg{position:fixed;right:24px;bottom:88px;z-index:72;width:min(380px,calc(100% - 24px));background:var(--silver);border:3px solid var(--ink);box-shadow:var(--sh);border-radius:6px;
+  transform:translateY(40px) scale(.9) rotate(2deg);opacity:0;visibility:hidden;transition:transform .45s cubic-bezier(.3,1.6,.5,1),opacity .25s,visibility .25s}
+.msg.is-on{transform:none;opacity:1;visibility:visible}
+.msg.is-on.is-shake{animation:msgShake .5s 2}
+.msg.is-drag{transition:none;box-shadow:12px 12px 0 var(--ink)}
+.msg.is-fly{transition:transform .55s cubic-bezier(.5,0,.9,.5),opacity .55s;opacity:0}
+@keyframes msgShake{0%,100%{rotate:0deg}20%{rotate:-2.5deg}40%{rotate:2.5deg}60%{rotate:-1.5deg}80%{rotate:1deg}}
+.msg__bar{display:flex;align-items:center;justify-content:space-between;gap:8px;background:linear-gradient(90deg,var(--ultra),#6b72ff);color:#fff;padding:5px 6px 5px 12px;font-weight:800;font-size:.9rem;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;border-radius:3px 3px 0 0}
+.msg.is-drag .msg__bar{cursor:grabbing}
+.msg__bar em{font-style:normal;font-weight:600;font-size:.72rem;opacity:.75;margin-left:4px}
+.msg__x{width:24px;height:22px;background:var(--silver);border:2px solid var(--ink);color:var(--ink);font-weight:900;line-height:1;font-size:.95rem;cursor:pointer}
+.msg__body{display:grid;grid-template-columns:46px 1fr;gap:14px;align-items:start;padding:16px 16px 12px}
+.msg__ico{width:44px;height:44px;border-radius:50%;background:var(--lemon);border:3px solid var(--ink);display:grid;place-items:center;font-weight:900;font-size:1.5rem}
+.msg__body strong{display:block;font-weight:900;font-stretch:112%;text-transform:uppercase;font-size:1.3rem;line-height:1.02;letter-spacing:-.01em}
+.msg__body p{font-size:1rem;margin-top:6px;line-height:1.35}
+.msg__btns{display:flex;gap:10px;justify-content:flex-end;padding:0 16px 16px}
+.msg__btns a,.msg__btns button{border:2px solid var(--ink);background:#eceef1;box-shadow:3px 3px 0 var(--ink);padding:8px 14px;font-size:.88rem;font-weight:800;text-decoration:none;color:var(--ink);cursor:pointer;transition:background .15s,transform .1s,box-shadow .1s}
+.msg__btns a{background:var(--lemon)}
+.msg__btns a:hover{background:var(--coral);color:#fff}
+.msg__btns button:hover{background:#fff}
+.msg__btns a:active,.msg__btns button:active{transform:translate(3px,3px);box-shadow:none}
 
 /* ---------- RAZLIKA ---------- */
 .vs{display:grid;grid-template-columns:minmax(0,1fr) 110px minmax(0,1fr);align-items:stretch;margin-top:54px}
@@ -521,7 +530,13 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
   .hud .hud__ach{display:none}
   .hud button{padding:0 10px}
   .toast{right:10px;left:10px;min-width:0}
-  .win{left:16px;bottom:84px}
+  .msg{right:10px;left:10px;width:auto;bottom:70px}
+  .msg__body{grid-template-columns:36px 1fr;gap:10px;padding:12px 12px 10px}
+  .msg__ico{width:34px;height:34px;font-size:1.15rem}
+  .msg__body strong{font-size:1.05rem}
+  .msg__body p{font-size:.92rem}
+  .msg__btns{padding:0 12px 12px}
+  .msg__btns a,.msg__btns button{padding:7px 10px;font-size:.82rem}
   .stk--seal{width:130px;height:130px}
   .stk--seal b{width:52px;height:52px;font-size:1.25rem}
   .stk--tag strong{font-size:2rem}
