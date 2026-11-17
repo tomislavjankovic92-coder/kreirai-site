@@ -86,10 +86,9 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 @media (max-width:420px){ .nav__cta span{display:none} }
 
 /* ---------- HERO ---------- */
-.hero{position:relative;background:var(--coral);padding:calc(var(--nav-h) + 54px) 0 120px;overflow:hidden;isolation:isolate}
+.hero{position:relative;background:var(--paper);padding:calc(var(--nav-h) + 54px) 0 120px;overflow:hidden;isolation:isolate}
 .hero::before{content:"";position:absolute;inset:0;z-index:-2;
-  background-image:linear-gradient(rgba(11,11,16,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(11,11,16,.13) 1px,transparent 1px);
-  background-size:48px 48px;background-position:-1px -1px}
+  background-image:radial-gradient(rgba(11,11,16,.2) 1.3px,transparent 1.7px);background-size:22px 22px;background-position:11px 11px}
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.22;mix-blend-mode:multiply;
   background-image:radial-gradient(rgba(11,11,16,.9) 1px,transparent 1.4px);background-size:5px 5px;
   -webkit-mask-image:radial-gradient(ellipse 60% 70% at 100% 0%,#000,transparent 70%);mask-image:radial-gradient(ellipse 60% 70% at 100% 0%,#000,transparent 70%)}
@@ -404,6 +403,42 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
   .paper__mast .meta{font-size:.95rem}
   .paper__mast .meta span:nth-child(2){display:none}
 }
+
+
+/* ---------- HERO naslov: "Stranice zbog kojih telefon zvoni." ---------- */
+.hero h1.hero-t{margin-top:20px;color:var(--ink);font-weight:900;font-stretch:125%;text-transform:uppercase;letter-spacing:-.02em;line-height:.9;font-size:min(5.6rem,6.2vw)}
+.hero-t .l{display:block}
+.ring{position:relative;display:inline-flex;align-items:center;margin:.1em 0 .06em -.04em;padding:.04em .2em .06em .16em;font:inherit;line-height:.95;letter-spacing:inherit;text-transform:inherit;
+  color:#fff;background:var(--coral);border:.05em solid var(--ink);box-shadow:.09em .09em 0 var(--ink);transform:rotate(-2.2deg);cursor:pointer;
+  animation:ringBox 2.6s ease-in-out infinite;transform-origin:50% 60%}
+.ring__txt{position:relative;z-index:1;text-shadow:.03em .03em 0 rgba(11,11,16,.18)}
+.ring__ph{position:absolute;right:-.42em;top:-.48em;z-index:2;width:.78em;height:.78em;border-radius:50%;display:grid;place-items:center;
+  background:var(--lemon);color:var(--ink);border:.045em solid var(--ink);box-shadow:.05em .05em 0 var(--ink);animation:ringPh 2.6s linear infinite;transform-origin:50% 50%}
+.ring__ph svg{width:52%;height:52%}
+.ring__w{position:absolute;right:-.42em;top:-.48em;width:.78em;height:.78em;border-radius:50%;border:.04em solid var(--ink);opacity:0;pointer-events:none;animation:ringW 2.6s ease-out infinite}
+.ring__w--2{animation-delay:.18s}.ring__w--3{animation-delay:.36s}
+@keyframes ringBox{
+  0%,44%,100%{transform:rotate(-2.2deg) translate(0,0)}
+  4%{transform:rotate(-3.4deg) translate(-2px,0)}8%{transform:rotate(-1deg) translate(2px,-1px)}
+  12%{transform:rotate(-3.4deg) translate(-2px,1px)}16%{transform:rotate(-1deg) translate(2px,0)}
+  20%{transform:rotate(-3.2deg) translate(-2px,-1px)}24%{transform:rotate(-1.2deg) translate(2px,1px)}
+  28%{transform:rotate(-3deg) translate(-1px,0)}32%{transform:rotate(-1.4deg) translate(1px,0)}
+  36%{transform:rotate(-2.8deg)}40%{transform:rotate(-1.8deg)}}
+@keyframes ringPh{
+  0%,44%,100%{transform:rotate(0) scale(1)}
+  2%{transform:rotate(-22deg) scale(1.12)}5%{transform:rotate(22deg) scale(1.12)}8%{transform:rotate(-22deg) scale(1.12)}
+  11%{transform:rotate(22deg) scale(1.12)}14%{transform:rotate(-20deg) scale(1.12)}17%{transform:rotate(20deg) scale(1.12)}
+  20%{transform:rotate(-18deg) scale(1.1)}23%{transform:rotate(18deg) scale(1.1)}26%{transform:rotate(-14deg) scale(1.08)}
+  29%{transform:rotate(14deg) scale(1.06)}32%{transform:rotate(-10deg) scale(1.04)}35%{transform:rotate(8deg)}38%{transform:rotate(-4deg)}41%{transform:rotate(0)}}
+@keyframes ringW{0%{opacity:0;transform:scale(1)}4%{opacity:.9}40%{opacity:0;transform:scale(2.3)}100%{opacity:0;transform:scale(2.3)}}
+.ring:hover,.ring.is-ringing{animation-duration:.9s}
+.ring:hover .ring__ph,.ring.is-ringing .ring__ph,.ring:hover .ring__w,.ring.is-ringing .ring__w{animation-duration:.9s}
+.ring:active{box-shadow:.03em .03em 0 var(--ink)}
+.h1-sub{display:inline-block;margin-top:22px;font-family:var(--f);font-stretch:100%;font-weight:800;text-transform:uppercase;letter-spacing:.01em;line-height:1.25;
+  font-size:clamp(.88rem,1.15vw,1.06rem);background:var(--ink);color:var(--lemon);padding:.55em .8em;max-width:100%;border-radius:8px;box-shadow:4px 4px 0 var(--coral)}
+@media (max-width:1060px){.hero h1.hero-t{font-size:min(5.6rem,9vw)}}
+@media (max-width:760px){.hero h1.hero-t{font-size:12.2vw}.ring__ph{right:-.3em}.ring__w{right:-.3em}.h1-sub{margin-top:18px}}
+@media (prefers-reduced-motion:reduce){.ring,.ring__ph,.ring__w{animation:none!important}}
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width:1060px){
