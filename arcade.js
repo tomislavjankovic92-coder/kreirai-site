@@ -34,6 +34,11 @@
   function paintSnd() { sndBtn.setAttribute('aria-pressed', soundOn); sndBtn.textContent = soundOn ? '🔊 Zvuk' : '🔈 Zvuk'; }
   if (sndBtn) { paintSnd(); sndBtn.addEventListener('click', function () { soundOn = !soundOn; store('kaiSound', soundOn ? '1' : '0'); paintSnd(); if (soundOn) { ac() && actx.resume && actx.resume(); coin(); } }); }
   $$('[data-snd="coin"]').forEach(function (a) { a.addEventListener('click', function () { coin(); }); });
+  /* tihi "tik" pri prelasku mišem preko navigacije i gumba — samo kad je zvuk uključen */
+  var lastTick = 0;
+  function tick(f) { var n = Date.now(); if (n - lastTick < 60) return; lastTick = n; beep(f, .035); }
+  $$('.nav__links a,.nav__logo,.nav__cta,.nav__burger,.menu a,.foot__row nav a').forEach(function (el, i) { el.addEventListener('mouseenter', function () { tick(i % 2 ? 1175 : 1047); }); });
+  $$('.btn,.tv__knob,.faq summary,.win__btns a,.win__btns button,.hud button').forEach(function (el) { el.addEventListener('mouseenter', function () { tick(784); }); });
 
   /* ---------- bodovi i postignuća ---------- */
   var scoreEl = $('#score'), shown = 0, score = parseInt(store('kaiScore') || '0', 10) || 0;
@@ -228,7 +233,6 @@
     kp = (e.keyCode === K[kp]) ? kp + 1 : (e.keyCode === K[0] ? 1 : 0);
     if (kp === K.length) { kp = 0; confetti(); achieve('konami', 'Turbo mod uključen', 1000); }
   });
-  $$('.ptag--hot .btn,.end .btn--lemon').forEach(function (b) { b.addEventListener('mouseenter', function () { beep(784, .05); }); });
   $('.coin') && $('.coin').addEventListener('click', confetti);
 
   /* ---------- kolačići ---------- */

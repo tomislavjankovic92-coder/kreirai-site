@@ -158,10 +158,10 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 @keyframes nudge{50%{transform:translateX(-6px)}}
 
 /* ---------- TRAKE (marquee) ---------- */
-.tapes{position:relative;height:150px;margin-top:-80px;z-index:5;pointer-events:none;overflow:hidden}
-.tape{position:absolute;left:-5%;width:110%;border-block:3px solid var(--ink);overflow:hidden;white-space:nowrap}
-.tape--a{top:22px;background:var(--lemon);transform:rotate(-2.6deg);box-shadow:0 8px 0 rgba(11,11,16,.25)}
-.tape--b{top:70px;background:var(--ink);color:#fff;transform:rotate(1.8deg)}
+.tapes{position:relative;height:180px;margin-top:-100px;margin-bottom:-24px;z-index:5;pointer-events:none;overflow:hidden;overflow-x:clip;overflow-y:visible}
+.tape{position:absolute;left:-12%;width:124%;backface-visibility:hidden;-webkit-backface-visibility:hidden;outline:1px solid transparent;border-block:3px solid var(--ink);overflow:hidden;white-space:nowrap}
+.tape--a{top:18px;background:var(--lemon);transform:rotate(-2deg);box-shadow:0 8px 0 rgba(11,11,16,.25)}
+.tape--b{top:92px;background:var(--ink);color:#fff;transform:rotate(-.7deg)}
 .tape__track{display:inline-flex;gap:0;padding:12px 0;animation:mq 38s linear infinite}
 .tape--b .tape__track{animation-direction:reverse;animation-duration:44s}
 .tape__track span{font-weight:900;font-stretch:75%;text-transform:uppercase;font-size:clamp(1.35rem,2.4vw,2rem);line-height:1;padding:0 .55em;display:inline-flex;align-items:center;gap:.55em}
@@ -210,7 +210,7 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 .tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:54px}
 .tile{position:relative;background:#fff;border:var(--bd);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;transition:transform .2s cubic-bezier(.3,1.5,.5,1),box-shadow .2s}
 .tile:hover{transform:translate(-4px,-4px) rotate(-.6deg);box-shadow:12px 12px 0 var(--ink)}
-.tile__top{display:flex;justify-content:space-between;align-items:center;background:var(--ink);color:#fff;padding:8px 14px}
+.tile__top{display:flex;justify-content:flex-start;align-items:center;background:var(--ink);color:#fff;padding:8px 14px}
 .tile__top .px{font-size:1.5rem;color:var(--lemon);line-height:1}
 .tile__dots{display:flex;gap:6px}.tile__dots i{width:12px;height:12px;border-radius:50%;background:#3a3a46;display:block}
 .tile:hover .tile__dots i:nth-child(1){background:var(--red)}.tile:hover .tile__dots i:nth-child(2){background:var(--lemon)}.tile:hover .tile__dots i:nth-child(3){background:var(--mint)}
@@ -278,6 +278,8 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 .ptag::before{content:"";position:absolute;left:50%;top:-46px;width:3px;height:44px;background:var(--ink);margin-left:-1.5px}
 .ptag::after{content:"";position:absolute;left:50%;top:14px;width:18px;height:18px;margin-left:-9px;border-radius:50%;border:3px solid var(--ink);background:var(--paper)}
 .ptag:hover{animation-play-state:paused;box-shadow:10px 10px 0 var(--ink)}
+.ptag--hot{transition:box-shadow .25s ease}
+.ptag--hot:hover{box-shadow:10px 10px 0 var(--lemon)}
 @keyframes swing{0%,100%{transform:rotate(-1.4deg)}50%{transform:rotate(1.4deg)}}
 .ptag__name{font-family:var(--px);font-size:1.55rem;text-transform:uppercase;line-height:1}
 .ptag__price{font-weight:900;font-stretch:72%;font-size:clamp(3.2rem,5vw,4.4rem);line-height:.9;margin-top:10px;letter-spacing:-.02em}
@@ -350,6 +352,7 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 .foot__row nav{display:flex;flex-wrap:wrap;gap:8px 22px}
 .foot__row a{text-decoration:none;font-weight:700}
 .foot__row a:hover{color:var(--lemon)}
+.nav__logo:hover,.foot__row a.nav__logo:hover{background:var(--ink);color:#fff;box-shadow:inset 0 0 0 3px var(--lemon)}
 .foot__legal{margin-top:24px;padding-top:18px;border-top:2px dashed #2b2b36;font-size:.82rem;color:#9a9caa;line-height:1.6}
 .foot__legal strong{color:#e6e7ee}
 
@@ -479,6 +482,13 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 .tv__knob--2{transform:rotate(-30deg)}
 .tv__screen::after{z-index:5}
 
+
+/* glatki rubovi nakrivljenih/animiranih elemenata (Chrome inače "nazubi" rub sloja) */
+.ptag,.stk,.tv,.vs__col,.shelf-lbl h3,.tv__tag,.memo,.polaroid,.post-cover,.story blockquote,.hero__card,.tile,.pf,.bcard,.paper,.nfc,.ring__ph{
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;outline:1px solid transparent}
+.ring{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.tape--b{border-top-color:var(--lemon)}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width:1060px){
   .hero__grid{grid-template-columns:1fr;padding-left:26px}
@@ -588,9 +598,7 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 .pf{display:block;text-decoration:none;color:var(--ink);background:#fff;border:var(--bd);border-radius:18px;box-shadow:var(--sh-l);overflow:hidden;transition:transform .25s cubic-bezier(.3,1.5,.5,1),box-shadow .25s}
 .pf:hover{transform:translate(-4px,-4px) rotate(-.6deg);box-shadow:14px 14px 0 var(--ink)}
 .pf__bar{display:flex;align-items:center;gap:8px;background:var(--ink);color:#fff;padding:9px 14px;font-family:var(--px);font-size:1.15rem}
-.pf__bar i{width:11px;height:11px;border-radius:50%;background:#3a3a46;display:block}
-.pf__bar i:nth-child(1){background:var(--red)}.pf__bar i:nth-child(2){background:var(--lemon)}.pf__bar i:nth-child(3){background:var(--mint)}
-.pf__bar span{margin-left:8px;opacity:.85}
+.pf__bar .pf__url{opacity:.9;color:var(--lemon)}
 .pf__img{position:relative;aspect-ratio:16/10;overflow:hidden;border-bottom:var(--bd);background:var(--paper-2)}
 .pf__img img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
 .pf:hover .pf__img img{transform:scale(1.05)}
