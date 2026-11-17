@@ -228,15 +228,19 @@
     <div class="hero__stage" id="stage">
       <div class="tv rv rv--pop" id="tv" style="--dl:.3s">
         <div class="tv__screen">
-          <video id="heroVideo" muted loop playsinline preload="none" poster="assets/hero-poster.jpg?v=3" aria-label="Promotivni video KreirAI">
-            <source src="assets/hero-video.mp4?v=4" type="video/mp4">
-          </video>
+          <div class="chs" id="tvChs" aria-live="polite">
+            <div class="ch ch--1 is-on" data-ch="1"><span class="ch__ico" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"><rect x="6" y="14" width="52" height="38" rx="5" fill="#fff"/><path d="m8 18 24 18 24-18"/></svg><b class="ch__badge">99+</b></span><strong class="ch__t">Napunite<br>inbox</strong><span class="ch__sub">▶ novi upit stigao</span></div>
+            <div class="ch ch--2" data-ch="2" aria-hidden="true"><span class="ch__ico" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"><path d="M4 32s10-18 28-18 28 18 28 18-10 18-28 18S4 32 4 32Z" fill="#fff"/><circle cx="32" cy="32" r="9" fill="currentColor"/></svg></span><strong class="ch__t">Zadržite<br>posjetioce</strong><span class="ch__sub">▶ učitavanje: 0,8 s</span></div>
+            <div class="ch ch--3" data-ch="3" aria-hidden="true"><span class="ch__ico" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"><path d="M14 6v44l12-11 8 19 9-4-8-18h16L14 6Z" fill="#fff"/></svg></span><strong class="ch__t">Dovedite<br>klijente</strong><span class="ch__sub">▶ #1 na Googleu</span></div>
+            <div class="ch ch--4" data-ch="4" aria-hidden="true"><span class="ch__ico" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><circle cx="32" cy="32" r="26" fill="#FFE14A"/><path d="M42 21a13 13 0 1 0 0 22M17 28h20M17 36h18"/></svg></span><strong class="ch__t">Zaradite.</strong><span class="ch__sub">▶ € € € € € € € €</span></div>
+          </div>
           <canvas class="tv__static" id="tvStatic" width="160" height="120" aria-hidden="true"></canvas>
           <span class="tv__ch" id="tvCh" aria-hidden="true">CH 01</span>
+          <span class="tv__dots" aria-hidden="true"><i class="is-on"></i><i></i><i></i><i></i></span>
         </div>
         <div class="tv__knobs">
-          <button class="tv__knob" id="tvKnob" type="button" aria-label="Promijeni kanal"></button>
-          <span class="tv__knob" aria-hidden="true"></span>
+          <button class="tv__knob" id="tvKnob" type="button" aria-label="Sljedeći kanal"></button>
+          <button class="tv__knob tv__knob--2" id="tvKnobPrev" type="button" aria-label="Prethodni kanal"></button>
           <span class="tv__grill" aria-hidden="true"></span>
         </div>
         <span class="tv__tag" aria-hidden="true">KreirAI TV · uživo</span>

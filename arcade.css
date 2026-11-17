@@ -389,11 +389,11 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 
 
 /* položaji naljepnica */
-.s1{left:-6%;top:-26px}.s2{right:2%;top:-34px}.s3{right:-2%;top:56%}.s4{left:-2%;top:62%}.s5{left:40%;top:70%}.s6{left:10%;top:88%}
+.s1{left:-19%;top:34%}.s2{left:2%;top:-30px}.s3{right:-2%;top:56%}.s4{left:-2%;top:62%}.s5{left:40%;top:70%}.s6{left:10%;top:88%}
 @media (max-width:760px){
-  .hero__stage{min-height:690px}
-  .s1{left:-8px;top:-30px}.s2{right:0;top:-40px}
-  .s3{right:0;top:330px}.s4{left:0;top:410px}.s5{right:6%;left:auto;top:500px}.s6{left:0;top:600px}
+  .hero__stage{min-height:820px}
+  .s1{left:-6px;right:auto;top:550px}.s2{left:0;right:auto;top:-36px}
+  .s3{right:0;top:330px}.s4{left:0;top:410px}.s5{right:6%;left:auto;top:500px}.s6{left:0;top:715px}
   .hint{display:none}
   .stats__grid{grid-template-columns:1fr 1fr;gap:12px}
   .stat{padding:16px 14px}
@@ -440,6 +440,45 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 @media (max-width:760px){.hero h1.hero-t{font-size:12.2vw}.ring__ph{right:-.3em}.ring__w{right:-.3em}.h1-sub{margin-top:18px}}
 @media (prefers-reduced-motion:reduce){.ring,.ring__ph,.ring__w{animation:none!important}}
 
+
+/* ---------- TV kanali (umjesto videa) ---------- */
+.tv__screen{container-type:inline-size}
+.chs{position:absolute;inset:0}
+.ch{position:absolute;inset:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3cqw;padding:7cqw 8cqw 10cqw;
+  background:var(--chbg);color:var(--chfg,var(--ink));opacity:0;visibility:hidden;overflow:hidden}
+.ch::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(11,11,16,.18) 1.2px,transparent 1.6px);background-size:14px 14px;pointer-events:none}
+.ch.is-on{opacity:1;visibility:visible}
+.ch--1{--chbg:var(--ultra);--chfg:#fff}
+.ch--2{--chbg:var(--coral)}
+.ch--3{--chbg:var(--lemon)}
+.ch--4{--chbg:var(--mint);--chfg:var(--ink)}
+.ch__ico{position:relative;flex:none;width:15cqw;height:15cqw;color:var(--ink);filter:drop-shadow(1cqw 1cqw 0 var(--ink))}
+.ch__ico svg{width:100%;height:100%}
+.ch__badge{position:absolute;right:-8cqw;top:-3cqw;font-family:var(--f);font-weight:900;font-stretch:75%;font-size:5cqw;line-height:1;background:var(--red);color:#fff;border:.8cqw solid var(--ink);border-radius:999px;padding:1cqw 2cqw}
+.ch__t{position:relative;font-weight:900;font-stretch:72%;text-transform:uppercase;letter-spacing:-.02em;line-height:.86;font-size:12.5cqw;color:var(--chfg,var(--ink));
+  text-shadow:1.2cqw 1.2cqw 0 rgba(11,11,16,.35)}
+.ch--4 .ch__t{font-size:15.5cqw}
+.ch__sub{position:relative;font-family:var(--px);font-size:6cqw;line-height:1;background:var(--ink);color:var(--lemon);padding:1.2cqw 2.2cqw .8cqw;border-radius:1.2cqw;white-space:nowrap;max-width:100%;overflow:hidden}
+.ch.is-on .ch__t{animation:chT .55s cubic-bezier(.3,1.6,.5,1) both}
+.ch.is-on .ch__ico{animation:chI .6s cubic-bezier(.3,1.7,.5,1) both .05s, chBob 2.4s ease-in-out infinite .7s}
+.ch.is-on .ch__sub{animation:chS .4s steps(6) both .25s}
+.ch--1.is-on .ch__badge{animation:chBadge 1.2s ease-in-out infinite .6s}
+.ch--4.is-on .ch__ico{animation:chI .6s cubic-bezier(.3,1.7,.5,1) both .05s, chFlip 1.6s linear infinite .7s}
+@keyframes chT{from{opacity:0;transform:scale(1.6) rotate(-4deg)}}
+@keyframes chI{from{opacity:0;transform:translateY(-30%) scale(.4) rotate(-20deg)}}
+@keyframes chBob{50%{transform:translateY(-6%) rotate(-5deg)}}
+@keyframes chS{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes chBadge{50%{transform:scale(1.18) rotate(8deg)}}
+@keyframes chFlip{50%{transform:scaleX(.15)}}
+.tv__ch{z-index:3}
+.tv__dots{position:absolute;left:12px;bottom:10px;z-index:3;display:flex;gap:6px}
+.tv__dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.35);border:2px solid var(--ink);display:block;transition:background-color .2s,transform .2s}
+.tv__dots i.is-on{background:#39ff7a;transform:scale(1.25)}
+.tv__static{z-index:4}
+.tv__knob{cursor:pointer}
+.tv__knob--2{transform:rotate(-30deg)}
+.tv__screen::after{z-index:5}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width:1060px){
   .hero__grid{grid-template-columns:1fr;padding-left:26px}
@@ -457,7 +496,7 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
   .hero__side .vt{font-size:.75rem}
   .hero__grid{padding-left:16px}
   .hero h1 .l--out{-webkit-text-stroke:2px #fff}
-  .hero__stage{min-height:690px}
+  .hero__stage{min-height:820px}
   .tv{padding:14px 70px 14px 14px;border-radius:20px}
   .tv__knobs{right:10px;width:48px}
   .tv__knob{width:40px;height:40px}
