@@ -62,6 +62,20 @@
   if (hudMin) hudMin.addEventListener('click', function () { var m = hud.classList.toggle('is-min'); hudMin.textContent = m ? '+' : '–'; hudMin.setAttribute('aria-label', m ? 'Prikaži traku s bodovima' : 'Sakrij traku s bodovima'); });
   addScore(0);
   window.KAI = { addScore: addScore, achieve: achieve, beep: beep };
+
+  /* ---------- "ZVONI." — klik/hover pozvoni (zvuk ako je uključen) ---------- */
+  var ringEl = $('#ring'), ringT;
+  function ringtone() {
+    for (var k = 0; k < 2; k++) for (var i = 0; i < 6; i++) (function (t, f) { setTimeout(function () { beep(f, .05, 'square'); }, t); })(k * 520 + i * 60, i % 2 ? 1760 : 1320);
+  }
+  if (ringEl) {
+    ringEl.addEventListener('click', function () {
+      ringEl.classList.add('is-ringing'); clearTimeout(ringT);
+      ringT = setTimeout(function () { ringEl.classList.remove('is-ringing'); }, 1800);
+      ringtone(); addScore(15); achieve('ring', 'Javili ste se na telefon', 300);
+    });
+    ringEl.addEventListener('mouseenter', function () { beep(1320, .04); });
+  }
   setTimeout(function () { achieve('start', 'Igrač 1 se pridružio', 100); }, 1800);
 
   /* ---------- otkrivanje pri scrollu ---------- */
@@ -150,18 +164,9 @@
     el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
   });
 
-  /* ---------- retro TV ---------- */
-  var video = $('#heroVideo'), tv = $('#tv'), cv = $('#tvStatic'), knob = $('#tvKnob'), chEl = $('#tvCh'), ch = 1;
-  function startVideo() {
-    if (!video) return;
-    var c = navigator.connection; if (c && c.saveData) return;
-    video.play && video.play().catch(function () {});
-  }
-  if (video) {
-    var go = function () { ('requestIdleCallback' in window) ? requestIdleCallback(startVideo, { timeout: 2500 }) : setTimeout(startVideo, 1200); };
-    if (doc.readyState === 'complete') go(); else window.addEventListener('load', go);
-    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { if (!video.readyState) return; es[0].isIntersecting ? video.play().catch(function () {}) : video.pause(); }).observe(video);
-  }
+  /* ---------- retro TV: 4 kanala ---------- */
+  var tv = $('#tv'), cv = $('#tvStatic'), knob = $('#tvKnob'), knobP = $('#tvKnobPrev'), chEl = $('#tvCh'), ch = 1, seen = { 1: 1 }, chTimer = null, knobDeg = 0, knobPDeg = -30;
+  var chans = $$('.ch'), dots = $$('.tv__dots i'), N = chans.length || 4;
   function noise(ms) {
     if (!cv) return; var g = cv.getContext('2d'), w = cv.width, h = cv.height, end = performance.now() + ms;
     tv.classList.add('is-zapping');
@@ -173,12 +178,25 @@
     })();
     beep(120, ms / 1000, 'sawtooth');
   }
-  if (knob) knob.addEventListener('click', function () {
-    ch = ch % 9 + 1; chEl.textContent = 'CH 0' + ch; noise(380);
-    knob.style.transform = 'rotate(' + (ch * 40) + 'deg)';
-    if (video && video.readyState) { video.currentTime = 0; video.play().catch(function () {}); }
-    addScore(5); if (ch === 9) achieve('tv', 'Pretražili ste sve kanale', 200);
-  });
+  function setCh(n, user) {
+    ch = ((n - 1 + N) % N) + 1;
+    noise(260);
+    setTimeout(function () {
+      chans.forEach(function (c, i) { var on = i === ch - 1; c.classList.toggle('is-on', on); c.setAttribute('aria-hidden', on ? 'false' : 'true'); });
+      dots.forEach(function (d, i) { d.classList.toggle('is-on', i === ch - 1); });
+      chEl.textContent = 'CH 0' + ch;
+    }, 140);
+    if (user) {
+      addScore(5); seen[ch] = 1;
+      if (Object.keys(seen).length === N) achieve('tv', 'Pogledali ste sve kanale', 200);
+    }
+  }
+  function auto() { clearInterval(chTimer); if (!reduce) chTimer = setInterval(function () { if (!doc.hidden && tvVisible) setCh(ch + 1); }, 4200); }
+  var tvVisible = true;
+  if (tv && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { tvVisible = es[0].isIntersecting; }).observe(tv);
+  if (knob) knob.addEventListener('click', function () { knobDeg += 90; knob.style.transform = 'rotate(' + knobDeg + 'deg)'; setCh(ch + 1, true); auto(); });
+  if (knobP) knobP.addEventListener('click', function () { knobPDeg -= 90; knobP.style.transform = 'rotate(' + knobPDeg + 'deg)'; setCh(ch - 1, true); auto(); });
+  if (tv) auto();
 
   /* ---------- retro popup (jednom po sesiji) ---------- */
   var win = $('#win');
