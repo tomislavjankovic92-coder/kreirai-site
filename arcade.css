@@ -134,7 +134,8 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 @keyframes stkIn{from{opacity:0;transform:translate(var(--x,0px),calc(var(--y,0px) - 60px)) rotate(calc(var(--r,0deg) - 25deg)) scale(.4)}}
 .stk--seal{width:170px;height:170px;border-radius:50%;background:var(--lemon);border:var(--bd);box-shadow:var(--sh);display:grid;place-items:center}
 .stk--seal svg{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);animation:spin 18s linear infinite}
-.stk--seal b{width:66px;height:66px;border-radius:50%;background:var(--ink);color:var(--lemon);display:grid;place-items:center;font-weight:900;font-stretch:75%;font-size:1.6rem;letter-spacing:-.03em}
+.stk--seal b{width:88px;height:88px;border-radius:50%;background:var(--ink);color:var(--lemon);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-stretch:80%;font-size:1.3rem;line-height:.86;letter-spacing:-.02em;text-transform:uppercase}
+.stk--seal b span+span{color:var(--coral);font-size:1.55em;font-stretch:100%}
 @keyframes spin{to{transform:rotate(360deg)}}
 .stk--tag{background:#fff;border:var(--bd);box-shadow:var(--sh);border-radius:10px 28px 28px 10px;padding:12px 26px 12px 40px;font-weight:900;font-stretch:75%;text-transform:uppercase;line-height:.9}
 .stk--tag::before{content:"";position:absolute;left:14px;top:50%;width:13px;height:13px;margin-top:-6px;border-radius:50%;border:3px solid var(--ink);background:var(--coral)}
@@ -183,6 +184,11 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 .flap{flex-wrap:nowrap}
 .stat__u{display:block;margin-top:10px;font-weight:900;font-stretch:75%;text-transform:uppercase;font-size:1.6rem;line-height:1;color:#fff}
 .stat p{margin-top:6px;font-family:var(--px);font-size:1.3rem;color:#c9cbd6;text-transform:uppercase;letter-spacing:.04em}
+.stat--or{position:relative;z-index:3}
+.or{position:absolute;right:-9px;top:0;z-index:4;transform:translate(50%,-45%) rotate(-12deg);background:var(--coral);color:var(--ink);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--lemon);
+  padding:8px 16px 9px;font-weight:900;font-stretch:125%;font-size:1.7rem;line-height:1;letter-spacing:.02em;white-space:nowrap;animation:orWob 3.2s ease-in-out infinite;backface-visibility:hidden;outline:1px solid transparent}
+@keyframes orWob{0%,100%{transform:translate(50%,-45%) rotate(-12deg)}50%{transform:translate(50%,-45%) rotate(-5deg) scale(1.06)}}
+@media (prefers-reduced-motion:reduce){.or{animation:none}}
 .stats__head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:28px}
 .stats__head h2{color:#fff;font-size:clamp(2.2rem,5vw,4rem)}
 .stats__head h2 span{color:var(--coral)}
@@ -409,6 +415,7 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
   .hint{display:none}
   .stats__grid{grid-template-columns:1fr 1fr;gap:12px}
   .stat{padding:16px 14px}
+  .or{right:-6px;font-size:1.15rem;padding:5px 10px 6px;box-shadow:4px 4px 0 var(--lemon)}
   .stat__u{font-size:1.15rem;overflow-wrap:anywhere}
   .stat p{font-size:1.05rem}
   .flap span{font-size:1.9rem}
@@ -504,6 +511,7 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
   .hero__stage{min-height:560px;margin-top:20px}
   .tv{margin:0 auto}
   .stats__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat--or{order:3}.stat--mo{order:4}
   .why__intro{grid-template-columns:1fr}
   .tags{grid-template-columns:1fr;gap:56px}
   .nfc{grid-template-columns:1fr}
@@ -538,7 +546,7 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
   .msg__btns{padding:0 12px 12px}
   .msg__btns a,.msg__btns button{padding:7px 10px;font-size:.82rem}
   .stk--seal{width:130px;height:130px}
-  .stk--seal b{width:52px;height:52px;font-size:1.25rem}
+  .stk--seal b{width:68px;height:68px;font-size:1rem}
   .stk--tag strong{font-size:2rem}
   .stk--ticket{width:200px}
   .stk--burst{width:104px;height:104px;font-size:1.05rem}
