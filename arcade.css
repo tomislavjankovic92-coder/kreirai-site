@@ -288,6 +288,11 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 .shelf-lbl::after{content:"";flex:1;height:3px;background:var(--ink)}
 .tags{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-top:40px;padding-top:44px}
 .tags::before{content:"";position:absolute;left:-2%;right:-2%;top:0;height:6px;background:var(--ink);border-radius:3px}
+.tags--2{grid-template-columns:repeat(2,minmax(0,1fr));max-width:940px;margin-left:auto;margin-right:auto;gap:70px}
+.tags--1{grid-template-columns:minmax(0,1fr);max-width:420px;margin-left:auto;margin-right:auto}
+.tags--2::before,.tags--1::before{left:-6%;right:-6%}
+.or--tags{right:auto;left:50%;top:200px;transform:translate(-50%,-50%) rotate(-12deg);animation-name:orWob2;font-size:2rem;padding:10px 20px 11px;box-shadow:6px 6px 0 var(--ink);z-index:6}
+@keyframes orWob2{0%,100%{transform:translate(-50%,-50%) rotate(-12deg)}50%{transform:translate(-50%,-50%) rotate(-5deg) scale(1.06)}}
 .ptag{position:relative;background:#fff;border:var(--bd);border-radius:16px;box-shadow:var(--sh);padding:44px 24px 24px;display:flex;flex-direction:column;
   transform-origin:50% -44px;animation:swing 6s ease-in-out infinite;animation-delay:var(--d,0s)}
 .ptag::before{content:"";position:absolute;left:50%;top:-46px;width:3px;height:44px;background:var(--ink);margin-left:-1.5px}
@@ -416,6 +421,7 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
   .stats__grid{grid-template-columns:1fr 1fr;gap:12px}
   .stat{padding:16px 14px}
   .or{right:-6px;font-size:1.15rem;padding:5px 10px 6px;box-shadow:4px 4px 0 var(--lemon)}
+  .or--tags{font-size:1.6rem;padding:8px 16px 9px;box-shadow:5px 5px 0 var(--ink)}
   .stat__u{font-size:1.15rem;overflow-wrap:anywhere}
   .stat p{font-size:1.05rem}
   .flap span{font-size:1.9rem}
@@ -514,6 +520,9 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
   .stat--or{order:3}.stat--mo{order:4}
   .why__intro{grid-template-columns:1fr}
   .tags{grid-template-columns:1fr;gap:56px}
+  .tags--2,.tags--1{grid-template-columns:minmax(0,1fr);max-width:480px}
+  .or--tags{position:relative;left:auto;top:auto;justify-self:center;align-self:center;margin:-34px 0;animation-name:orWob3}
+  @keyframes orWob3{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(-5deg) scale(1.06)}}
   .nfc{grid-template-columns:1fr}
 }
 @media (max-width:760px){

@@ -55,7 +55,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=VT323&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="arcade.css?v=8">
+<link rel="stylesheet" href="arcade.css?v=9">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -299,8 +299,9 @@
 <section class="sec sec--lemon sec--grid" id="cjenik" data-ach="Pronašli ste cjenik">
   <div class="wrap">
     <div class="sec__head"><span class="lbl rv"><i></i>Cjenik</span><h2 class="h2 rv">Cjenik prilagođen <span class="hl">svakom proračunu.</span></h2></div>
-    <div class="shelf-lbl rv"><h3>Web stranice i webshop</h3></div>
-    <div class="tags">
+    <div class="cjenik-web">
+<div class="shelf-lbl rv"><h3>Web stranice</h3></div>
+<div class="tags tags--2">
 <div class="ptag rv" style="--d:-1s">
 <span class="ptag__name">Jednokratno</span>
 <div class="ptag__price">990 €</div>
@@ -312,6 +313,7 @@
 </ul>
 <a class="btn btn--lemon" data-snd="coin" href="kontakt.html">Započnimo</a>
 </div>
+<span aria-label="ili" class="or or--tags">ILI</span>
 <div class="ptag ptag--hot rv" style="--d:-3s;--dl:.1s">
 <span aria-hidden="true" class="ptag__burst">Popu-<br/>larno</span>
 <span class="ptag__name">Standardna</span>
@@ -327,6 +329,9 @@
 </ul>
 <a class="btn btn--coral" data-snd="coin" href="kontakt.html">Zakažite konzultacije</a>
 </div>
+</div>
+<div class="shelf-lbl rv" style="margin-top:90px"><h3>Webshop</h3></div>
+<div class="tags tags--1">
 <div class="ptag ptag--plain rv" style="--d:-5s;--dl:.2s">
 <span class="ptag__name">Prilagođeno</span>
 <div class="ptag__price">Individualno</div>
@@ -336,6 +341,7 @@
 <li><span>Funkcionalnosti po mjeri vašeg posla</span></li>
 </ul>
 <a class="btn btn--white" data-snd="coin" href="kontakt.html">Kontaktirajte nas</a>
+</div>
 </div>
 </div>
     <div class="shelf-lbl rv" style="margin-top:90px"><h3>NFC kartice</h3></div>
@@ -404,6 +410,6 @@
 </div>
 <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
 
-<script src="arcade.js?v=8"></script>
+<script src="arcade.js?v=9"></script>
 </body>
 </html>
