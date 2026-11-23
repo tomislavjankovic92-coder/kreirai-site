@@ -12,7 +12,7 @@
     if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
     var p = location.pathname, n = p;
     if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
-    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke|izrada-webshopa-za-mali-posao)\/?$/);
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke|izrada-webshopa-za-mali-posao|google-recenzije-za-male-tvrtke|odrzavanje-web-stranice)\/?$/);
     if (m) n = '/' + m[1] + '.html';
     if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
   })();
@@ -55,7 +55,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=VT323&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="arcade.css?v=9">
+<link rel="stylesheet" href="arcade.css?v=10">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -88,6 +88,22 @@
         "@id": "https://kreirai.hr/#organization"
       },
       "blogPost": [
+        {
+          "@type": "BlogPosting",
+          "@id": "https://kreirai.hr/google-recenzije-za-male-tvrtke.html#article",
+          "headline": "Kako dobiti više Google recenzija – bez kršenja pravila",
+          "url": "https://kreirai.hr/google-recenzije-za-male-tvrtke.html",
+          "datePublished": "2026-11-23",
+          "image": "https://kreirai.hr/blog-google-recenzije-thumb.jpg"
+        },
+        {
+          "@type": "BlogPosting",
+          "@id": "https://kreirai.hr/odrzavanje-web-stranice.html#article",
+          "headline": "Što se događa s web stranicom koju nitko ne održava",
+          "url": "https://kreirai.hr/odrzavanje-web-stranice.html",
+          "datePublished": "2026-11-23",
+          "image": "https://kreirai.hr/blog-odrzavanje-thumb.jpg"
+        },
         {
           "@type": "BlogPosting",
           "@id": "https://kreirai.hr/izrada-webshopa-za-mali-posao.html#article",
@@ -166,8 +182,26 @@
 <section class="sec sec--paper sec--grid" id="blog" data-ach="Otvorili ste blog">
   <div class="wrap">
     <div class="bgrid">
+    <a class="bcard rv" href="google-recenzije-za-male-tvrtke.html" style="--dl:0.0s">
+      <div class="bcard__img"><img src="blog-google-recenzije-thumb.jpg" alt="Kartica s pet zvjezdica i NFC kartica za Google recenzije na pultu" width="1200" height="675" loading="eager" decoding="async"></div>
+      <div class="bcard__body">
+        <div class="bcard__meta"><span class="tag">Vodič</span><time datetime="2026-11-23">23. studenoga 2026. · 6 min čitanja</time></div>
+        <h2>Kako dobiti više Google recenzija – bez kršenja pravila</h2>
+        <p>Praktični vodič za obrtnike: kada i kako zamoliti kupce za Google recenziju, kako odgovarati na loše ocjene i što Google zabranjuje.</p>
+        <span class="pf__go">Pročitajte članak <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </a>
+    <a class="bcard rv" href="odrzavanje-web-stranice.html" style="--dl:0.1s">
+      <div class="bcard__img"><img src="blog-odrzavanje-thumb.jpg" alt="Prozor s upozorenjem da je domena istekla i servisna lista održavanja web stranice" width="1200" height="675" loading="lazy" decoding="async"></div>
+      <div class="bcard__body">
+        <div class="bcard__meta"><span class="tag">Vodič</span><time datetime="2026-11-23">23. studenoga 2026. · 4 min čitanja</time></div>
+        <h2>Što se događa s web stranicom koju nitko ne održava</h2>
+        <p>Istekla domena, hakirana stranica, kontakt obrazac koji ne radi. Saznajte zašto je održavanje web stranice važno i što ono uključuje.</p>
+        <span class="pf__go">Pročitajte članak <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </a>
     <a class="bcard rv" href="izrada-webshopa-za-mali-posao.html" style="--dl:0.0s">
-      <div class="bcard__img"><img src="blog-webshop-thumb.jpg" alt="Webshop malog obrta s proizvodima u košarici i obavijest o prvoj narudžbi" width="1200" height="675" loading="eager" decoding="async"></div>
+      <div class="bcard__img"><img src="blog-webshop-thumb.jpg" alt="Webshop malog obrta s proizvodima u košarici i obavijest o prvoj narudžbi" width="1200" height="675" loading="lazy" decoding="async"></div>
       <div class="bcard__body">
         <div class="bcard__meta"><span class="tag">Vodič</span><time datetime="2026-10-16">16. listopada 2026. · 6 min čitanja</time></div>
         <h2>Izrada webshopa za mali posao: od ideje do prve narudžbe</h2>
@@ -247,6 +281,6 @@
 </div>
 <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
 
-<script src="arcade.js?v=9"></script>
+<script src="arcade.js?v=10"></script>
 </body>
 </html>

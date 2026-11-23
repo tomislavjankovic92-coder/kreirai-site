@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<script>
+  // SEO: jedna adresa po stranici. GitHub Pages ne zna raditi 301
+  // preusmjeravanja, pa svaku "drugu" adresu iste stranice odmah
+  // prebacujemo na službenu (ista kao <link rel="canonical">):
+  // www.kreirai.hr → kreirai.hr, /index.html → /, /portfolio → /portfolio.html
+  (function () {
+    var h = location.hostname;
+    if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
+    var p = location.pathname, n = p;
+    if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke|izrada-webshopa-za-mali-posao|google-recenzije-za-male-tvrtke|odrzavanje-web-stranice)\/?$/);
+    if (m) n = '/' + m[1] + '.html';
+    if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
+  })();
+</script>
+<script>
+  // Spriječi preglednik da pri osvježavanju (refresh) stranice vrati
+  // korisnika na mjesto gdje je zadnje skrolao — stranica uvijek kreće
+  // od vrha. Mora se postaviti što prije, prije nego preglednik stigne
+  // primijeniti svoje zadano ponašanje vraćanja scroll pozicije.
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+</script>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://d8j0ntlcm91z4.cloudfront.net; media-src 'self' https://d8j0ntlcm91z4.cloudfront.net; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Održavanje web stranice: što ako je nitko ne održava? | KreirAI</title>
+<meta name="description" content="Istekla domena, hakirana stranica, kontakt obrazac koji ne radi. Saznajte zašto je održavanje web stranice važno i što ono uključuje.">
+<link rel="canonical" href="https://kreirai.hr/odrzavanje-web-stranice.html">
+
+<!-- Social share preview (link thumbnail) -->
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-11-23">
+<meta property="article:section" content="Digitalni marketing">
+<meta property="og:locale" content="hr_HR">
+<meta property="og:url" content="https://kreirai.hr/odrzavanje-web-stranice.html">
+<meta property="og:site_name" content="KreirAI">
+<meta property="og:title" content="Održavanje web stranice: što ako je nitko ne održava?">
+<meta property="og:description" content="Istekla domena, hakirana stranica, kontakt obrazac koji ne radi. Saznajte zašto je održavanje web stranice važno i što ono uključuje.">
+<meta property="og:image" content="https://kreirai.hr/blog-odrzavanje-thumb.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Prozor s upozorenjem da je domena istekla i servisna lista održavanja web stranice">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Održavanje web stranice: što ako je nitko ne održava?">
+<meta name="twitter:description" content="Istekla domena, hakirana stranica, kontakt obrazac koji ne radi. Saznajte zašto je održavanje web stranice važno i što ono uključuje.">
+<meta name="twitter:image" content="https://kreirai.hr/blog-odrzavanje-thumb.jpg">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="arcade.css?v=10">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://kreirai.hr/odrzavanje-web-stranice.html#article",
+      "mainEntityOfPage": "https://kreirai.hr/odrzavanje-web-stranice.html",
+      "headline": "Što se događa s web stranicom koju nitko ne održava",
+      "description": "Istekla domena, hakirana stranica, kontakt obrazac koji ne radi. Saznajte zašto je održavanje web stranice važno i što ono uključuje.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://kreirai.hr/blog-odrzavanje-thumb.jpg",
+        "width": 1200,
+        "height": 675
+      },
+      "datePublished": "2026-11-23",
+      "dateModified": "2026-11-23",
+      "inLanguage": "hr",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://kreirai.hr/#organization",
+        "name": "KreirAI",
+        "url": "https://kreirai.hr/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://kreirai.hr/#organization",
+        "name": "KreirAI",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://kreirai.hr/logo-512.png"
+        }
+      },
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://kreirai.hr/blog.html#blog",
+        "name": "KreirAI blog"
+      },
+      "keywords": "održavanje web stranice, sigurnost web stranice, hosting za male firme, sigurnosna kopija stranice"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://kreirai.hr/odrzavanje-web-stranice.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Početna",
+          "item": "https://kreirai.hr/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://kreirai.hr/blog.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Održavanje web stranice",
+          "item": "https://kreirai.hr/odrzavanje-web-stranice.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="no-js">
+<a class="sr-only" href="#sadrzaj">Preskoči na sadržaj</a>
+<header class="nav" id="top">
+  <a class="nav__logo" href="/" aria-label="KreirAI — početna">Kreir<b>AI</b></a>
+  <nav class="nav__links" aria-label="Glavni izbornik">
+    <a href="/">Početna</a>
+    <a href="usluge.html">Usluge</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="blog.html" aria-current="page">Blog</a>
+    <a href="onama.html">O nama</a>
+    <a href="kontakt.html">Kontakt</a>
+    <a href="faq.html">Pitanja</a>
+  </nav>
+  <span class="nav__spacer"></span>
+  <a class="nav__cta" href="kontakt.html" data-snd="coin">Zatražite <span>ponudu</span></a>
+  <button class="nav__burger" id="burger" type="button" aria-label="Otvori izbornik" aria-expanded="false" aria-controls="menu"><span></span></button>
+</header>
+<nav class="menu" id="menu" aria-label="Mobilni izbornik">
+  <a href="/">Početna</a>
+  <a href="usluge.html">Usluge</a>
+  <a href="portfolio.html">Portfolio</a>
+  <a href="blog.html">Blog</a>
+  <a href="onama.html">O nama</a>
+  <a href="kontakt.html">Kontakt</a>
+  <a href="faq.html">Pitanja</a>
+  <a class="btn btn--lemon" href="kontakt.html">Zatražite ponudu</a>
+</nav>
+
+<main id="sadrzaj">
+<section class="phero" style="padding-bottom:110px">
+  <div class="wrap post">
+    <nav aria-label="Putanja" class="post-crumbs">
+<a href="/">Početna</a><span aria-hidden="true">/</span><a href="blog.html">Blog</a><span aria-hidden="true">/</span><span>Održavanje web stranice</span>
+</nav>
+    <h1 class="post-title rv">Što se događa s web stranicom koju nitko ne održava</h1>
+    <div class="post-meta">
+<time datetime="2026-11-23">23. studenoga 2026.</time><i aria-hidden="true"></i><span>KreirAI</span><i aria-hidden="true"></i><span>4 min čitanja</span>
+</div>
+  </div>
+</section>
+<div class="post-wrap sec--grid" data-ach="Čitate blog članak" id="clanak">
+  <div class="wrap post">
+    <figure class="post-cover rv" style="margin-top:-150px"><img src="blog-odrzavanje-thumb.jpg" alt="Prozor s upozorenjem da je domena istekla i servisna lista održavanja web stranice" width="1200" height="675" fetchpriority="high" decoding="async"></figure>
+    <div class="post-body">
+<div class="post-answer">
+<span class="label">Kratki odgovor</span>
+<p>Web stranica koju nitko ne održava ne prestane raditi odjednom – nego tiho: istekne domena ili SSL certifikat, kontakt obrazac prestane slati upite, stranica postane meta automatiziranih napada, a podaci zastare. <strong>Održavanje</strong> znači redovita ažuriranja, sigurnosne kopije, praćenje dostupnosti, brigu o domeni i hostingu te povremenu provjeru obrazaca i sadržaja.</p>
+</div>
+<p>Mnogi vlasnici malih firmi web stranicu doživljavaju kao letak: jednom se napravi, objavi i zaboravi. Prve godine sve radi. Onda jednog dana kupac nazove i kaže: „Htio sam vam poslati upit preko stranice, ali nešto ne radi.“ Ili, još gore, stranica se uopće ne otvara.</p>
+<p>Web stranica više nalikuje automobilu nego letku. Može dugo voziti bez servisa, ali kad se pokvari, obično je to u najgorem trenutku. U ovom tekstu prolazimo kroz najčešće probleme s neodržavanim stranicama i kroz to što dobro održavanje zapravo uključuje.</p>
+<h2 id="problemi">Pet stvari koje se događaju neodržavanim stranicama</h2>
+<div class="post-gsteps">
+<section aria-labelledby="p-1" class="post-gstep">
+<span aria-hidden="true" class="n">1</span>
+<h3 id="p-1">Istekne domena ili smještaj stranice</h3>
+<p>Domena i hosting plaćaju se periodično, najčešće godišnje. Ako je obavijest o obnovi stigla na adresu e-pošte bivšeg zaposlenika ili web dizajnera s kojim više ne surađujete, stranica i e-pošta na vašoj domeni mogu jednostavno prestati raditi. Domenu koja nije obnovljena na vrijeme netko drugi može i registrirati.</p>
+</section>
+<section aria-labelledby="p-2" class="post-gstep">
+<span aria-hidden="true" class="n">2</span>
+<h3 id="p-2">Stranica postane meta napada</h3>
+<p>Napadači rijetko ciljaju baš vašu firmu. Automatizirani programi neprestano pretražuju internet tražeći stranice sa zastarjelim sustavima i dodacima koji imaju poznate sigurnosne propuste. Neodržavana stranica može biti preusmjerena na sumnjive sadržaje, slati neželjenu poštu ili joj preglednici mogu početi prikazivati upozorenje da nije sigurna. Takvo upozorenje kupca odbije brže od bilo kakve loše recenzije.</p>
+</section>
+<section aria-labelledby="p-3" class="post-gstep">
+<span aria-hidden="true" class="n">3</span>
+<h3 id="p-3">Kontakt obrazac prestane raditi – a vi to ne znate</h3>
+<p>Ovo je možda najskuplji problem jer je nevidljiv. Obrazac izgleda normalno, posjetitelj klikne „Pošalji“ i dobije poruku zahvale, ali upit nikada ne stigne do vas. Uzroci su različiti: promjena postavki e-pošte, zastarjeli dodatak ili filtar neželjene pošte. Ako nitko redovito ne testira obrazac, možete tjednima gubiti upite.</p>
+</section>
+<section aria-labelledby="p-4" class="post-gstep">
+<span aria-hidden="true" class="n">4</span>
+<h3 id="p-4">Sigurnosni certifikat istekne</h3>
+<p>SSL certifikat omogućuje šifriranu vezu i lokot pokraj adrese u pregledniku. Kad certifikat istekne ili nije ispravno postavljen, preglednici posjetitelju prikazuju upozorenje preko cijelog ekrana. Većina ljudi tada jednostavno odustane.</p>
+</section>
+<section aria-labelledby="p-5" class="post-gstep">
+<span aria-hidden="true" class="n">5</span>
+<h3 id="p-5">Podaci zastare</h3>
+<p>Staro radno vrijeme, cjenik od prije tri godine, zaposlenik koji više ne radi kod vas, fotografije prostora prije preuređenja. Ništa od toga ne „ruši“ stranicu, ali narušava povjerenje i stvara nesporazume s kupcima – pogotovo ako se podaci razlikuju od onih na vašem <a href="google-profil-tvrtke.html">Google profilu tvrtke</a>.</p>
+</section>
+</div>
+<h2 id="odrzavanje">Što uključuje dobro održavanje?</h2>
+<ul class="post-list post-pros">
+<li><strong>Redovita ažuriranja</strong> sustava, teme i dodataka, uz provjeru da nakon ažuriranja sve radi.</li>
+<li><strong>Automatske sigurnosne kopije</strong> pohranjene na drugom mjestu, kako bi se stranica u slučaju problema mogla vratiti u prijašnje stanje.</li>
+<li><strong>Praćenje dostupnosti</strong> – obavijest čim se stranica prestane otvarati, a ne tek kad nazove kupac.</li>
+<li><strong>Brigu o domeni, smještaju i certifikatu</strong>, s obnovama na vrijeme.</li>
+<li><strong>Povremenu provjeru</strong> obrazaca, poveznica i brzine učitavanja.</li>
+<li><strong>Manje izmjene sadržaja</strong> – novo radno vrijeme, cijene ili fotografije bez zasebne ponude za svaku sitnicu.</li>
+<li><strong>Osnovnu brigu o vidljivosti na tražilicama</strong>, jer i najbolje održavana stranica ne pomaže ako je nitko ne može pronaći.</li>
+</ul>
+<h2 id="provjera">Kako znati je li vaša stranica održavana?</h2>
+<p>Postavite si nekoliko pitanja:</p>
+<ul class="post-q">
+<li>Znate li kada vam ističe domena i na čije je ime registrirana?</li>
+<li>Znate li tko ima pristupne podatke za stranicu i hosting?</li>
+<li>Kada je stranica zadnji put ažurirana?</li>
+<li>Postoji li sigurnosna kopija i znate li gdje je?</li>
+<li>Kada ste zadnji put sami poslali upit preko vlastitog obrasca?</li>
+</ul>
+<div class="post-warn"><p>Ako na većinu pitanja odgovorite s <strong>„ne znam“</strong>, vaša stranica vjerojatno nije održavana – i to je trenutak da se to promijeni, prije nego što nastane problem.</p></div>
+<h2 id="primjer">Primjer iz prakse</h2>
+<div class="post-example">
+<p>Zamislimo obiteljski apartmanski obrt na Pelješcu. Stranicu je prije pet godina izradio poznanik, a obrazac za upite rezervacija godinama je slao poruke na adresu e-pošte koju vlasnica više ne provjerava. Usred predsezone gost nazove i kaže da je dvaput slao upit i nije dobio odgovor. Nakon provjere ispostavi se da upiti stižu na pogrešnu adresu već mjesecima. Problem se riješi u pola sata, ali izgubljene rezervacije više se ne mogu vratiti. Upravo takve situacije redovito održavanje otkriva na vrijeme.</p>
+</div>
+<h2 id="partner">Sami ili s partnerom?</h2>
+<p>Dio poslova možete obavljati sami: redovito testirati obrazac, provjeravati podatke i bilježiti datume obnove domene. Tehnički dio – ažuriranja, sigurnosne kopije i praćenje – zahtijeva vrijeme i znanje, a pogreška pri ažuriranju može srušiti stranicu. Zato mnogi vlasnici biraju partnera koji o tome brine umjesto njih.</p>
+<div class="post-tip"><p><strong>U KreirAI-ju</strong> smo zato osmislili mjesečni paket u kojem su smještaj stranice, održavanje i SEO uključeni. Vi se ne morate brinuti o obnovama, ažuriranjima ni sigurnosnim kopijama, a za izmjene sadržaja imate se kome javiti. Više o tome što stranica realno košta pročitajte u vodiču <a href="koliko-kosta-web-stranica-za-obrt.html">Koliko košta web stranica za obrt</a>.</p></div>
+<h2 id="zakljucak">Zaključak</h2>
+<p>Web stranica radi za vas danju i noću, ali samo ako netko brine o njoj. Malo redovite pažnje sprječava velike i skupe probleme – od izgubljenih upita do hakirane stranice.</p>
+<div class="post-cta">
+<h3>Niste sigurni u kakvom je stanju vaša stranica?</h3>
+<p>Ili želite da o njoj netko brine umjesto vas? Pišite nam na <a href="mailto:info@kreirai.hr">info@kreirai.hr</a> ili pogledajte pakete – Standardni paket sa smještajem, održavanjem, izmjenama i SEO-om već je od 90 € mjesečno.</p>
+<div class="btn-row">
+<a class="btn btn--ink" href="kontakt.html">Javite nam se <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a class="btn btn--white" href="/#cjenik">Pogledajte pakete</a>
+</div>
+</div>
+<a class="post-related" href="koliko-kosta-web-stranica-za-obrt.html">
+<small>Pročitajte i</small>
+<strong>Koliko košta web stranica za obrt u 2026. i na što paziti? →</strong>
+</a>
+<a class="post-related" href="google-recenzije-za-male-tvrtke.html">
+<small>Pročitajte i</small>
+<strong>Kako dobiti više Google recenzija – bez kršenja pravila →</strong>
+</a>
+</div>
+    <p class="post-back"><a class="btn btn--white" href="blog.html">← Svi članci</a></p>
+  </div>
+</div>
+</main>
+
+<footer class="foot">
+  <div class="foot__mark" aria-hidden="true"><div>
+    <span>KreirAI</span><span>KreirAI</span><span>KreirAI</span><span>KreirAI</span><span>KreirAI</span><span>KreirAI</span>
+  </div></div>
+  <div class="wrap">
+    <div class="foot__row">
+      <a class="nav__logo" href="/" style="height:52px;border-radius:8px" aria-label="KreirAI — početna">Kreir<b>AI</b></a>
+      <nav aria-label="Podnožje">
+        <a href="usluge.html">Usluge</a><a href="portfolio.html">Portfolio</a><a href="blog.html">Blog</a><a href="onama.html">O nama</a><a href="kontakt.html">Kontakt</a><a href="faq.html">Pitanja</a>
+        <a href="uvjeti.html">Uvjeti korištenja</a><a href="privatnost.html">Pravila privatnosti</a><a href="cjenik.xml">Cjenik (XML)</a><a href="cjenik.csv">Cjenik (CSV)</a>
+      </nav>
+      <span>© 2026 KreirAI. Sva prava pridržana.</span>
+    </div>
+    <div class="foot__legal">
+      <p><strong>KreirAI, obrt za računalno stvaralaštvo</strong>, vl. Tomislav Janković · Osijek, Hrvatska · <a href="mailto:info@kreirai.hr">info@kreirai.hr</a></p>
+      <p>Nismo u sustavu PDV-a — PDV nije obračunat temeljem čl. 90. st. 1. Zakona o PDV-u. Sve navedene cijene su konačne.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="hud" id="hud" role="region" aria-label="Igrica: bodovi">
+  <div class="hud__score"><small>BODOVI</small><b id="score">000000</b></div>
+  <button type="button" id="sndBtn" aria-pressed="false">🔈 Zvuk</button>
+  <button type="button" class="hud__ach" id="achBtn" aria-label="Otključana postignuća">🏆 <span id="achN">0</span></button>
+  <button type="button" class="hud__min" id="hudMin" aria-label="Sakrij traku s bodovima">–</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"><small>Postignuće otključano</small><strong id="toastT">—</strong><em id="toastP">+0</em></div>
+<div class="msg" id="msg" role="status" aria-live="polite" aria-hidden="true">
+  <div class="msg__bar" id="msgBar"><span>1 nova poruka <em>(baci me)</em></span><button class="msg__x" type="button" id="msgX" aria-label="Zatvori poruku">×</button></div>
+  <div class="msg__body"><span class="msg__ico" aria-hidden="true">!</span><div><strong id="msgFrom">Od: vašeg telefona</strong><p id="msgTxt">„Zašto više ne zvonim?“</p></div></div>
+  <div class="msg__btns"><a href="kontakt.html" id="msgGo" data-snd="coin">Obratite se KreirAI-ju</a><button type="button" id="msgC">Zatvori</button></div>
+</div>
+<div id="cookieBanner" class="cookie" hidden role="dialog" aria-live="polite" aria-label="Obavijest o kolačićima">
+  <strong>Kolačić? 🍪</strong>
+  <p>Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje bodova i postavki). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html">Pravilima privatnosti</a>.</p>
+  <button id="cookieAccept" type="button" class="btn btn--ink">Slažem se</button>
+</div>
+<canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+
+<script src="arcade.js?v=10"></script>
+</body>
+</html>

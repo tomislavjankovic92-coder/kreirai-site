@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<script>
+  // SEO: jedna adresa po stranici. GitHub Pages ne zna raditi 301
+  // preusmjeravanja, pa svaku "drugu" adresu iste stranice odmah
+  // prebacujemo na službenu (ista kao <link rel="canonical">):
+  // www.kreirai.hr → kreirai.hr, /index.html → /, /portfolio → /portfolio.html
+  (function () {
+    var h = location.hostname;
+    if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
+    var p = location.pathname, n = p;
+    if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke|izrada-webshopa-za-mali-posao|google-recenzije-za-male-tvrtke|odrzavanje-web-stranice)\/?$/);
+    if (m) n = '/' + m[1] + '.html';
+    if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
+  })();
+</script>
+<script>
+  // Spriječi preglednik da pri osvježavanju (refresh) stranice vrati
+  // korisnika na mjesto gdje je zadnje skrolao — stranica uvijek kreće
+  // od vrha. Mora se postaviti što prije, prije nego preglednik stigne
+  // primijeniti svoje zadano ponašanje vraćanja scroll pozicije.
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+</script>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://d8j0ntlcm91z4.cloudfront.net; media-src 'self' https://d8j0ntlcm91z4.cloudfront.net; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kako dobiti više Google recenzija – bez kršenja pravila | KreirAI</title>
+<meta name="description" content="Praktični vodič za obrtnike: kada i kako zamoliti kupce za Google recenziju, kako odgovarati na loše ocjene i što Google zabranjuje.">
+<link rel="canonical" href="https://kreirai.hr/google-recenzije-za-male-tvrtke.html">
+
+<!-- Social share preview (link thumbnail) -->
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-11-23">
+<meta property="article:section" content="Digitalni marketing">
+<meta property="og:locale" content="hr_HR">
+<meta property="og:url" content="https://kreirai.hr/google-recenzije-za-male-tvrtke.html">
+<meta property="og:site_name" content="KreirAI">
+<meta property="og:title" content="Kako dobiti više Google recenzija – bez kršenja pravila">
+<meta property="og:description" content="Praktični vodič za obrtnike: kada i kako zamoliti kupce za Google recenziju, kako odgovarati na loše ocjene i što Google zabranjuje.">
+<meta property="og:image" content="https://kreirai.hr/blog-google-recenzije-thumb.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Kartica s pet zvjezdica i NFC kartica za Google recenzije na pultu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kako dobiti više Google recenzija – bez kršenja pravila">
+<meta name="twitter:description" content="Praktični vodič za obrtnike: kada i kako zamoliti kupce za Google recenziju, kako odgovarati na loše ocjene i što Google zabranjuje.">
+<meta name="twitter:image" content="https://kreirai.hr/blog-google-recenzije-thumb.jpg">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="arcade.css?v=10">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://kreirai.hr/google-recenzije-za-male-tvrtke.html#article",
+      "mainEntityOfPage": "https://kreirai.hr/google-recenzije-za-male-tvrtke.html",
+      "headline": "Kako dobiti više Google recenzija – bez kršenja pravila",
+      "description": "Praktični vodič za obrtnike: kada i kako zamoliti kupce za Google recenziju, kako odgovarati na loše ocjene i što Google zabranjuje.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://kreirai.hr/blog-google-recenzije-thumb.jpg",
+        "width": 1200,
+        "height": 675
+      },
+      "datePublished": "2026-11-23",
+      "dateModified": "2026-11-23",
+      "inLanguage": "hr",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://kreirai.hr/#organization",
+        "name": "KreirAI",
+        "url": "https://kreirai.hr/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://kreirai.hr/#organization",
+        "name": "KreirAI",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://kreirai.hr/logo-512.png"
+        }
+      },
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://kreirai.hr/blog.html#blog",
+        "name": "KreirAI blog"
+      },
+      "keywords": "kako dobiti Google recenzije, poveznica za Google recenzije, odgovor na lošu recenziju, Google recenzije za obrt"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://kreirai.hr/google-recenzije-za-male-tvrtke.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Početna",
+          "item": "https://kreirai.hr/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://kreirai.hr/blog.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Google recenzije",
+          "item": "https://kreirai.hr/google-recenzije-za-male-tvrtke.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="no-js">
+<a class="sr-only" href="#sadrzaj">Preskoči na sadržaj</a>
+<header class="nav" id="top">
+  <a class="nav__logo" href="/" aria-label="KreirAI — početna">Kreir<b>AI</b></a>
+  <nav class="nav__links" aria-label="Glavni izbornik">
+    <a href="/">Početna</a>
+    <a href="usluge.html">Usluge</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="blog.html" aria-current="page">Blog</a>
+    <a href="onama.html">O nama</a>
+    <a href="kontakt.html">Kontakt</a>
+    <a href="faq.html">Pitanja</a>
+  </nav>
+  <span class="nav__spacer"></span>
+  <a class="nav__cta" href="kontakt.html" data-snd="coin">Zatražite <span>ponudu</span></a>
+  <button class="nav__burger" id="burger" type="button" aria-label="Otvori izbornik" aria-expanded="false" aria-controls="menu"><span></span></button>
+</header>
+<nav class="menu" id="menu" aria-label="Mobilni izbornik">
+  <a href="/">Početna</a>
+  <a href="usluge.html">Usluge</a>
+  <a href="portfolio.html">Portfolio</a>
+  <a href="blog.html">Blog</a>
+  <a href="onama.html">O nama</a>
+  <a href="kontakt.html">Kontakt</a>
+  <a href="faq.html">Pitanja</a>
+  <a class="btn btn--lemon" href="kontakt.html">Zatražite ponudu</a>
+</nav>
+
+<main id="sadrzaj">
+<section class="phero" style="padding-bottom:110px">
+  <div class="wrap post">
+    <nav aria-label="Putanja" class="post-crumbs">
+<a href="/">Početna</a><span aria-hidden="true">/</span><a href="blog.html">Blog</a><span aria-hidden="true">/</span><span>Google recenzije</span>
+</nav>
+    <h1 class="post-title rv">Kako dobiti više Google recenzija – bez kršenja pravila</h1>
+    <div class="post-meta">
+<time datetime="2026-11-23">23. studenoga 2026.</time><i aria-hidden="true"></i><span>KreirAI</span><i aria-hidden="true"></i><span>6 min čitanja</span>
+</div>
+  </div>
+</section>
+<div class="post-wrap sec--grid" data-ach="Čitate blog članak" id="clanak">
+  <div class="wrap post">
+    <figure class="post-cover rv" style="margin-top:-150px"><img src="blog-google-recenzije-thumb.jpg" alt="Kartica s pet zvjezdica i NFC kartica za Google recenzije na pultu" width="1200" height="675" fetchpriority="high" decoding="async"></figure>
+    <div class="post-body">
+<div class="post-answer">
+<span class="label">Kratki odgovor</span>
+<p>Za više Google recenzija trebaju vam tri stvari: <strong>izravna poveznica</strong> na obrazac za recenziju, <strong>pravi trenutak</strong> (odmah nakon dobro obavljenog posla) i <strong>navika da pitate svakog kupca</strong>. Ne nudite ništa zauzvrat, ne birajte samo zadovoljne kupce i odgovarajte na svaku recenziju – tako ste usklađeni s Googleovim pravilima, a profil raste prirodno.</p>
+</div>
+<p>Kad netko traži vodoinstalatera, frizera ili autoservis u svom mjestu, prvo što vidi na Googleu nije vaša web stranica, nego <a href="google-profil-tvrtke.html">karta s nekoliko tvrtki</a>, zvjezdicama i brojem recenzija. U tih nekoliko sekundi odlučuje koga će nazvati. Tvrtka s 4,8 zvjezdica i šezdeset recenzija djeluje sigurnije od one s tri recenzije iz 2021., čak i ako je druga jednako dobra.</p>
+<p>Većina zadovoljnih kupaca recenziju nikad ne napiše sama od sebe. Ne zato što ih nije briga, nego zato što se toga ne sjete ili ne znaju gdje kliknuti. Dobra vijest: to se može promijeniti jednostavnom navikom. U ovom vodiču objašnjavamo kako tražiti recenzije na način koji je kupcima lak, a s Googleovim pravilima potpuno usklađen.</p>
+<h2 id="zasto">Zašto su recenzije važne malom poslu</h2>
+<p>Google u svojoj pomoći za Google profil tvrtke navodi da recenzije i odgovori vlasnika pomažu tvrtki da se istakne te se prikazuju uz profil na kartama i u pretraživanju. Za lokalni posao to znači tri stvari:</p>
+<ul class="post-list post-pros">
+<li><strong>Povjerenje.</strong> Novi kupac čita iskustva ljudi poput sebe, a ne vašu reklamu.</li>
+<li><strong>Vidljivost.</strong> Profil s redovitim, svježim recenzijama djeluje živo i aktivno.</li>
+<li><strong>Povratna informacija.</strong> Recenzije vam govore što kupci cijene i što ih smeta – besplatno istraživanje tržišta.</li>
+</ul>
+<h2 id="pravila">Što Google dopušta, a što zabranjuje</h2>
+<p>Prije savjeta, pravila. Googleova pravila za sadržaj na kartama izričito dopuštaju da tvrtka zamoli kupce za recenziju, pod uvjetom da recenzija opisuje stvarno iskustvo i da ne nudite ništa zauzvrat niti utječete na ocjenu.</p>
+<p><strong>Zabranjeno je:</strong></p>
+<ul class="post-list post-cons">
+<li>nuditi nagradu za recenziju – popust, besplatnu uslugu, poklon ili sudjelovanje u nagradnoj igri;</li>
+<li>birati koga ćete pitati – primjerice slati poveznicu samo kupcima za koje znate da su zadovoljni, a ostale preskočiti;</li>
+<li>nuditi nešto za uklanjanje ili izmjenu loše recenzije;</li>
+<li>pisati recenzije sam sebi ili tražiti od obitelji, prijatelja i zaposlenika da ih pišu kao da su kupci;</li>
+<li>pritiskati kupce da recenziju napišu odmah, pred vama, ili tražiti da u njoj piše nešto određeno.</li>
+</ul>
+<div class="post-warn"><p>Google navodi da takve recenzije <strong>uklanja</strong>, a profilima koji pravila krše opetovano može ograničiti primanje novih recenzija ili privremeno sakriti postojeće. Osim toga, Zakon o zaštiti potrošača lažne recenzije i njihovo naručivanje izričito svrstava u zavaravajuću poslovnu praksu. Pošteno je, dakle, i jedino sigurno.</p></div>
+<h2 id="koraci">6 koraka do više recenzija</h2>
+<div class="post-gsteps">
+<section aria-labelledby="korak-1" class="post-gstep">
+<span aria-hidden="true" class="n">1</span>
+<h3 id="korak-1">Uzmite izravnu poveznicu na obrazac za recenziju</h3>
+<p>U Google profilu tvrtke odaberite <strong>Pročitajte recenzije → Dobijte više recenzija</strong> (ili „Zatražite recenzije“, ovisno o prikazu). Google vam daje kratku poveznicu i QR kod koji kupca vode ravno na obrazac za ocjenu – bez traženja vaše tvrtke na karti i bez dodatnih klikova. Ako profil još nije preuzet i potvrđen, prvo pogledajte <a href="google-profil-tvrtke.html">kako urediti Google profil tvrtke</a>.</p>
+</section>
+<section aria-labelledby="korak-2" class="post-gstep">
+<span aria-hidden="true" class="n">2</span>
+<h3 id="korak-2">Pitajte u pravom trenutku</h3>
+<p>Najbolji trenutak je odmah nakon što je kupac zadovoljan: kad frizerka okrene ogledalo, kad vodoinstalater pusti vodu i ništa ne curi, kad kupac preuzme gotov namještaj. Tada je dojam svjež, a molba zvuči prirodno.</p>
+<div class="post-tip"><p><strong>Jedna rečenica je dovoljna:</strong> „Ako ste zadovoljni, puno bi nam značila kratka recenzija na Googleu – evo, ovdje je poveznica.“</p></div>
+</section>
+<section aria-labelledby="korak-3" class="post-gstep">
+<span aria-hidden="true" class="n">3</span>
+<h3 id="korak-3">Neka bude lako – za kupca i za vas</h3>
+<p>Poveznicu ili QR kod stavite tamo gdje kupac ionako gleda:</p>
+<ul class="post-list">
+<li>u poruku zahvale nakon obavljenog posla (SMS, WhatsApp, e-pošta);</li>
+<li>na račun ili ponudu;</li>
+<li>na pult, u radionicu ili u vozilo – kao naljepnicu s QR kodom ili <a href="usluge.html">NFC karticu</a> koju kupac samo dotakne mobitelom;</li>
+<li>na <a href="web-stranica-ili-facebook-stranica.html">svoju web stranicu</a>, uz odjeljak s recenzijama.</li>
+</ul>
+<p>Što je manje koraka između „zadovoljan sam“ i „objavljeno“, to ćete više recenzija dobiti.</p>
+</section>
+<section aria-labelledby="korak-4" class="post-gstep">
+<span aria-hidden="true" class="n">4</span>
+<h3 id="korak-4">Pitajte sve kupce, ne samo one najzadovoljnije</h3>
+<p>Ovo je točka na kojoj mnogi nesvjesno griješe. Ako poveznicu šaljete svima nakon obavljenog posla, ponašate se u skladu s pravilima i dobivate stvarnu sliku. Uz to, nekoliko ocjena od četiri zvjezdice čini profil uvjerljivijim od niza savršenih petica.</p>
+</section>
+<section aria-labelledby="korak-5" class="post-gstep">
+<span aria-hidden="true" class="n">5</span>
+<h3 id="korak-5">Odgovorite na svaku recenziju</h3>
+<p>Na pohvale odgovorite kratko i osobno – zahvalite i, ako možete, spomenite posao: „Hvala, drago nam je da kuhinja stoji kako ste zamislili.“</p>
+<p>Na loše recenzije odgovorite smireno, bez prepucavanja i bez osobnih podataka kupca. Prepoznajte problem, objasnite što ste poduzeli i pozovite kupca da vas kontaktira izravno. Takav odgovor ne čita samo nezadovoljni kupac – čitaju ga svi budući.</p>
+</section>
+<section aria-labelledby="korak-6" class="post-gstep">
+<span aria-hidden="true" class="n">6</span>
+<h3 id="korak-6">Neka to postane navika, a ne akcija</h3>
+<p>Deset recenzija u jednom tjednu pa godinu dana ništa izgleda neprirodno. Bolje je dvije-tri mjesečno, stalno. Odredite tko u timu pita i kada (primjerice uvijek pri predaji posla) i jednom mjesečno pogledajte profil i odgovorite na nove recenzije.</p>
+</section>
+</div>
+<h2 id="primjer">Primjer: stolarski obrt iz Đakova</h2>
+<div class="post-example">
+<p>(Izmišljeni primjer za ilustraciju.) Mali stolarski obrt izrađuje kuhinje i ugradne ormare. Kupci su redovito zadovoljni, ali na Googleu ima samo pet recenzija, posljednja od prije dvije godine. Vlasnik uvede jedno pravilo: pri svakoj predaji posla kupcu ostavi malu karticu s QR kodom i NFC čipom i kaže rečenicu o recenziji, a večer prije pošalje i poruku zahvale s poveznicom. Ne nudi popust i ne bira kupce.</p>
+<p>Za nekoliko mjeseci profil ima dvadesetak novih recenzija, u kojima kupci sami spominju točnost mjera, urednost montaže i poštovanje dogovorenog roka – upravo ono što novi kupci žele znati. Jedna recenzija je kritična (kašnjenje okova), a vlasnikov smiren odgovor pokazuje da se problemi kod njega rješavaju.</p>
+</div>
+<h2 id="zablude">Česte zablude o Google recenzijama</h2>
+<ul class="post-q">
+<li><strong>„Smijem dati popust ako ostave recenziju, samo ne tražim da bude pozitivna.“</strong> Ne smijete. Svaka nagrada za recenziju krši Googleova pravila, bez obzira na ocjenu.</li>
+<li><strong>„Loša recenzija mi uništava profil, moram je maknuti.“</strong> Google uklanja recenzije koje krše pravila (lažne, uvredljive, nepovezane s vašim poslom), ali ne i one koje su samo negativne. Dobar odgovor obično vrijedi više od brisanja.</li>
+<li><strong>„Prijatelji i obitelj mogu napisati par recenzija za početak.“</strong> Recenzije na temelju sukoba interesa nisu dopuštene. Počnite od stvarnih kupaca – i petero zadovoljnih je dobar početak.</li>
+<li><strong>„Recenzije dolaze same ako je posao dobar.“</strong> Dolaze, ali sporo. Kupca treba podsjetiti i olakšati mu.</li>
+</ul>
+<h2 id="zakljucak">Zaključak</h2>
+<p>Više Google recenzija ne zahtijeva trikove ni plaćene alate, nego tri stvari: izravnu poveznicu, pravi trenutak i naviku da pitate svakog kupca. Uz smirene odgovore na svaku recenziju, to je jedan od najjeftinijih načina da vas novi kupci u vašem mjestu primijete i nazovu.</p>
+<div class="post-cta">
+<h3>Želite da kupcima bude još lakše?</h3>
+<p>Izrađujemo NFC kartice za Google recenzije – kupac dotakne karticu mobitelom ili skenira QR kod i odmah je na obrascu za recenziju. Povezat ćemo ih s vašim profilom, a pogledat ćemo i je li sam profil uređen kako treba. Javite nam se na <a href="mailto:info@kreirai.hr">info@kreirai.hr</a> ili pogledajte ponudu.</p>
+<div class="btn-row">
+<a class="btn btn--ink" href="kontakt.html">Javite nam se <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a class="btn btn--white" href="usluge.html">NFC kartice i usluge</a>
+</div>
+</div>
+<a class="post-related" href="google-profil-tvrtke.html">
+<small>Pročitajte i</small>
+<strong>Google profil tvrtke: 7 koraka do više lokalnih kupaca →</strong>
+</a>
+<a class="post-related" href="odrzavanje-web-stranice.html">
+<small>Pročitajte i</small>
+<strong>Što se događa s web stranicom koju nitko ne održava →</strong>
+</a>
+<div class="post-sources">
+<h2>Izvori</h2>
+<ul class="post-list">
+<li><a href="https://support.google.com/business/answer/16816815?hl=en" rel="noopener" target="_blank">Google: Create a Google link or QR code to request reviews</a></li>
+<li><a href="https://support.google.com/business/answer/7035772" rel="noopener" target="_blank">Google: Tips to get more Google reviews</a></li>
+<li><a href="https://support.google.com/contributionpolicy/answer/7400114?hl=en" rel="noopener" target="_blank">Google Karte: zabranjeni i ograničeni sadržaj (lažno sudjelovanje, nagrađene recenzije)</a></li>
+<li><a href="https://transparencyreport.google.com/maps-content/protections?hl=en" rel="noopener" target="_blank">Google Transparency Report: zaštita sadržaja na kartama</a></li>
+<li><a href="https://narodne-novine.nn.hr/clanci/sluzbeni/2022_02_19_203.html" rel="noopener" target="_blank">Zakon o zaštiti potrošača (NN 19/2022)</a></li>
+<li><a href="https://informator.hr/strucni-clanci/novosti-u-zastiti-potrosaca" rel="noopener" target="_blank">Informator: Novosti u zaštiti potrošača</a></li>
+</ul>
+</div>
+</div>
+    <p class="post-back"><a class="btn btn--white" href="blog.html">← Svi članci</a></p>
+  </div>
+</div>
+</main>
+
+<footer class="foot">
+  <div class="foot__mark" aria-hidden="true"><div>
+    <span>KreirAI</span><span>KreirAI</span><span>KreirAI</span><span>KreirAI</span><span>KreirAI</span><span>KreirAI</span>
+  </div></div>
+  <div class="wrap">
+    <div class="foot__row">
+      <a class="nav__logo" href="/" style="height:52px;border-radius:8px" aria-label="KreirAI — početna">Kreir<b>AI</b></a>
+      <nav aria-label="Podnožje">
+        <a href="usluge.html">Usluge</a><a href="portfolio.html">Portfolio</a><a href="blog.html">Blog</a><a href="onama.html">O nama</a><a href="kontakt.html">Kontakt</a><a href="faq.html">Pitanja</a>
+        <a href="uvjeti.html">Uvjeti korištenja</a><a href="privatnost.html">Pravila privatnosti</a><a href="cjenik.xml">Cjenik (XML)</a><a href="cjenik.csv">Cjenik (CSV)</a>
+      </nav>
+      <span>© 2026 KreirAI. Sva prava pridržana.</span>
+    </div>
+    <div class="foot__legal">
+      <p><strong>KreirAI, obrt za računalno stvaralaštvo</strong>, vl. Tomislav Janković · Osijek, Hrvatska · <a href="mailto:info@kreirai.hr">info@kreirai.hr</a></p>
+      <p>Nismo u sustavu PDV-a — PDV nije obračunat temeljem čl. 90. st. 1. Zakona o PDV-u. Sve navedene cijene su konačne.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="hud" id="hud" role="region" aria-label="Igrica: bodovi">
+  <div class="hud__score"><small>BODOVI</small><b id="score">000000</b></div>
+  <button type="button" id="sndBtn" aria-pressed="false">🔈 Zvuk</button>
+  <button type="button" class="hud__ach" id="achBtn" aria-label="Otključana postignuća">🏆 <span id="achN">0</span></button>
+  <button type="button" class="hud__min" id="hudMin" aria-label="Sakrij traku s bodovima">–</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"><small>Postignuće otključano</small><strong id="toastT">—</strong><em id="toastP">+0</em></div>
+<div class="msg" id="msg" role="status" aria-live="polite" aria-hidden="true">
+  <div class="msg__bar" id="msgBar"><span>1 nova poruka <em>(baci me)</em></span><button class="msg__x" type="button" id="msgX" aria-label="Zatvori poruku">×</button></div>
+  <div class="msg__body"><span class="msg__ico" aria-hidden="true">!</span><div><strong id="msgFrom">Od: vašeg telefona</strong><p id="msgTxt">„Zašto više ne zvonim?“</p></div></div>
+  <div class="msg__btns"><a href="kontakt.html" id="msgGo" data-snd="coin">Obratite se KreirAI-ju</a><button type="button" id="msgC">Zatvori</button></div>
+</div>
+<div id="cookieBanner" class="cookie" hidden role="dialog" aria-live="polite" aria-label="Obavijest o kolačićima">
+  <strong>Kolačić? 🍪</strong>
+  <p>Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje bodova i postavki). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html">Pravilima privatnosti</a>.</p>
+  <button id="cookieAccept" type="button" class="btn btn--ink">Slažem se</button>
+</div>
+<canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+
+<script src="arcade.js?v=10"></script>
+</body>
+</html>
