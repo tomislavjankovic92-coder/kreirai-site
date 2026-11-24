@@ -296,6 +296,29 @@
     }
   })();
 
+  /* ---------- šaljivi naslov kartice dok je posjetitelj na drugoj kartici ---------- */
+  (function () {
+    if (navigator.webdriver || /bot|crawl|spider|lighthouse|headless/i.test(navigator.userAgent)) return;
+    var orig = doc.title, away = [
+      '📞 Zvoni! Vratite se…',
+      'Psst… stranica vas čeka 👀',
+      'Telefon vam se dosađuje 😴',
+      'Klijenti vas traže na Googleu 🔎',
+      '★★★★★ samo nedostajete vi',
+      'Hej, ostavili ste nas! 🥺'
+    ], i = 0, t = null, back = null;
+    doc.addEventListener('visibilitychange', function () {
+      clearInterval(t); clearTimeout(back);
+      if (doc.hidden) {
+        i = 0; doc.title = away[0];
+        t = setInterval(function () { i = (i + 1) % away.length; doc.title = away[i]; }, 2000);
+      } else {
+        doc.title = 'Bok opet! 👋 Igrač 1 se vratio';
+        back = setTimeout(function () { doc.title = orig; }, 1800);
+      }
+    });
+  })();
+
   /* ---------- konfeti + Konami kod (↑↑↓↓←→←→BA) ---------- */
   var cf = $('#confetti');
   function confetti() {
