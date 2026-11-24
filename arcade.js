@@ -38,7 +38,7 @@
   var lastTick = 0;
   function tick(f) { var n = Date.now(); if (n - lastTick < 60) return; lastTick = n; beep(f, .035); }
   $$('.nav__links a,.nav__logo,.nav__cta,.nav__burger,.menu a,.foot__row nav a').forEach(function (el, i) { el.addEventListener('mouseenter', function () { tick(i % 2 ? 1175 : 1047); }); });
-  $$('.btn,.tv__knob,.faq summary,.msg__btns a,.msg__btns button,.hud button').forEach(function (el) { el.addEventListener('mouseenter', function () { tick(784); }); });
+  $$('.btn,.tv__knob,.faq summary,.msg__btns a,.msg__btns button,.hud button,.dont,.boom__fix').forEach(function (el) { el.addEventListener('mouseenter', function () { tick(784); }); });
 
   /* ---------- bodovi i postignuća ---------- */
   var scoreEl = $('#score'), shown = 0, score = parseInt(store('kaiScore') || '0', 10) || 0;
@@ -295,6 +295,99 @@
       var ft = setTimeout(first, 15000);
     }
   })();
+
+  /* ---------- upozorenje: sirena pri prelasku mišem (samo kad je zvuk uključen) ---------- */
+  var notice = $('.notice__tape'), lastSiren = 0;
+  if (notice) notice.addEventListener('mouseenter', function () {
+    var n = Date.now(); if (n - lastSiren < 1500) return; lastSiren = n;
+    for (var k = 0; k < 4; k++) (function (k) { setTimeout(function () { beep(k % 2 ? 660 : 880, .11); }, k * 120); })(k);
+    achieve('upozorenje', 'Pročitali ste upozorenje', 50);
+  });
+
+  /* ---------- dramatični zvučni efekti (samo kad je zvuk uključen) ---------- */
+  var noiseBuf = null;
+  function nbuf(c) { if (noiseBuf) return noiseBuf; var b = c.createBuffer(1, c.sampleRate * 2, c.sampleRate), d = b.getChannelData(0); for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return (noiseBuf = b); }
+  function sTone(f, d, at, o) {
+    o = o || {}; if (!soundOn) return; var c = ac(); if (!c) return;
+    var t = c.currentTime + at, osc = c.createOscillator(), g = c.createGain();
+    osc.type = o.type || 'square'; osc.frequency.setValueAtTime(f, t);
+    if (o.slide) osc.frequency.exponentialRampToValueAtTime(o.slide, t + d);
+    if (o.vib) { var l = c.createOscillator(), lg = c.createGain(); l.frequency.value = o.vib; lg.gain.value = f * .03; l.connect(lg); lg.connect(osc.frequency); l.start(t); l.stop(t + d + .05); }
+    var v = o.vol || .08; g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(v, t + (o.att || .01)); g.gain.setValueAtTime(v, t + d * (o.hold || .6)); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+    osc.connect(g); g.connect(c.destination); osc.start(t); osc.stop(t + d + .05);
+  }
+  function sNoise(d, at, o) {
+    o = o || {}; if (!soundOn) return; var c = ac(); if (!c) return;
+    var t = c.currentTime + at, src = c.createBufferSource(), fl = c.createBiquadFilter(), g = c.createGain();
+    src.buffer = nbuf(c); src.loop = true; fl.type = o.filter || 'lowpass'; fl.Q.value = o.q || 1;
+    fl.frequency.setValueAtTime(o.f0 || 2000, t); if (o.f1) fl.frequency.exponentialRampToValueAtTime(o.f1, t + d);
+    var v = o.vol || .2; g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(v, t + (o.att || .005)); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+    src.connect(fl); fl.connect(g); g.connect(c.destination); src.start(t, Math.random()); src.stop(t + d + .05);
+  }
+  function sfxCrash() {
+    if (!soundOn) return; var c = ac(); if (c && c.resume) c.resume();
+    // sirena
+    for (var k = 0; k < 3; k++) { sTone(620, .4, k * .4, { type: 'sawtooth', slide: 1240, vol: .045, hold: .8 }); }
+    // pucanje / pukotine
+    [0, .12, .27, .5].forEach(function (a, i) { sNoise(.06 + i * .02, a, { filter: 'highpass', f0: 2500, vol: .35 }); });
+    // tutnjava
+    sNoise(2.6, .15, { filter: 'lowpass', f0: 180, f1: 60, vol: .55, att: .6 });
+    // velika eksplozija
+    sTone(140, 1.4, .45, { type: 'sine', slide: 28, vol: .5, att: .005, hold: .1 });
+    sNoise(1.3, .45, { filter: 'lowpass', f0: 4000, f1: 90, vol: .6 });
+    // komadi koji padaju
+    for (var i = 0; i < 22; i++) { var a = .55 + Math.random() * 1.5; sNoise(.05 + Math.random() * .08, a, { filter: 'bandpass', f0: 300 + Math.random() * 2500, q: 6, vol: .25 * (1 - (a - .55) / 2) }); }
+    // staklo
+    for (var s = 0; s < 9; s++) sTone(2200 + Math.random() * 3200, .25, .75 + Math.random() * .5, { type: 'triangle', vol: .04, hold: .05 });
+    // tužna truba
+    [[196, .32], [185, .32], [175, .32], [165, 1.1]].forEach(function (n, i) {
+      sTone(n[0], n[1], 1.75 + i * .36, { type: 'sawtooth', vol: .07, slide: i === 3 ? 150 : null, vib: i === 3 ? 6 : 0, att: .03, hold: .7 });
+      sTone(n[0] / 2, n[1], 1.75 + i * .36, { type: 'square', vol: .03, att: .03, hold: .7 });
+    });
+  }
+  function sfxFix() {
+    if (!soundOn) return;
+    sTone(180, .5, 0, { type: 'square', slide: 1600, vol: .05, hold: .3 });
+    sNoise(.5, 0, { filter: 'bandpass', f0: 400, f1: 4000, q: 2, vol: .12 });
+    [523, 659, 784, 1046, 1319].forEach(function (f, i) { sTone(f, i === 4 ? .45 : .12, .45 + i * .08, { vol: .07 }); });
+  }
+
+  /* ---------- "Nikako ne stiskajte ovo": stranica se raspadne, gumb je popravi ---------- */
+  var dont = $('#dontBtn'), boom = $('#boom'), fix = $('#boomFix'), broken = [], isBroken = false;
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+  function breakPage() {
+    if (isBroken || !boom) return; isBroken = true;
+    sfxCrash();
+    setTimeout(function () { achieve('boom', 'Znatiželja je srušila stranicu', 1); }, 3300);
+    var H = innerHeight, els = $$('.nav, .tape-line, .hazard-bar, main section .wrap > *, main > div .wrap > *, .hero__stage > *, .foot__mark, .foot__row > *, .foot__contact, .foot__legal, .foot__danger');
+    broken = [];
+    els.forEach(function (el) {
+      var r = el.getBoundingClientRect(); if (r.bottom < -200 || r.top > H + 200 || !r.width) return;
+      var fall = H - r.top + rnd(200, 700), delay = rnd(0, 450) + (r.top < 0 ? 0 : (H - r.top) / H * 250);
+      if (reduce) { broken.push(el.animate([{ opacity: 1 }, { opacity: .15 }], { duration: 300, fill: 'forwards' })); return; }
+      broken.push(el.animate([
+        { transform: 'translate(0,0) rotate(0)' },
+        { transform: 'translate(' + rnd(-6, 6) + 'px,' + rnd(-4, 4) + 'px) rotate(' + rnd(-2, 2) + 'deg)', offset: .12 },
+        { transform: 'translate(' + rnd(-5, 5) + 'px,' + rnd(-3, 3) + 'px) rotate(' + rnd(-3, 3) + 'deg)', offset: .22 },
+        { transform: 'translate(' + rnd(-160, 160) + 'px,' + fall + 'px) rotate(' + rnd(-75, 75) + 'deg)' }
+      ], { duration: rnd(1100, 1700), delay: delay, easing: 'cubic-bezier(.55,0,.85,.35)', fill: 'forwards' }));
+    });
+    document.documentElement.classList.add('is-broken');
+    boom.hidden = false; setTimeout(function () { fix.focus({ preventScroll: true }); }, 1400);
+  }
+  function fixPage() {
+    if (!isBroken) return; isBroken = false;
+    sfxFix();
+    boom.hidden = true;
+    var n = broken.length, done = 0;
+    broken.forEach(function (a) { a.playbackRate = 2.2; a.reverse(); a.finished.then(function () { a.cancel(); if (++done >= n) document.documentElement.classList.remove('is-broken'); }); });
+    if (!n) document.documentElement.classList.remove('is-broken');
+    setTimeout(function () { document.documentElement.classList.remove('is-broken'); broken.forEach(function (a) { try { a.cancel(); } catch (e) {} }); }, 1800);
+    if (dont) dont.textContent = 'Rekao sam NIKAKO.';
+  }
+  if (dont) dont.addEventListener('click', breakPage);
+  if (fix) fix.addEventListener('click', fixPage);
+  doc.addEventListener('keydown', function (e) { if (e.key === 'Escape') fixPage(); });
 
   /* ---------- šaljivi naslov kartice dok je posjetitelj na drugoj kartici ---------- */
   (function () {
