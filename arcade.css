@@ -373,6 +373,14 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 .foot__row a{text-decoration:none;font-weight:700}
 .foot__row a:hover{color:var(--lemon)}
 .nav__logo:hover,.foot__row a.nav__logo:hover{background:var(--ink);color:#fff;box-shadow:inset 0 0 0 3px var(--lemon)}
+.foot__contact{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.fc{display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border:3px solid #fff;border-radius:999px;color:#fff;text-decoration:none;font-weight:800;font-size:1rem;transition:transform .15s,background .15s,color .15s}
+.fc span{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--coral);color:var(--ink)}
+.fc svg{width:16px;height:16px}
+.fc--wa span{background:#25D366;color:#fff}.fc--vb span{background:#7360F2;color:#fff}
+.fc:hover{background:var(--lemon);color:var(--ink);border-color:var(--lemon);transform:translateY(-2px)}
+.menu__contact{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.menu .menu__contact a{font-size:1rem;font-stretch:100%;-webkit-text-stroke:0;color:var(--ink);background:#fff;border:3px solid var(--ink);border-radius:999px;padding:8px 14px;text-transform:none;font-weight:800;box-shadow:3px 3px 0 var(--ink)}
 .foot__legal{margin-top:24px;padding-top:18px;border-top:2px dashed #2b2b36;font-size:.82rem;color:#9a9caa;line-height:1.6}
 .foot__legal strong{color:#e6e7ee}
 
@@ -690,8 +698,6 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 .kcard{display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:center;background:#fff;border:var(--bd);border-radius:14px;box-shadow:5px 5px 0 var(--ink);padding:16px 18px;text-decoration:none;color:var(--ink);transition:transform .2s,box-shadow .2s}
 a.kcard:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--coral)}
 .kcard .ico{width:56px;height:56px;border:3px solid var(--ink);border-radius:12px;display:grid;place-items:center;background:var(--coral)}
-.kcard:nth-child(2) .ico{background:var(--lemon)}
-.kcard:nth-child(3) .ico{background:var(--mint)}
 .kcard .ico svg{width:26px;height:26px}
 .kcard strong{display:block;font-weight:900;font-stretch:80%;text-transform:uppercase;font-size:1.25rem;line-height:1.05}
 .kcard small{display:block;margin-top:3px;font-weight:500;color:#4a4a55}
@@ -867,3 +873,16 @@ a.kcard:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--coral)}
   .post-gstep .n{left:16px;top:14px;width:48px;height:48px;font-size:1.7rem}
   .post-wrap{padding:40px 0 80px}
 }
+
+/* telefon, WhatsApp, Viber */
+.kcard--tel .ico{background:var(--coral)}
+.kcard--tel strong{font-size:1.7rem;font-stretch:100%;letter-spacing:.01em}
+.kcard--mail .ico{background:var(--lemon)}
+.kcard--loc .ico{background:var(--paper)}
+.kcard--time .ico{background:var(--mint)}
+.kchat{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.kcard--wa .ico{background:#25D366;color:#fff}
+.kcard--vb .ico{background:#7360F2;color:#fff}
+.kcard--wa:hover{box-shadow:8px 8px 0 #25D366}
+.kcard--vb:hover{box-shadow:8px 8px 0 #7360F2}
+@media (max-width:420px){.kchat{grid-template-columns:1fr}}
