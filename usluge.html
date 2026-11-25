@@ -56,7 +56,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=VT323&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="arcade.css?v=19">
+<link rel="stylesheet" href="arcade.css?v=21">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -276,6 +276,18 @@
       <li class="rv" style="--dl:0.2s"><span class="lvl__coin" aria-hidden="true"></span><span class="lvl__n"><b>03</b>Korak</span><h3>Dorada</h3><p>Tim ručno provjerava, dorađuje i usklađuje s brendom.</p></li>
       <li class="rv" style="--dl:0.3s"><span class="lvl__coin" aria-hidden="true"></span><span class="lvl__n"><b>04</b>Korak</span><h3>Isporuka</h3><p>Predajemo gotov rad i dogovaramo dalje korake.</p></li>
     </ol>
+    <div class="game rv" id="game">
+      <div class="game__head"><div><span class="lbl" style="background:var(--coral);color:var(--ink)"><i></i>Mini igra</span><h3>Prođite sva četiri koraka <span>i osvojite stranicu.</span></h3></div><button type="button" class="game__snd" id="gameSnd" aria-pressed="true">🔊 Zvuk igre</button></div>
+      <div class="game__screen" tabindex="0" aria-label="Mini igra: četiri levela od informiranja do isporuke web stranice">
+        <canvas id="gameCv"></canvas>
+        <div class="game__ov" id="gameOv" aria-live="polite"></div>
+      </div>
+      <div class="game__pad">
+        <button type="button" data-k="left" aria-label="Lijevo">◀</button><button type="button" data-k="right" aria-label="Desno">▶</button>
+        <button type="button" data-k="jump" class="jump" aria-label="Skok">SKOK</button>
+      </div>
+      <p class="game__keys">Tipkovnica: <b>A</b> / <b>D</b> kretanje · <b>W</b> ili <b>razmak</b> skok &nbsp;|&nbsp; Mobitel: tipke ispod ekrana</p>
+    </div>
   </div>
 </section>
 <div class="hazard-bar" aria-hidden="true"></div>
@@ -422,6 +434,7 @@
   <div class="boom__card"><span class="boom__lbl">GREŠKA 418 · KORISNIK JE STISNUO</span><strong id="boomT">Pa jesam li rekao da ne stišćete?!</strong><p>Sad ste sve srušili. Srećom, imamo gumb i za to — gore.</p></div>
 </div>
 
-<script src="arcade.js?v=19"></script>
+<script src="arcade.js?v=21"></script>
+<script src="igra.js?v=21"></script>
 </body>
 </html>

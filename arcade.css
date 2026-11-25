@@ -938,3 +938,45 @@ a.kcard:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--coral)}
 .kcard--wa:hover{box-shadow:8px 8px 0 #25D366}
 .kcard--vb:hover{box-shadow:8px 8px 0 #7360F2}
 @media (max-width:420px){.kchat{grid-template-columns:1fr}}
+
+/* ---------- mini igra (Usluge) ---------- */
+.game{margin-top:70px;--rr:0deg}
+.game__head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:14px 24px;margin-bottom:22px}
+.game__head h3{margin-top:14px;color:#fff;font-weight:900;font-stretch:75%;text-transform:uppercase;font-size:clamp(1.8rem,4vw,3rem);line-height:.95;max-width:720px;text-wrap:balance}
+.game__head h3 span{color:var(--lemon)}
+.game__screen{position:relative;max-width:980px;border:4px solid #fff;box-shadow:12px 12px 0 var(--coral);background:var(--lemon);overflow:hidden;outline:none;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.game__screen:focus-visible{box-shadow:12px 12px 0 var(--coral),0 0 0 4px var(--lemon)}
+.game__screen canvas{display:block;width:100%;image-rendering:auto}
+.game__ov{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:18px;background:rgba(11,11,16,.82);color:#fff}
+.game__ov.is-on{display:flex;animation:govIn .35s cubic-bezier(.3,1.5,.5,1)}
+@keyframes govIn{from{opacity:0;transform:scale(.94)}}
+.game__ov.is-card,.game__ov.is-clear{background:rgba(11,11,16,.7)}
+.game__ov.is-win{background:rgba(11,11,16,.62)}
+.game__lbl{font-family:var(--px);font-size:1.3rem;letter-spacing:.08em;background:var(--lemon);color:var(--ink);padding:3px 12px 1px}
+.game__ov.is-over .game__lbl{background:var(--red);color:#fff}
+.game__ov strong{font-weight:900;font-stretch:75%;text-transform:uppercase;font-size:clamp(1.8rem,5.4vw,3.4rem);line-height:.92;color:#fff}
+.game__ov p{max-width:440px;font-size:clamp(.85rem,2.2vw,1rem);color:#e6e7ee;line-height:1.35}
+.game__how{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;font-size:.9rem;color:#cfd0da}
+.game__how b{display:inline-grid;place-items:center;min-width:28px;height:28px;padding:0 6px;background:#fff;color:var(--ink);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--coral);font-family:var(--px);font-size:1.1rem}
+.game__row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.game__btn{display:inline-block;background:var(--coral);color:var(--ink);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--lemon);font-weight:900;font-stretch:85%;text-transform:uppercase;font-size:clamp(1rem,2.6vw,1.25rem);padding:12px 22px;cursor:pointer;text-decoration:none;margin-top:6px}
+.game__btn:hover{background:var(--lemon)}
+.game__btn:active{transform:translate(5px,5px);box-shadow:none}
+.game__btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.game__btn--ghost{background:#fff}
+.game__keys{margin-top:16px;color:#c9cbd6;font-size:.95rem}
+.game__keys b{color:var(--lemon);font-family:var(--px);font-size:1.15rem}
+.game__pad{display:none;max-width:980px;margin-top:18px;gap:12px;user-select:none;-webkit-user-select:none;touch-action:none}
+.game__pad button{height:74px;min-width:84px;border:4px solid #fff;background:var(--ink);color:#fff;font-size:1.8rem;box-shadow:6px 6px 0 var(--coral);touch-action:none;-webkit-tap-highlight-color:transparent}
+.game__pad button.jump{margin-left:auto;min-width:130px;background:var(--lemon);color:var(--ink);font-weight:900;font-size:1.3rem;border-color:var(--ink);box-shadow:6px 6px 0 #fff}
+.game__pad button.is-down{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--coral)}
+.game__pad button.jump.is-down{box-shadow:2px 2px 0 #fff}
+@media (pointer:coarse),(max-width:760px){.game__pad{display:flex}.game__keys{display:none}}
+@media (max-width:760px){.game{margin-top:50px}.game__screen{box-shadow:7px 7px 0 var(--coral);border-width:3px}.game__ov{gap:6px;padding:10px}.game__how{display:none}.game__ov p{display:none}.game__ov.is-win p,.game__ov.is-card p{display:block}}
+.game__snd{background:transparent;color:#fff;border:3px solid #fff;padding:9px 16px;font-weight:800;cursor:pointer}
+.game__snd[aria-pressed="false"]{opacity:.6}
+.game__snd:hover{background:#fff;color:var(--ink)}
+.game__bar{display:block;width:min(260px,70%);height:8px;border:2px solid #fff;margin-top:4px}
+.game__bar i{display:block;height:100%;background:var(--lemon);animation:gbar 1.5s linear forwards}
+.game__bar--slow i{animation-duration:1.7s}
+@keyframes gbar{from{width:0}to{width:100%}}
