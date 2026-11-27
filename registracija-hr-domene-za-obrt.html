@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<script>
+  // SEO: jedna adresa po stranici. GitHub Pages ne zna raditi 301
+  // preusmjeravanja, pa svaku "drugu" adresu iste stranice odmah
+  // prebacujemo na službenu (ista kao <link rel="canonical">):
+  // www.kreirai.hr → kreirai.hr, /index.html → /, /portfolio → /portfolio.html
+  (function () {
+    var h = location.hostname;
+    if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
+    var p = location.pathname, n = p;
+    if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke|izrada-webshopa-za-mali-posao|google-recenzije-za-male-tvrtke|odrzavanje-web-stranice|registracija-hr-domene-za-obrt)\/?$/);
+    if (m) n = '/' + m[1] + '.html';
+    if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
+  })();
+</script>
+<script>
+  // Spriječi preglednik da pri osvježavanju (refresh) stranice vrati
+  // korisnika na mjesto gdje je zadnje skrolao — stranica uvijek kreće
+  // od vrha. Mora se postaviti što prije, prije nego preglednik stigne
+  // primijeniti svoje zadano ponašanje vraćanja scroll pozicije.
+  if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+</script>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://d8j0ntlcm91z4.cloudfront.net; media-src 'self' https://d8j0ntlcm91z4.cloudfront.net; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kako odabrati i registrirati .hr domenu za obrt | KreirAI</title>
+<meta name="description" content="Besplatna ili naplatna .hr domena, kako odabrati dobar naziv i zašto domena mora biti na vaše ime – jednostavan vodič za obrtnike.">
+<link rel="canonical" href="https://kreirai.hr/registracija-hr-domene-za-obrt.html">
+
+<!-- Social share preview (link thumbnail) -->
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2026-11-27">
+<meta property="article:section" content="Digitalni marketing">
+<meta property="og:locale" content="hr_HR">
+<meta property="og:url" content="https://kreirai.hr/registracija-hr-domene-za-obrt.html">
+<meta property="og:site_name" content="KreirAI">
+<meta property="og:title" content="Kako odabrati i registrirati .hr domenu za obrt">
+<meta property="og:description" content="Besplatna ili naplatna .hr domena, kako odabrati dobar naziv i zašto domena mora biti na vaše ime – jednostavan vodič za obrtnike.">
+<meta property="og:image" content="https://kreirai.hr/blog-domena-thumb.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Tražilica domena s rezultatima: babic.hr zauzeto, keramika-babic.hr slobodno, i maskota Pikso">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kako odabrati i registrirati .hr domenu za obrt">
+<meta name="twitter:description" content="Besplatna ili naplatna .hr domena, kako odabrati dobar naziv i zašto domena mora biti na vaše ime – jednostavan vodič za obrtnike.">
+<meta name="twitter:image" content="https://kreirai.hr/blog-domena-thumb.jpg">
+
+<link rel="icon" href="/favicon.ico?v=2" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32.png?v=2">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="arcade.css?v=24">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://kreirai.hr/registracija-hr-domene-za-obrt.html#article",
+      "mainEntityOfPage": "https://kreirai.hr/registracija-hr-domene-za-obrt.html",
+      "headline": "Kako odabrati i registrirati .hr domenu za obrt",
+      "description": "Besplatna ili naplatna .hr domena, kako odabrati dobar naziv i zašto domena mora biti na vaše ime – jednostavan vodič za obrtnike.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://kreirai.hr/blog-domena-thumb.jpg",
+        "width": 1200,
+        "height": 675
+      },
+      "datePublished": "2026-11-27",
+      "dateModified": "2026-11-27",
+      "inLanguage": "hr",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://kreirai.hr/#organization",
+        "name": "KreirAI",
+        "url": "https://kreirai.hr/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://kreirai.hr/#organization",
+        "name": "KreirAI",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://kreirai.hr/logo-512.png"
+        }
+      },
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://kreirai.hr/blog.html#blog",
+        "name": "KreirAI blog"
+      },
+      "keywords": "registracija .hr domene, besplatna .hr domena za obrt, kako odabrati ime domene, .hr ili .com"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://kreirai.hr/registracija-hr-domene-za-obrt.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Početna",
+          "item": "https://kreirai.hr/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://kreirai.hr/blog.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": ".hr domena za obrt",
+          "item": "https://kreirai.hr/registracija-hr-domene-za-obrt.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="no-js">
+<a class="sr-only" href="#sadrzaj">Preskoči na sadržaj</a>
+<header class="nav" id="top">
+  <a class="nav__logo" href="/" aria-label="KreirAI — početna">Kreir<b>AI</b></a>
+  <nav class="nav__links" aria-label="Glavni izbornik">
+    <a href="/">Početna</a>
+    <a href="usluge.html">Usluge</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="blog.html" aria-current="page">Blog</a>
+    <a href="onama.html">O nama</a>
+    <a href="kontakt.html">Kontakt</a>
+    <a href="faq.html">Pitanja</a>
+  </nav>
+  <span class="nav__spacer"></span>
+  <a class="nav__cta" href="kontakt.html" data-snd="coin">Zatražite <span>ponudu</span></a>
+  <button class="nav__burger" id="burger" type="button" aria-label="Otvori izbornik" aria-expanded="false" aria-controls="menu"><span></span></button>
+</header>
+<nav class="menu" id="menu" aria-label="Mobilni izbornik">
+  <a href="/">Početna</a>
+  <a href="usluge.html">Usluge</a>
+  <a href="portfolio.html">Portfolio</a>
+  <a href="blog.html">Blog</a>
+  <a href="onama.html">O nama</a>
+  <a href="kontakt.html">Kontakt</a>
+  <a href="faq.html">Pitanja</a>
+  <a class="btn btn--lemon" href="kontakt.html">Zatražite ponudu</a>
+  <div class="menu__contact"><a href="tel:+385925010329">Nazovite: 092 501 0329</a><a href="https://wa.me/385925010329?text=Pozdrav%21%20Zanima%20me%20izrada%20web%20stranice." target="_blank" rel="noopener">WhatsApp</a><a href="viber://chat?number=%2B385925010329">Viber</a></div>
+</nav>
+
+<main id="sadrzaj">
+<section class="phero" style="padding-bottom:110px">
+  <div class="wrap post">
+    <nav aria-label="Putanja" class="post-crumbs">
+<a href="/">Početna</a><span aria-hidden="true">/</span><a href="blog.html">Blog</a><span aria-hidden="true">/</span><span>.hr domena za obrt</span>
+</nav>
+    <h1 class="post-title rv">Kako odabrati i registrirati .hr domenu za obrt</h1>
+    <div class="post-meta">
+<time datetime="2026-11-27">27. studenoga 2026.</time><i aria-hidden="true"></i><span>KreirAI</span><i aria-hidden="true"></i><span>5 min čitanja</span>
+</div>
+  </div>
+</section>
+<div class="post-wrap sec--grid" data-ach="Čitate blog članak" id="clanak">
+  <div class="wrap post">
+    <figure class="post-cover rv" style="margin-top:-150px"><img src="blog-domena-thumb.jpg" alt="Tražilica domena s rezultatima: babic.hr zauzeto, keramika-babic.hr slobodno, i maskota Pikso" width="1200" height="675" fetchpriority="high" decoding="async"></figure>
+    <div class="post-body">
+<div class="post-answer">
+<span class="label">Kratki odgovor</span>
+<p>Obrt u Hrvatskoj ima pravo na <strong>jednu besplatnu .hr domenu</strong> koja mora sadržavati naziv obrta ili djelatnost s imenom i/ili prezimenom. Za slobodniji naziv birate <strong>naplatnu domenu</strong> preko ovlaštenog registrara. Dobra domena je kratka, laka za izgovor i bez kvačica. Najvažnije od svega: mora biti <strong>registrirana na vaš obrt</strong>, a datum obnove mora netko pratiti.</p>
+</div>
+<p>Prije prve fotografije, prvog teksta i prvog gumba „Pošaljite upit“, svaka <a href="web-stranica-ili-facebook-stranica.html">web stranica</a> treba adresu. Domena je ono što kupac upisuje u preglednik, ono što piše na vašem kombiju i posjetnici, i ono što stoji iza znaka @ u vašoj poslovnoj e-pošti. Mijenja se rijetko. Ako je odaberete loše ili je registrirate na pogrešno ime, posljedice vas prate godinama.</p>
+<p>U ovom vodiču objašnjavamo kako odabrati dobar naziv, kakve .hr domene postoje, tko ih može registrirati i na što paziti da domena uvijek ostane vaša.</p>
+<h2 id="vrste">Kakve .hr domene postoje</h2>
+<p>Domenom .hr upravlja CARNET, a pravila propisuje Pravilnik o ustrojstvu i upravljanju vršnom nacionalnom internetskom domenom. Za obrtnika su važne dvije vrste.</p>
+<h3>Besplatna .hr domena</h3>
+<p>Pravilnik obrtima i drugim fizičkim osobama sa samostalnom djelatnošću registriranom u Hrvatskoj daje pravo na jednu besplatnu .hr domenu. Registrira se izravno kod CARNET-a na godinu dana, a registraciju treba produljivati svake godine.</p>
+<p>Kvaka je u nazivu. Besplatna domena mora sadržavati jedno od sljedećeg:</p>
+<ul class="post-list">
+<li>registrirani naziv obrta;</li>
+<li>skraćeni naziv obrta;</li>
+<li>skraćenicu od početnih slova ili slogova naziva;</li>
+<li>oznaku djelatnosti zajedno s imenom i/ili prezimenom.</li>
+</ul>
+<p>Dakle, „keramika-babic.hr“ je moguća, ali „najboljaplocica.hr“ nije.</p>
+<h3>Naplatna .hr domena</h3>
+<p>Naplatnu domenu registrirate preko ovlaštenog registrara (popis je na stranici domene.hr), na jednu, dvije ili pet godina, uz mogućnost produljenja. Mogu je registrirati pravne osobe s poslovnim nastanom u Europskoj uniji i državljani EU-a koji imaju hrvatski OIB.</p>
+<p>Prednost je sloboda: naziv ne mora sadržavati ime obrta, pa možete odabrati nešto kraće i pamtljivije. Cijene se razlikuju od registrara do registrara, pa ih usporedite. Pritom pogledajte i <a href="koliko-kosta-web-stranica-za-obrt.html">koliko košta produljenje</a>, a ne samo prva godina.</p>
+<div class="post-table post-compare">
+<table>
+<thead><tr><th scope="col"><span class="sr-only">Stavka</span></th><th scope="col">Besplatna .hr</th><th scope="col">Naplatna .hr</th></tr></thead>
+<tbody>
+<tr><td>Gdje se registrira</td><td>Izravno kod CARNET-a</td><td>Kod ovlaštenog registrara</td></tr>
+<tr><td>Koliko ih možete imati</td><td>Jednu</td><td>Koliko želite</td></tr>
+<tr><td>Naziv</td><td>Mora sadržavati ime obrta ili djelatnost s imenom/prezimenom</td><td>Slobodan izbor</td></tr>
+<tr><td>Razdoblje</td><td>Godinu dana, produljuje se svake godine</td><td>Jedna, dvije ili pet godina</td></tr>
+<tr><td>Cijena</td><td>0 €</td><td>Ovisi o registraru</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="naziv">Kako odabrati dobar naziv domene</h2>
+<div class="post-gsteps">
+<section aria-labelledby="n-1" class="post-gstep">
+<span aria-hidden="true" class="n">1</span>
+<h3 id="n-1">Kratko i lako za izgovoriti</h3>
+<p>Najbolji test je telefonski: izgovorite domenu nekome tko je nikad nije čuo i neka je zapiše. Ako treba spelovati, ponavljati ili objašnjavati „s crticom, ali bez točke“, potražite jednostavniju inačicu.</p>
+</section>
+<section aria-labelledby="n-2" class="post-gstep">
+<span aria-hidden="true" class="n">2</span>
+<h3 id="n-2">Oprezno s kvačicama</h3>
+<p>Pravilnik dopušta domene sa slovima č, ć, đ, š i ž, ali one u praksi stvaraju probleme. Kupci ih često upisuju bez kvačica, strane tipkovnice ih nemaju, a dio programa za e-poštu s njima ne radi pouzdano. Za glavnu adresu i poslovnu e-poštu odaberite inačicu bez kvačica. Ako želite, inačicu s kvačicama registrirajte dodatno i preusmjerite je na glavnu.</p>
+</section>
+<section aria-labelledby="n-3" class="post-gstep">
+<span aria-hidden="true" class="n">3</span>
+<h3 id="n-3">Crtica da, ali samo jedna</h3>
+<p>Crtica je dopuštena i katkad nužna kad je spojena inačica zauzeta. Ipak, „vodoinstalater-horvat.hr“ teže je izgovoriti od „horvatvoda.hr“, a domena s dvije ili tri crtice djeluje nespretno.</p>
+</section>
+<section aria-labelledby="n-4" class="post-gstep">
+<span aria-hidden="true" class="n">4</span>
+<h3 id="n-4">Mislite i na e-poštu</h3>
+<p>Adresa poput info@vasobrt.hr izgleda ozbiljnije od adrese na besplatnom servisu, a kupac vas lakše prepozna. Zato zamislite i kako će naziv izgledati iza znaka @.</p>
+</section>
+<section aria-labelledby="n-5" class="post-gstep">
+<span aria-hidden="true" class="n">5</span>
+<h3 id="n-5">.hr ili .com?</h3>
+<p>Ako radite za kupce u Hrvatskoj, .hr je prirodan izbor jer i kupcima i tražilicama jasno govori gdje poslujete. Domena .com ima smisla ako ciljate strano tržište. Ako želite biti sigurni, registrirajte obje i jednu preusmjerite na drugu. Tako ih nitko drugi neće zauzeti.</p>
+</section>
+</div>
+<h2 id="registracija">Registracija korak po korak</h2>
+<ol class="post-steps">
+<li><strong>Provjerite je li naziv slobodan.</strong> Na stranici domene.hr možete provjeriti je li domena već registrirana. Domene se dodjeljuju po redoslijedu zahtjeva, pa ne odgađajte kad nađete dobar naziv.</li>
+<li><strong>Odaberite vrstu domene.</strong> Ako vam odgovara naziv s imenom obrta, besplatna domena je dovoljna. Ako želite slobodniji naziv ili ste besplatnu već iskoristili, birate naplatnu.</li>
+<li><strong>Podnesite zahtjev</strong> s točnim podacima obrta: za besplatnu domenu CARNET-u, a za naplatnu odabranom registraru.</li>
+<li><strong>Povežite domenu sa smještajem stranice (hostingom) i poslovnom e-poštom.</strong> Ovaj tehnički korak obično obavlja izvođač vaše stranice. Istu adresu upišite i u svoj <a href="google-profil-tvrtke.html">Google profil tvrtke</a>.</li>
+<li><strong>Zabilježite datum isteka</strong> i provjerite stižu li obavijesti o obnovi na adresu e-pošte koju redovito čitate.</li>
+</ol>
+<h2 id="vlasnistvo">Najvažnije pravilo: domena mora biti na vaše ime</h2>
+<p>Korisnik domene je onaj tko je upisan u registar. To nije nužno onaj tko je platio račun, niti onaj tko misli da mu domena pripada. Ako je izvođač domenu registrirao na sebe, „vaša“ adresa formalno je njegova.</p>
+<p>Dok surađujete, to se ne primjećuje. Problem nastaje kad <a href="odrzavanje-web-stranice.html">prestanete surađivati</a>, kad izvođač zatvori obrt ili se prestane javljati.</p>
+<div class="post-warn"><p>Tražite da domena bude <strong>registrirana na vaš obrt</strong>, s vašim podacima, i da znate kod kojeg je registrara i kada ističe. Izvođač može domenom tehnički upravljati, ali vlasnik mora biti onaj čiji je posao.</p></div>
+<h2 id="primjer">Primjer: keramičar iz Vinkovaca</h2>
+<div class="post-example">
+<p>(Izmišljeni primjer za ilustraciju.) Ivan Babić vodi obrt za postavljanje keramike u Vinkovcima. Želi stranicu i adresu e-pošte koju će napisati na kombi.</p>
+<p>Prvo provjeri „babic.hr“, ali ta je domena zauzeta. Kao besplatnu domenu odabere „keramika-babic.hr“, koja zadovoljava pravila jer sadrži djelatnost i prezime.</p>
+<p>Kasnije, kad počne raditi i u Osijeku, dokupi naplatnu „keramikababic.hr“ bez crtice i preusmjeri je na glavnu, jer je kupci tako češće upisuju. Obje domene registrirane su na njegov obrt, a datum obnove ima u kalendaru.</p>
+</div>
+<h2 id="zablude">Česte zablude</h2>
+<ul class="post-q">
+<li><strong>„Domenu ću registrirati kad stranica bude gotova.“</strong> Domena se dodjeljuje onome tko je prvi zatraži. Ako ste našli dobar naziv, registrirajte ga odmah.</li>
+<li><strong>„Besplatna domena je lošija.“</strong> Tehnički radi jednako. Razlikuju se samo pravila za naziv, a besplatnu domenu možete imati samo jednu.</li>
+<li><strong>„Platio sam domenu, znači moja je.“</strong> Vaša je ako ste upisani kao korisnik. Provjerite.</li>
+<li><strong>„Domena se sama produljuje.“</strong> Ne uvijek. Ako obnova izostane, domena može biti obrisana i postati dostupna drugima.</li>
+</ul>
+<h2 id="zakljucak">Zaključak</h2>
+<p>Dobra domena je kratka, laka za izgovor i bez kvačica. Registrirana je na vaše ime, a datum njezine obnove netko prati. Pola sata razmišljanja na početku uštedi vam mnogo problema kasnije, od pretiska posjetnica do izgubljene adrese e-pošte.</p>
+<div class="post-cta">
+<h3>Ne znate koji naziv odabrati?</h3>
+<p>Ako planirate novu stranicu, rado ćemo s vama proći mogućnosti i provjeriti što je slobodno. Pišite nam na <a href="mailto:info@kreirai.hr">info@kreirai.hr</a> ili pogledajte što sve nudimo.</p>
+<div class="btn-row">
+<a class="btn btn--ink" href="kontakt.html">Javite nam se <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a class="btn btn--white" href="usluge.html">Pogledajte ponudu</a>
+</div>
+</div>
+<a class="post-related" href="odrzavanje-web-stranice.html">
+<small>Pročitajte i</small>
+<strong>Što se događa s web stranicom koju nitko ne održava →</strong>
+</a>
+<a class="post-related" href="koliko-kosta-web-stranica-za-obrt.html">
+<small>Pročitajte i</small>
+<strong>Koliko košta web stranica za obrt u 2026. i na što paziti? →</strong>
+</a>
+<div class="post-sources">
+<h2>Izvori</h2>
+<ul class="post-list">
+<li><a href="https://narodne-novine.nn.hr/clanci/sluzbeni/2023_07_83_1330.html" rel="noopener" target="_blank">Pravilnik o ustrojstvu i upravljanju vršnom nacionalnom internetskom domenom (NN 83/2023), čl. 8, 11–16 i 24</a></li>
+<li><a href="https://www.domene.hr/portal/files/HRTLDpravilnik2023_hr.pdf" rel="noopener" target="_blank">CARNET: Pravilnik na stranici domene.hr</a></li>
+<li><a href="https://www.carnet.hr/en/?p=8566" rel="noopener" target="_blank">CARNET: informacije o .hr domenama</a></li>
+</ul>
+</div>
+</div>
+    <p class="post-back"><a class="btn btn--white" href="blog.html">← Svi članci</a></p>
+  </div>
+</div>
+</main>
+
+<footer class="foot">
+  <div class="foot__mark" aria-hidden="true"><div>
+    <span>KreirAI</span><span>KreirAI</span><span>KreirAI</span><span>KreirAI</span><span>KreirAI</span><span>KreirAI</span>
+  </div></div>
+  <div class="wrap">
+    <div class="foot__row">
+      <a class="nav__logo" href="/" style="height:52px;border-radius:8px" aria-label="KreirAI — početna">Kreir<b>AI</b></a>
+      <nav aria-label="Podnožje">
+        <a href="usluge.html">Usluge</a><a href="portfolio.html">Portfolio</a><a href="blog.html">Blog</a><a href="onama.html">O nama</a><a href="kontakt.html">Kontakt</a><a href="faq.html">Pitanja</a>
+        <a href="uvjeti.html">Uvjeti korištenja</a><a href="privatnost.html">Pravila privatnosti</a><a href="cjenik.xml">Cjenik (XML)</a><a href="cjenik.csv">Cjenik (CSV)</a>
+      </nav>
+      <span>© 2026 KreirAI. Sva prava pridržana.</span>
+    </div>
+    <div class="foot__contact">
+      <a class="fc fc--tel" href="tel:+385925010329"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></span>092 501 0329</a>
+      <a class="fc fc--wa" href="https://wa.me/385925010329?text=Pozdrav%21%20Zanima%20me%20izrada%20web%20stranice." target="_blank" rel="noopener"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2-5.5A8.4 8.4 0 1 1 21 11.5Z"/></svg></span>WhatsApp</a>
+      <a class="fc fc--vb" href="viber://chat?number=%2B385925010329"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2-5.5A8.4 8.4 0 1 1 21 11.5Z"/></svg></span>Viber</a>
+    </div>
+    <div class="foot__danger"><button type="button" class="dont" id="dontBtn">Nikako ne stiskajte ovo</button></div>
+    <div class="foot__legal">
+      <p><strong>KreirAI, obrt za računalno stvaralaštvo</strong>, vl. Tomislav Janković · Osijek, Hrvatska · <a href="mailto:info@kreirai.hr">info@kreirai.hr</a> · <a href="tel:+385925010329">092 501 0329</a></p>
+      <p>Nismo u sustavu PDV-a — PDV nije obračunat temeljem čl. 90. st. 1. Zakona o PDV-u. Sve navedene cijene su konačne.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="hud" id="hud" role="region" aria-label="Igrica: bodovi">
+  <div class="hud__score"><small>BODOVI</small><b id="score">000000</b></div>
+  <button type="button" id="sndBtn" aria-pressed="false">🔈 Zvuk</button>
+  <button type="button" class="hud__ach" id="achBtn" aria-label="Otključana postignuća">🏆 <span id="achN">0</span></button>
+  <button type="button" class="hud__min" id="hudMin" aria-label="Sakrij traku s bodovima">–</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"><small>Postignuće otključano</small><strong id="toastT">—</strong><em id="toastP">+0</em></div>
+<div class="msg" id="msg" role="status" aria-live="polite" aria-hidden="true">
+  <div class="msg__bar" id="msgBar"><span>1 nova poruka <em>(baci me)</em></span><button class="msg__x" type="button" id="msgX" aria-label="Zatvori poruku">×</button></div>
+  <div class="msg__body"><span class="msg__ico" aria-hidden="true">!</span><div><strong id="msgFrom">Od: vašeg telefona</strong><p id="msgTxt">„Zašto više ne zvonim?“</p></div></div>
+  <div class="msg__btns"><a href="kontakt.html" id="msgGo" data-snd="coin">Obratite se KreirAI-ju</a><button type="button" id="msgC">Zatvori</button></div>
+</div>
+<div id="cookieBanner" class="cookie" hidden role="dialog" aria-live="polite" aria-label="Obavijest o kolačićima">
+  <strong>Kolačić? 🍪</strong>
+  <p>Ova stranica koristi kolačiće/lokalnu pohranu nužnu za rad (npr. pamćenje bodova i postavki). Nastavkom korištenja pristajete na to. Više u <a href="privatnost.html">Pravilima privatnosti</a>.</p>
+  <button id="cookieAccept" type="button" class="btn btn--ink">Slažem se</button>
+</div>
+<canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+<div class="boom" id="boom" role="alertdialog" aria-modal="true" aria-labelledby="boomT" hidden>
+  <button type="button" class="boom__fix" id="boomFix">↺ Popravi stranicu</button>
+  <div class="boom__card"><span class="boom__lbl">GREŠKA 418 · KORISNIK JE STISNUO</span><strong id="boomT">Pa jesam li rekao da ne stišćete?!</strong><p>Sad ste sve srušili. Srećom, imamo gumb i za to — gore.</p></div>
+</div>
+
+<script src="arcade.js?v=24"></script>
+</body>
+</html>

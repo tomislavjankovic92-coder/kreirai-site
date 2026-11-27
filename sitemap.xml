@@ -32,7 +32,7 @@
   </url>
   <url>
     <loc>https://kreirai.hr/blog.html</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -87,6 +87,12 @@
   <url>
     <loc>https://kreirai.hr/odrzavanje-web-stranice.html</loc>
     <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://kreirai.hr/registracija-hr-domene-za-obrt.html</loc>
+    <lastmod>2026-11-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

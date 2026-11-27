@@ -6,6 +6,24 @@
   var KAI = window.KAI || { addScore: function () {}, achieve: function () {}, beep: function () {} };
   var T = 32, VW = 640, VH = 352, ROWS = 11;
   var INK = '#0B0B10', CORAL = '#FF6F59', LEMON = '#FFE14A', ULTRA = '#2E37FF', MINT = '#00C27A', PAPER = '#FFF6EA', RED = '#FF2D3D', PINK = '#FF4FA3';
+  /* ---------- Pikso (maskota) — pikselni sprite ---------- */
+  var PIK = [".......................KKKKKKKKKK.......................", "......................KwwwwwwwwwwK......................", "......................KwkkkkkkkkwK......................", "......................KwkkkkkkkkwK......................", "......................KwkkyyyykkwK......................", "......................KwkkyyyykkwK......................", "......................KwkkyyyykkwK......................", "......................KwkkyyyykkwK......................", "......................KwkkkkkkkkwK......................", "......................KwkkkkkkkkwK......................", "......................KwwwkkkkwwwK......................", ".......................KKwkkkkwKK.......................", ".........KKKKKKKKKKKKKKKKwkkkkwKKKKKKKKKKKKKKKK.........", "........KwwwwwwwwwwwwwwwwwkkkkwwwwwwwwwwwwwwwwwK........", ".......KKwkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkwKK.......", "......KwwwkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkwwwK......", "......KwkkllllllllllllllllllllllllllllllllllcckkwK......", "......KwkkllllllllllllllllllllllllllllllllllcckkwK......", "......KwkkllccccccccccccccccccccccccccccccccddkkwK......", "......KwkkllccccccccccccccccccccccccccccccccddkkwK......", "......KwkkllcckkkkkkkkkkkkkkkkkkkkkkkkkkkkccddkkwK......", "......KwkkllcckkkkkkkkkkkkkkkkkkkkkkkkkkkkccddkkwK......", "......KwkkllcckkggggsssssssssssssssssssskkccddkkwK......", "......KwkkllcckkggggsssssssssssssssssssskkccddkkwK......", ".KKKKKKwkkllcckkssssyywwssssssssyywwsssskkccddkkwKKKKKK.", "KwwwwwwwkkllcckkssssyywwssssssssyywwsssskkccddkkwwwwwwwK", "KwkkcckkkkllcckkssssyyyyssssssssyyyysssskkccddkkkkcckkwK", "KwkkcckkkkllcckkssssyyyyssssssssyyyysssskkccddkkkkcckkwK", "KwkkcckkkkllcckksssssssssssssssssssssssskkccddkkkkcckkwK", "KwkkcckkkkllcckksssssssssssssssssssssssskkccddkkkkcckkwK", "KwkkcckkkkllcckkssppssssyyssssyyssssppsskkccddkkkkcckkwK", "KwkkcckkkkllcckkssppssssyyssssyyssssppsskkccddkkkkcckkwK", "KwkkcckkkkllcckkssssssssssyyyysssssssssskkccddkkkkcckkwK", "KwkkcckkkkllcckkssssssssssyyyysssssssssskkccddkkkkcckkwK", "KwkkwwkkkkllcckksssssssssssssssssssssssskkccddkkkkwwkkwK", "KwkkwwkkkkllcckksssssssssssssssssssssssskkccddkkkkwwkkwK", "KwwwwwwwkkllcckkkkkkkkkkkkkkkkkkkkkkkkkkkkccddkkwwwwwwwK", ".KKKKKKwkkllcckkkkkkkkkkkkkkkkkkkkkkkkkkkkccddkkwKKKKKK.", "......KwkkllccccddccddccddccccccccyyyyccccccddkkwK......", "......KwkkllccccddccddccddccccccccyyyyccccccddkkwK......", "......KwkkccddddddddddddddddddddddddddddddddddkkwK......", "......KwkkccddddddddddddddddddddddddddddddddddkkwK......", "......KwwwkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkwwwK......", ".......KKwkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkwKK.......", "........KwwwwwwwwwkkddkkwwwwwwwwkkddkkwwwwwwwwwK........", ".........KKKKKKKKwkkddkkwKKKKKKwkkddkkwKKKKKKKK.........", "...............KKwkkddkkwKK..KKwkkddkkwKK...............", "..............KwwwkkddkkwwwKKwwwkkddkkwwwK..............", "..............KwkkkkkkkkkkwKKwkkkkkkkkkkwK..............", "..............KwwwwwwwwwwwwKKwwwwwwwwwwwwK..............", "...............KKKKKKKKKKKK..KKKKKKKKKKKK..............."];
+  var PIKC = { K: INK, k: INK, w: '#FFFFFF', l: '#FF8E78', c: CORAL, d: '#D9432E', y: LEMON, p: PINK, s: '#1B1B27', g: '#3A3A4D' };
+  var pikCache = {};
+  function pikFrame(dx, blink, legs) { // legs: 0 stoji, 1 lijeva gore, 2 desna gore, 3 skok
+    var key = dx + '|' + blink + '|' + legs; if (pikCache[key]) return pikCache[key];
+    var g = PIK.map(function (r) { return r.split(''); }), H = g.length, W = g[0].length, y, x;
+    // lice (oči, obrazi, usta) gleda u smjeru kretanja
+    var face = [];
+    for (y = 22; y <= 35; y++) for (x = 16; x <= 39; x++) { var ch = g[y][x]; if (ch === 'y' || ch === 'w' || ch === 'p') { face.push([y, x, ch]); g[y][x] = 's'; } }
+    face.forEach(function (f) { var ch = f[2]; if (blink && f[0] >= 24 && f[0] <= 27) { if (f[0] === 26) ch = 'y'; else return; } g[f[0]][f[1] + dx] = ch; });
+    // noge
+    function lift(lo, hi, n) { for (var yy = 48 - n; yy <= 47; yy++) for (var xx = lo; xx <= hi; xx++) if (g[yy][xx] === 'd') g[yy][xx] = 'k'; }
+    if (legs === 1 || legs === 3) lift(0, 27, 2); if (legs === 2 || legs === 3) lift(28, 55, 2);
+    var c = document.createElement('canvas'); c.width = W; c.height = H; var cx = c.getContext('2d');
+    for (y = 0; y < H; y++) for (x = 0; x < W; x++) { var col = PIKC[g[y][x]]; if (col) { cx.fillStyle = col; cx.fillRect(x, y, 1, 1); } }
+    return (pikCache[key] = c);
+  }
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- leveli ---------- */
@@ -30,13 +48,13 @@
         row(g, 6, 7, 3); plat(g, 10, 5, 2); put(g, 12, 5, 'B'); plat(g, 13, 5, 2); put(g, 16, 8, 'e'); put(g, 20, 8, '^');
         gap(g, 24, 3); plat(g, 24, 6, 3); row(g, 24, 5, 3); put(g, 30, 8, 'e'); put(g, 33, 8, 'e');
         stairs(g, 37, 4); gap(g, 41, 3); stairs(g, 44, 4, true); row(g, 41, 4, 3);
-        put(g, 52, 8, '^'); put(g, 53, 8, '^'); row(g, 52, 6, 2); plat(g, 57, 5, 4); put(g, 58, 2, 'B'); put(g, 61, 8, 'e');
+        put(g, 52, 8, '^'); put(g, 53, 8, '^'); row(g, 52, 6, 2); plat(g, 55, 7, 2); plat(g, 57, 5, 4); put(g, 58, 2, 'B'); put(g, 61, 8, 'e');
         gap(g, 66, 4); plat(g, 67, 6, 2); row(g, 67, 5, 2); put(g, 74, 8, 'e'); plat(g, 77, 6, 3); plat(g, 81, 4, 3); row(g, 81, 3, 3);
         put(g, 86, 8, 'e'); put(g, 90, 8, '^'); row(g, 92, 7, 3); put(g, 98, 8, 'F'); return g; } },
     { name: 'Dorada', next: 'Isporuka', sky: MINT, tint: 'rgba(11,11,16,.08)', block: PINK, item: 'pixel', tip: 'Poliramo svaki piksel do savršenstva.',
       build: function () { var g = make(112);
         row(g, 5, 7, 3); gap(g, 10, 6); plat(g, 11, 6, 2); plat(g, 14, 5, 2); row(g, 14, 4, 2); put(g, 19, 8, 'e');
-        plat(g, 22, 5, 3); put(g, 23, 2, 'B'); gap(g, 27, 5); plat(g, 28, 6, 1); plat(g, 30, 5, 1); row(g, 30, 4, 1);
+        plat(g, 20, 7, 1); plat(g, 22, 5, 3); put(g, 23, 2, 'B'); gap(g, 27, 5); plat(g, 28, 6, 1); plat(g, 30, 5, 1); row(g, 30, 4, 1);
         put(g, 35, 8, '^'); put(g, 36, 8, '^'); put(g, 37, 8, '^'); row(g, 35, 6, 3); put(g, 40, 8, 'e'); put(g, 43, 8, 'e');
         stairs(g, 47, 3); gap(g, 50, 4); plat(g, 51, 5, 2); row(g, 51, 4, 2); stairs(g, 54, 3, true);
         plat(g, 60, 6, 2); plat(g, 63, 4, 2); plat(g, 66, 2, 3); row(g, 66, 1, 3); put(g, 70, 8, 'e'); put(g, 73, 8, 'e');
@@ -47,7 +65,7 @@
         row(g, 5, 7, 4); put(g, 11, 5, 'B'); put(g, 12, 5, 'B'); put(g, 16, 8, 'e'); gap(g, 20, 3); row(g, 20, 6, 3);
         stairs(g, 26, 3); put(g, 29, 8, '^'); put(g, 30, 8, '^'); stairs(g, 31, 3, true); row(g, 29, 4, 2); put(g, 36, 8, 'e'); put(g, 39, 8, 'e');
         gap(g, 43, 5); plat(g, 44, 6, 3); row(g, 44, 5, 3); plat(g, 50, 4, 3); put(g, 51, 1, 'B'); put(g, 55, 8, 'e');
-        put(g, 59, 8, '^'); put(g, 60, 8, '^'); plat(g, 58, 5, 4); row(g, 58, 4, 4); put(g, 65, 8, 'e'); put(g, 68, 8, 'e');
+        put(g, 59, 8, '^'); put(g, 60, 8, '^'); plat(g, 56, 7, 1); plat(g, 58, 5, 4); row(g, 58, 4, 4); put(g, 65, 8, 'e'); put(g, 68, 8, 'e');
         gap(g, 72, 4); plat(g, 73, 6, 2); row(g, 73, 5, 2); stairs(g, 79, 4); row(g, 79, 4, 4);
         for (var x = 83; x < 104; x++) { col(g, x, 5); } // visoravan za pobjedu
         row(g, 85, 4, 5); put(g, 97, 4, 'W'); return g; } }
@@ -213,13 +231,11 @@
   }
   function drawPlayer() {
     if (P.inv > 0 && Math.floor(S.t * 16) % 2 === 0 && S.state === 'play') return;
-    var x = Math.round(P.x), y = Math.round(P.y), f = P.face, step = P.on && Math.abs(P.vx) > 20 ? Math.sin(P.run * .12) * 3 : 0;
-    ctx.fillStyle = INK; ctx.fillRect(x + 4, y + 22 + Math.max(0, step), 6, 6 - Math.max(0, step)); ctx.fillRect(x + 12, y + 22 + Math.max(0, -step), 6, 6 - Math.max(0, -step));
-    box(x, y + 12, P.w, 12, CORAL, 3);
-    box(x - 1, y - 2, P.w + 2, 16, PAPER, 3);
-    var blink = (S.t % 3) < .12; ctx.fillStyle = INK; var ex = x + 7 + f * 2;
-    ctx.fillRect(ex, y + 3, 3, blink ? 1 : 5); ctx.fillRect(ex + 7, y + 3, 3, blink ? 1 : 5);
-    ctx.fillRect(x + 10, y - 9, 3, 7); ctx.fillStyle = LEMON; ctx.beginPath(); ctx.arc(x + 11.5, y - 10, 4, 0, 7); ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
+    var moving = P.on && Math.abs(P.vx) > 20, legs = !P.on ? 3 : moving ? (Math.floor(P.run / 22) % 2 ? 1 : 2) : 0;
+    var blink = (S.t % 3.2) < .12, img = pikFrame(P.face > 0 ? 1 : -1, blink, legs);
+    var sw = 44, sh = sw * img.height / img.width, bob = !moving && P.on && Math.floor(S.t * 1.25) % 2 ? 1 : 0;
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(img, Math.round(P.x + P.w / 2 - sw / 2), Math.round(P.y + P.h - sh + 1 - bob), sw, sh);
   }
   function drawEnemy(e) {
     var x = Math.round(e.x), y = Math.round(e.y);
@@ -255,7 +271,7 @@
     ctx.font = '22px VT323, monospace'; ctx.textAlign = 'left'; var lab = 'LV' + (S.lvl + 1) + ' · ' + L.name.toUpperCase(), lw = ctx.measureText(lab).width + 22;
     box(10, 10, lw, 30, INK, 2); ctx.fillStyle = LEMON; ctx.fillText(lab, 21, 32);
     var it = S.items + ' / ' + S.total, iw = ctx.measureText(it).width + 52, ix = Math.max(lw + 24, VW / 2 - iw / 2); box(ix, 10, iw, 30, '#fff', 2); drawItem(L.item, ix + 20, 25); ctx.fillStyle = INK; ctx.font = '22px VT323, monospace'; ctx.textAlign = 'left'; ctx.fillText(it, ix + 38, 32);
-    for (var i = 0; i < 3; i++) { box(VW - 40 - i * 28, 12, 22, 22, i < S.lives ? CORAL : (dark ? '#4a4ff0' : 'rgba(255,255,255,.5)'), 2); }
+    for (var i = 0; i < 3; i++) { box(VW - 40 - i * 28, 12, 22, 22, i < S.lives ? (L.sky === CORAL ? RED : CORAL) : (dark ? '#4a4ff0' : 'rgba(255,255,255,.5)'), 2); }
     if (S.flash > 0) { ctx.fillStyle = 'rgba(255,255,255,' + S.flash + ')'; ctx.fillRect(0, 0, VW, VH); }
   }
 
@@ -264,7 +280,7 @@
   function hideOv() { ov.className = 'game__ov'; ov.innerHTML = ''; scr.focus({ preventScroll: true }); }
   function showTitle() {
     S.state = 'title';
-    overlay('<span class="game__lbl">MINI IGRA</span><strong>4 levela do<br>vaše stranice</strong><p>Prođite Informiranje, Izradu, Doradu i Isporuku — skupljajte predmete, gazite bugove i osvojite web stranicu.</p>' +
+    overlay('<span class="game__lbl">MINI IGRA</span><strong>4 levela do<br>vaše stranice</strong><p>Provedite Piksa kroz Informiranje, Izradu, Doradu i Isporuku — skupljajte predmete, gazite bugove i osvojite web stranicu.</p>' +
       '<div class="game__how"><span><b>A</b> <b>D</b> kretanje</span><span><b>W</b> / <b>razmak</b> skok</span></div><button type="button" class="game__btn" data-act="start">▶ Start</button>');
   }
   function later(ms, fn) { var s = S.seq; setTimeout(function () { if (S.seq === s) fn(); }, ms); }

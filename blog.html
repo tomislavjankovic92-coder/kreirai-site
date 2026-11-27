@@ -12,7 +12,7 @@
     if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
     var p = location.pathname, n = p;
     if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
-    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke|izrada-webshopa-za-mali-posao|google-recenzije-za-male-tvrtke|odrzavanje-web-stranice)\/?$/);
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke|izrada-webshopa-za-mali-posao|google-recenzije-za-male-tvrtke|odrzavanje-web-stranice|registracija-hr-domene-za-obrt)\/?$/);
     if (m) n = '/' + m[1] + '.html';
     if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
   })();
@@ -56,7 +56,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=VT323&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="arcade.css?v=21">
+<link rel="stylesheet" href="arcade.css?v=24">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -89,6 +89,14 @@
         "@id": "https://kreirai.hr/#organization"
       },
       "blogPost": [
+        {
+          "@type": "BlogPosting",
+          "@id": "https://kreirai.hr/registracija-hr-domene-za-obrt.html#article",
+          "headline": "Kako odabrati i registrirati .hr domenu za obrt",
+          "url": "https://kreirai.hr/registracija-hr-domene-za-obrt.html",
+          "datePublished": "2026-11-27",
+          "image": "https://kreirai.hr/blog-domena-thumb.jpg"
+        },
         {
           "@type": "BlogPosting",
           "@id": "https://kreirai.hr/google-recenzije-za-male-tvrtke.html#article",
@@ -184,8 +192,17 @@
 <section class="sec sec--paper sec--grid" id="blog" data-ach="Otvorili ste blog">
   <div class="wrap">
     <div class="bgrid">
-    <a class="bcard rv" href="google-recenzije-za-male-tvrtke.html" style="--dl:0.0s">
-      <div class="bcard__img"><img src="blog-google-recenzije-thumb.jpg" alt="Kartica s pet zvjezdica i NFC kartica za Google recenzije na pultu" width="1200" height="675" loading="eager" decoding="async"></div>
+    <a class="bcard rv" href="registracija-hr-domene-za-obrt.html" style="--dl:0.0s">
+      <div class="bcard__img"><img src="blog-domena-thumb.jpg" alt="Tražilica domena s rezultatima: babic.hr zauzeto, keramika-babic.hr slobodno, i maskota Pikso" width="1200" height="675" loading="eager" decoding="async"></div>
+      <div class="bcard__body">
+        <div class="bcard__meta"><span class="tag">Vodič</span><time datetime="2026-11-27">27. studenoga 2026. · 5 min čitanja</time></div>
+        <h2>Kako odabrati i registrirati .hr domenu za obrt</h2>
+        <p>Besplatna ili naplatna .hr domena, kako odabrati dobar naziv i zašto domena mora biti na vaše ime – jednostavan vodič za obrtnike.</p>
+        <span class="pf__go">Pročitajte članak <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </a>
+    <a class="bcard rv" href="google-recenzije-za-male-tvrtke.html" style="--dl:0.1s">
+      <div class="bcard__img"><img src="blog-google-recenzije-thumb.jpg" alt="Kartica s pet zvjezdica i NFC kartica za Google recenzije na pultu" width="1200" height="675" loading="lazy" decoding="async"></div>
       <div class="bcard__body">
         <div class="bcard__meta"><span class="tag">Vodič</span><time datetime="2026-11-23">23. studenoga 2026. · 6 min čitanja</time></div>
         <h2>Kako dobiti više Google recenzija – bez kršenja pravila</h2>
@@ -193,7 +210,7 @@
         <span class="pf__go">Pročitajte članak <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </div>
     </a>
-    <a class="bcard rv" href="odrzavanje-web-stranice.html" style="--dl:0.1s">
+    <a class="bcard rv" href="odrzavanje-web-stranice.html" style="--dl:0.0s">
       <div class="bcard__img"><img src="blog-odrzavanje-thumb.jpg" alt="Prozor s upozorenjem da je domena istekla i servisna lista održavanja web stranice" width="1200" height="675" loading="lazy" decoding="async"></div>
       <div class="bcard__body">
         <div class="bcard__meta"><span class="tag">Vodič</span><time datetime="2026-11-23">23. studenoga 2026. · 4 min čitanja</time></div>
@@ -202,7 +219,7 @@
         <span class="pf__go">Pročitajte članak <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </div>
     </a>
-    <a class="bcard rv" href="izrada-webshopa-za-mali-posao.html" style="--dl:0.0s">
+    <a class="bcard rv" href="izrada-webshopa-za-mali-posao.html" style="--dl:0.1s">
       <div class="bcard__img"><img src="blog-webshop-thumb.jpg" alt="Webshop malog obrta s proizvodima u košarici i obavijest o prvoj narudžbi" width="1200" height="675" loading="lazy" decoding="async"></div>
       <div class="bcard__body">
         <div class="bcard__meta"><span class="tag">Vodič</span><time datetime="2026-10-16">16. listopada 2026. · 6 min čitanja</time></div>
@@ -211,7 +228,7 @@
         <span class="pf__go">Pročitajte članak <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </div>
     </a>
-    <a class="bcard rv" href="google-profil-tvrtke.html" style="--dl:0.1s">
+    <a class="bcard rv" href="google-profil-tvrtke.html" style="--dl:0.0s">
       <div class="bcard__img"><img src="blog-google-profil-thumb.jpg" alt="Lokalna karta s istaknutom tvrtkom, ocjenom 4,9 i gumbima Nazovi, Upute i Web-lokacija" width="1200" height="675" loading="lazy" decoding="async"></div>
       <div class="bcard__body">
         <div class="bcard__meta"><span class="tag">Vodič</span><time datetime="2026-10-16">16. listopada 2026. · 6 min čitanja</time></div>
@@ -220,7 +237,7 @@
         <span class="pf__go">Pročitajte članak <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </div>
     </a>
-    <a class="bcard rv" href="koliko-kosta-web-stranica-za-obrt.html" style="--dl:0.0s">
+    <a class="bcard rv" href="koliko-kosta-web-stranica-za-obrt.html" style="--dl:0.1s">
       <div class="bcard__img"><img src="blog-koliko-kosta-thumb.jpg" alt="Cjenik izrade web stranica za obrt 2026. s istaknutom prezentacijskom stranicom od 900 do 2.500 €" width="1200" height="675" loading="lazy" decoding="async"></div>
       <div class="bcard__body">
         <div class="bcard__meta"><span class="tag">Vodič</span><time datetime="2026-10-15">15. listopada 2026. · 6 min čitanja</time></div>
@@ -229,7 +246,7 @@
         <span class="pf__go">Pročitajte članak <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </div>
     </a>
-    <a class="bcard rv" href="web-stranica-ili-facebook-stranica.html" style="--dl:0.1s">
+    <a class="bcard rv" href="web-stranica-ili-facebook-stranica.html" style="--dl:0.0s">
       <div class="bcard__img"><img src="blog-web-ili-facebook-thumb.jpg" alt="Usporedba objave na društvenoj mreži i vlastite web stranice koja je prva na Googleu" width="1200" height="675" loading="lazy" decoding="async"></div>
       <div class="bcard__body">
         <div class="bcard__meta"><span class="tag">Usporedba</span><time datetime="2026-10-15">15. listopada 2026. · 5 min čitanja</time></div>
@@ -293,6 +310,6 @@
   <div class="boom__card"><span class="boom__lbl">GREŠKA 418 · KORISNIK JE STISNUO</span><strong id="boomT">Pa jesam li rekao da ne stišćete?!</strong><p>Sad ste sve srušili. Srećom, imamo gumb i za to — gore.</p></div>
 </div>
 
-<script src="arcade.js?v=21"></script>
+<script src="arcade.js?v=24"></script>
 </body>
 </html>

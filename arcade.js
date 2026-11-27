@@ -389,6 +389,30 @@
   if (fix) fix.addEventListener('click', fixPage);
   doc.addEventListener('keydown', function (e) { if (e.key === 'Escape') fixPage(); });
 
+  /* ---------- Pikso, maskota: pozdrav i skok ---------- */
+  var pik = $('#pikso');
+  if (pik) {
+    pik.addEventListener('mouseenter', function () { beep(988, .06); setTimeout(function () { beep(1319, .1); }, 70); });
+    pik.addEventListener('click', function () {
+      pik.classList.remove('is-jump'); void pik.offsetWidth; pik.classList.add('is-jump', 'is-hi');
+      beep(260, .16, 'square', 720); setTimeout(function () { beep(1046, .08); }, 180);
+      achieve('pikso', 'Upoznali ste Piksa', 25);
+      clearTimeout(pik._t); pik._t = setTimeout(function () { pik.classList.remove('is-hi'); }, 1800);
+    });
+    // Pikso prati pokazivač pogledom (pomak lica za 1 piksel)
+    var pface = pik.querySelector('.pikso__face'), pq = 0, pdx = 0, pdy = 0;
+    if (pface && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      window.addEventListener('pointermove', function (e) {
+        if (pq) return; pq = requestAnimationFrame(function () {
+          pq = 0; var r = pik.getBoundingClientRect(); if (!r.width) return;
+          var cx = r.left + r.width / 2, cy = r.top + r.height * .45, dx = e.clientX - cx, dy = e.clientY - cy;
+          var nx = Math.abs(dx) > r.width * .6 ? (dx > 0 ? 1 : -1) : 0, ny = Math.abs(dy) > r.height * .6 ? (dy > 0 ? 1 : -1) : 0;
+          if (nx !== pdx || ny !== pdy) { pdx = nx; pdy = ny; pface.style.transform = 'translate(' + nx + 'px,' + ny + 'px)'; }
+        });
+      }, { passive: true });
+    }
+  }
+
   /* ---------- šaljivi naslov kartice dok je posjetitelj na drugoj kartici ---------- */
   (function () {
     if (navigator.webdriver || /bot|crawl|spider|lighthouse|headless/i.test(navigator.userAgent)) return;

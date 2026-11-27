@@ -12,7 +12,7 @@
     if (h !== 'kreirai.hr' && h !== 'www.kreirai.hr') return;
     var p = location.pathname, n = p;
     if (/\/index\.html$/.test(n)) n = n.replace(/index\.html$/, '');
-    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke|izrada-webshopa-za-mali-posao|google-recenzije-za-male-tvrtke|odrzavanje-web-stranice)\/?$/);
+    var m = n.match(/^\/(usluge|portfolio|onama|kontakt|faq|blog|privatnost|uvjeti|koliko-kosta-web-stranica-za-obrt|web-stranica-ili-facebook-stranica|google-profil-tvrtke|izrada-webshopa-za-mali-posao|google-recenzije-za-male-tvrtke|odrzavanje-web-stranice|registracija-hr-domene-za-obrt)\/?$/);
     if (m) n = '/' + m[1] + '.html';
     if (h !== 'kreirai.hr' || n !== p) location.replace('https://kreirai.hr' + n + location.search + location.hash);
   })();
@@ -58,7 +58,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=VT323&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="arcade.css?v=21">
+<link rel="stylesheet" href="arcade.css?v=24">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -335,6 +335,6 @@
   <div class="boom__card"><span class="boom__lbl">GREŠKA 418 · KORISNIK JE STISNUO</span><strong id="boomT">Pa jesam li rekao da ne stišćete?!</strong><p>Sad ste sve srušili. Srećom, imamo gumb i za to — gore.</p></div>
 </div>
 
-<script src="arcade.js?v=21"></script>
+<script src="arcade.js?v=24"></script>
 </body>
 </html>

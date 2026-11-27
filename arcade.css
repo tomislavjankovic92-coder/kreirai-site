@@ -154,6 +154,29 @@ main,.foot{overflow-x:hidden;overflow-x:clip}
 .stk--stars b{color:var(--lemon);letter-spacing:2px}
 .stk--burst{width:128px;height:128px;display:grid;place-items:center;text-align:center;font-weight:900;font-stretch:72%;text-transform:uppercase;line-height:.9;font-size:1.25rem;color:#fff;
   background:var(--ultra);clip-path:polygon(50% 0,61% 13%,77% 6%,80% 22%,96% 24%,90% 39%,100% 50%,90% 61%,96% 76%,80% 78%,77% 94%,61% 87%,50% 100%,39% 87%,23% 94%,20% 78%,4% 76%,10% 61%,0 50%,10% 39%,4% 24%,20% 22%,23% 6%,39% 13%)}
+/* Pikso, maskota */
+.hero__stage:has(.pikso){margin-bottom:225px}
+.pikso{position:absolute;right:3%;top:calc(100% + 54px);z-index:3;width:172px;padding:0;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pikso::after{content:"";position:absolute;left:20%;right:20%;bottom:-10px;height:8px;background:rgba(11,11,16,.16);animation:pikShad 1.6s steps(1) infinite}
+.pikso__svg{display:block;width:100%;height:auto;overflow:visible;image-rendering:pixelated}
+.pikso__body{animation:pikBob 1.6s steps(1) infinite}
+.pikso__eyes{animation:pikBlink 4.2s infinite;transform-box:fill-box;transform-origin:center}
+.pikso__happy{opacity:0}
+.pikso__bulb rect{animation:pikBulb 1.6s steps(1) infinite}
+.pikso__face{transition:transform .12s steps(1)}
+.pikso:hover .pikso__eyes,.pikso.is-hi .pikso__eyes{opacity:0}
+.pikso:hover .pikso__happy,.pikso.is-hi .pikso__happy{opacity:1}
+.pikso__say{position:absolute;right:96%;top:-10px;white-space:nowrap;font-family:var(--px);font-size:1.3rem;background:#fff;color:var(--ink);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:5px 12px 3px;opacity:0;transform:translateY(8px);transition:opacity .15s,transform .15s;pointer-events:none}
+.pikso__say::after{content:"";position:absolute;right:-12px;bottom:8px;border:7px solid transparent;border-left-color:var(--ink)}
+.pikso:hover .pikso__say,.pikso:focus-visible .pikso__say,.pikso.is-hi .pikso__say{opacity:1;transform:none}
+.pikso.is-jump .pikso__svg{animation:pikJump .55s cubic-bezier(.3,1.4,.5,1)}
+.pikso:focus-visible{outline:3px solid var(--coral);outline-offset:6px}
+@keyframes pikBob{0%{transform:none}50%{transform:translateY(-1px)}}
+@keyframes pikShad{0%{transform:none}50%{transform:scaleX(.88)}}
+@keyframes pikBlink{0%,93%,100%{transform:scaleY(1)}95%,97%{transform:scaleY(.25)}}
+@keyframes pikBulb{0%{fill:#FFE14A}50%{fill:#FFF6B8}}
+@keyframes pikJump{0%{transform:translateY(0)}40%{transform:translateY(-34px)}70%{transform:translateY(0) scaleY(.92)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){.pikso__body,.pikso__bulb rect,.pikso__eyes,.pikso::after{animation:none}}
 .hint{position:absolute;right:6px;bottom:-34px;font-family:var(--px);font-size:1.25rem;color:var(--ink);display:flex;align-items:center;gap:6px}
 .hint svg{width:22px;height:22px;animation:nudge 1.2s ease-in-out infinite}
 @keyframes nudge{50%{transform:translateX(-6px)}}
@@ -575,6 +598,8 @@ html.is-broken,html.is-broken body{overflow:hidden}
 @media (max-width:1060px){
   .hero__grid{grid-template-columns:1fr;padding-left:26px}
   .hero__stage{min-height:560px;margin-top:20px}
+  .pikso{top:calc(100% + 52px);right:6%;width:128px}
+  .hero__stage:has(.pikso){margin-bottom:190px}
   .tv{margin:0 auto}
   .stats__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .stat--or{order:3}.stat--mo{order:4}
@@ -588,6 +613,9 @@ html.is-broken,html.is-broken body{overflow:hidden}
 @media (max-width:760px){
   .sec{padding:84px 0}
   .hero{padding:calc(var(--nav-h) + 34px) 0 110px}
+  .pikso{right:4px;top:calc(100% + 18px);width:100px}
+  .hero__stage:has(.pikso){margin-bottom:120px}
+  .pikso__say{font-size:1.05rem}
   .hero__side{width:26px}
   .hero__side .vt{font-size:.75rem}
   .hero__grid{padding-left:16px}
